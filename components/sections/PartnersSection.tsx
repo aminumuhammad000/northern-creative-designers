@@ -7,14 +7,11 @@ import {
   CheckCircle2,
   PieChart,
   Building2,
-  CreditCard,
   ArrowRight,
   ArrowDownRight,
   ArrowDownCircle,
-  ShieldCheck,
   Award,
   Sparkles,
-  Crown,
 } from "lucide-react";
 import {
   eventConfig,
@@ -536,43 +533,6 @@ export function PartnersSection() {
                   onMouseEnter={() => setActiveBudgetIdx(idx)}
                 />
               ))}
-            </div>
-          </div>
-        </div>
-
-        {/* 4. Official Corporate Bank Channel */}
-        <div className="p-8 sm:p-12 md:p-14 rounded-[2.5rem] bg-[#013811] text-white flex flex-col lg:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden">
-          <div className="space-y-3 max-w-xl text-center lg:text-left relative z-10">
-            <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              Official Corporate Bank Channel
-            </h3>
-            <p className="text-sm sm:text-base text-white/85 leading-relaxed font-normal">
-              Partners may opt for a structured installment payment plan. Full commitment confirmation and brand asset submissions must be finalized 14 days before the event to guarantee inclusion across physical print runs and summit backdrops.
-            </p>
-            <div className="flex items-center gap-2 pt-2 text-xs text-white/70">
-              <ShieldCheck className="w-4 h-4 text-spring flex-shrink-0" />
-              <span>Registered Corporate Entity: {eventConfig.secretariat.rcNumber}</span>
-            </div>
-          </div>
-
-          <div className="p-8 rounded-[2rem] bg-white/10 border border-white/15 text-xs sm:text-sm space-y-4 w-full lg:w-auto min-w-[340px] relative z-10">
-            <div className="flex justify-between items-center py-2 border-b border-white/10">
-              <span className="text-white/70">Account Name:</span>
-              <span className="font-bold text-white font-mono">
-                {eventConfig.banking.accountName}
-              </span>
-            </div>
-            <div className="flex justify-between items-center py-2 border-b border-white/10">
-              <span className="text-white/70">Bank Name:</span>
-              <span className="font-bold text-spring font-mono text-base">
-                {eventConfig.banking.bankName}
-              </span>
-            </div>
-            <div className="flex justify-between items-center py-2">
-              <span className="text-white/70">Account Number:</span>
-              <span className="font-black text-white font-mono tracking-wider text-xl">
-                {eventConfig.banking.accountNumber}
-              </span>
             </div>
           </div>
         </div>
