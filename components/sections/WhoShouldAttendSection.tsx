@@ -240,186 +240,114 @@ export function WhoShouldAttendSection() {
           </div>
 
           {/* Middle: Saturated Multi-Colored Pills Grid */}
-          <div className="p-8 sm:p-12 md:p-16 space-y-4">
-            
-            {/* Row 1 */}
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-              {attendeeRoles.filter(r => r.row === 1).map((role) => (
-                <button
-                  key={role.id}
-                  onClick={() => setSelectedRole(role)}
-                  className={`
-                    group px-6 py-3 sm:px-7 sm:py-3.5 rounded-full font-bold text-sm sm:text-base
-                    transition-all duration-300 ease-out cursor-pointer shadow-sm
-                    hover:scale-105 hover:-rotate-1 active:scale-95
-                    ${role.colorClass}
-                    ${selectedRole.id === role.id ? "ring-4 ring-spring/50 scale-105 shadow-xl -translate-y-1" : ""}
-                  `}
-                >
-                  <span className="flex items-center gap-2">
-                    <span className="transition-transform duration-300 group-hover:scale-110">
-                      {role.icon}
-                    </span>
-                    <span>{role.name}</span>
-                  </span>
-                </button>
-              ))}
-            </div>
+          <div className="p-6 sm:p-10 md:p-14 space-y-3 sm:space-y-3.5">
+            {[1, 2, 3, 4, 5].map((rowNum) => (
+              <div
+                key={rowNum}
+                className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5"
+              >
+                {attendeeRoles
+                  .filter((r) => r.row === rowNum)
+                  .map((role) => {
+                    const isSelected = selectedRole.id === role.id;
+                    return (
+                      <button
+                        key={role.id}
+                        onClick={() => setSelectedRole(role)}
+                        className={`
+                          group px-5 py-2.5 sm:px-6 sm:py-3 rounded-full font-bold text-xs sm:text-sm
+                          transition-all duration-300 ease-out cursor-pointer shadow-sm
+                          hover:scale-105 active:scale-95
+                          ${role.colorClass}
+                          ${
+                            isSelected
+                              ? "ring-4 ring-spring/60 scale-105 shadow-xl -translate-y-1"
+                              : "hover:-translate-y-0.5"
+                          }
+                        `}
+                      >
+                        <span className="flex items-center gap-2 whitespace-nowrap">
+                          <span className="transition-transform duration-300 group-hover:scale-110 flex-shrink-0">
+                            {role.icon}
+                          </span>
+                          <span>{role.name}</span>
+                        </span>
+                      </button>
+                    );
+                  })}
+              </div>
+            ))}
 
-            {/* Row 2 */}
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-              {attendeeRoles.filter(r => r.row === 2).map((role) => (
-                <button
-                  key={role.id}
-                  onClick={() => setSelectedRole(role)}
-                  className={`
-                    group px-6 py-3 sm:px-7 sm:py-3.5 rounded-full font-bold text-sm sm:text-base
-                    transition-all duration-300 ease-out cursor-pointer shadow-sm
-                    hover:scale-105 hover:-rotate-1 active:scale-95
-                    ${role.colorClass}
-                    ${selectedRole.id === role.id ? "ring-4 ring-spring/50 scale-105 shadow-xl -translate-y-1" : ""}
-                  `}
-                >
-                  <span className="flex items-center gap-2">
-                    <span className="transition-transform duration-300 group-hover:scale-110">
-                      {role.icon}
-                    </span>
-                    <span>{role.name}</span>
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            {/* Row 3 */}
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-              {attendeeRoles.filter(r => r.row === 3).map((role) => (
-                <button
-                  key={role.id}
-                  onClick={() => setSelectedRole(role)}
-                  className={`
-                    group px-6 py-3 sm:px-7 sm:py-3.5 rounded-full font-bold text-sm sm:text-base
-                    transition-all duration-300 ease-out cursor-pointer shadow-sm
-                    hover:scale-105 hover:-rotate-1 active:scale-95
-                    ${role.colorClass}
-                    ${selectedRole.id === role.id ? "ring-4 ring-spring/50 scale-105 shadow-xl -translate-y-1" : ""}
-                  `}
-                >
-                  <span className="flex items-center gap-2">
-                    <span className="transition-transform duration-300 group-hover:scale-110">
-                      {role.icon}
-                    </span>
-                    <span>{role.name}</span>
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            {/* Row 4 */}
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-              {attendeeRoles.filter(r => r.row === 4).map((role) => (
-                <button
-                  key={role.id}
-                  onClick={() => setSelectedRole(role)}
-                  className={`
-                    group px-6 py-3 sm:px-7 sm:py-3.5 rounded-full font-bold text-sm sm:text-base
-                    transition-all duration-300 ease-out cursor-pointer shadow-sm
-                    hover:scale-105 hover:-rotate-1 active:scale-95
-                    ${role.colorClass}
-                    ${selectedRole.id === role.id ? "ring-4 ring-spring/50 scale-105 shadow-xl -translate-y-1" : ""}
-                  `}
-                >
-                  <span className="flex items-center gap-2">
-                    <span className="transition-transform duration-300 group-hover:scale-110">
-                      {role.icon}
-                    </span>
-                    <span>{role.name}</span>
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            {/* Row 5 */}
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-              {attendeeRoles.filter(r => r.row === 5).map((role) => (
-                <button
-                  key={role.id}
-                  onClick={() => setSelectedRole(role)}
-                  className={`
-                    group px-6 py-3 sm:px-7 sm:py-3.5 rounded-full font-bold text-sm sm:text-base
-                    transition-all duration-300 ease-out cursor-pointer shadow-sm
-                    hover:scale-105 hover:-rotate-1 active:scale-95
-                    ${role.colorClass}
-                    ${selectedRole.id === role.id ? "ring-4 ring-spring/50 scale-105 shadow-xl -translate-y-1" : ""}
-                  `}
-                >
-                  <span className="flex items-center gap-2">
-                    <span className="transition-transform duration-300 group-hover:scale-110">
-                      {role.icon}
-                    </span>
-                    <span>{role.name}</span>
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            {/* Bottom Row: Cutout Portrait at the BOTTOM-LEFT CORNER, Sleek Interactive Card on the RIGHT */}
-            <div className="mt-12 pt-8 border-t border-neutral-border/50 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+            {/* Bottom Row: Cutout Portrait aligned to Bottom-Left, Professional Detail Card on the Right */}
+            <div className="mt-12 pt-10 border-t border-neutral-border/60 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
               
-              {/* Bottom-Left Corner: Real Northern Designers with MacBooks (Enlarged & Flushed to Bottom-Left) */}
-              <div className="lg:col-span-5 xl:col-span-6 relative flex justify-start items-end self-end -mb-8 sm:-mb-12 md:-mb-16 -ml-8 sm:-ml-12 md:-ml-16">
-                <div className="relative w-full max-w-[580px] aspect-[1408/768] h-[280px] sm:h-[360px] lg:h-[430px]">
+              {/* Left Side: Real Northern Designers with MacBooks */}
+              <div className="lg:col-span-5 relative flex justify-center lg:justify-start items-end lg:-mb-10 lg:-ml-10 md:lg:-mb-14 md:lg:-ml-14">
+                <div className="relative w-full max-w-[480px] sm:max-w-[520px] aspect-[1408/768] h-[260px] sm:h-[340px] lg:h-[400px]">
                   <Image
                     src="/images/pdf_extracted/attendees_portraits.png"
                     alt="Northern Creative Designers Summit Attendees"
                     fill
-                    className="object-contain object-bottom-left drop-shadow-xl"
+                    className="object-contain object-bottom lg:object-bottom-left drop-shadow-xl"
                     priority
                   />
                 </div>
               </div>
 
-              {/* Right Side: Smaller, Sleek Selected Role Interactive Feedback Card */}
-              <div className="lg:col-span-7 xl:col-span-6 pb-4 sm:pb-8 lg:pb-10">
-                <div className="p-5 sm:p-6 rounded-2xl bg-white border border-neutral-border shadow-md transition-all duration-300">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-neutral-border/60">
-                    <div className="flex items-center gap-3">
+              {/* Right Side: Professional Selected Pathway Card */}
+              <div className="lg:col-span-7 pb-2 sm:pb-6 lg:pb-8">
+                <div className="p-6 sm:p-8 rounded-3xl bg-white border border-neutral-border shadow-xl space-y-5 transition-all duration-300">
+                  
+                  {/* Card Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-border/60">
+                    <div className="flex items-center gap-3.5">
                       <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-sm flex-shrink-0"
+                        className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md flex-shrink-0"
                         style={{ backgroundColor: selectedRole.bgHex }}
                       >
                         {selectedRole.icon}
                       </div>
                       <div>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-pine/70 bg-pine/5 px-2 py-0.5 rounded-full border border-pine/10">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-pine/70 bg-pine/5 px-2.5 py-0.5 rounded-full border border-pine/10">
                           {selectedRole.category}
                         </span>
-                        <h3 className="text-lg sm:text-xl font-black text-pine mt-0.5 tracking-tight">
+                        <h3 className="text-xl sm:text-2xl font-black text-pine mt-0.5 tracking-tight">
                           {selectedRole.name}
                         </h3>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-navy/60 font-medium">Pass:</span>
-                      <span className="px-2.5 py-0.5 rounded-full bg-spring/15 text-pine font-extrabold text-xs uppercase tracking-wide border border-spring/30">
+                    <div className="flex items-center gap-2 bg-[#FAFAF8] px-3.5 py-1.5 rounded-full border border-neutral-border self-start sm:self-auto">
+                      <span className="text-[11px] font-mono text-navy/60 font-semibold uppercase">Recommended:</span>
+                      <span className="text-xs font-black text-pine font-mono">
                         {selectedRole.recommendedPass}
                       </span>
                     </div>
                   </div>
 
-                  <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <p className="text-navy/85 text-xs sm:text-sm leading-relaxed font-normal">
+                  {/* Narrative Takeaway */}
+                  <div className="space-y-3">
+                    <p className="text-navy/80 text-sm sm:text-base leading-relaxed font-normal">
                       {selectedRole.takeaway}
                     </p>
+                  </div>
+
+                  {/* Action Row */}
+                  <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex items-center gap-2 text-xs font-mono text-pine/80">
+                      <span className="w-2 h-2 rounded-full bg-spring animate-pulse" />
+                      <span>Verified Summit 2.0 Track</span>
+                    </div>
 
                     <Link
                       href="/register"
-                      className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-pine hover:bg-[#024a18] text-white text-xs font-extrabold tracking-wider uppercase hover:scale-105 active:scale-95 transition-all shadow-sm flex-shrink-0"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-pine hover:bg-[#024a18] text-white text-xs font-extrabold tracking-wider uppercase hover:scale-105 active:scale-95 transition-all shadow-md flex-shrink-0"
                     >
-                      <span>Register Now</span>
+                      <span>Register for this Track</span>
                       <ArrowRight className="w-3.5 h-3.5 text-spring" />
                     </Link>
                   </div>
+
                 </div>
               </div>
 
