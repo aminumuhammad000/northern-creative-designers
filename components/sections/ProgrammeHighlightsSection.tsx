@@ -31,28 +31,7 @@ interface ProgramItem {
 }
 
 const programCards: ProgramItem[] = [
-  // 1. Creative Design Hackathon (Purple/Indigo)
-  {
-    id: "creative-hackathon",
-    category: "Creative",
-    headline: "Creative\nDesign Hackathon",
-    details:
-      "High-intensity live design sprint with hardware prizes, cash awards, and transparent real-time audience voting.",
-    bgClass: "bg-[#453478]",
-    colPosition: "left",
-    dogEarCorner: "bottom-left",
-    tapeRotation: "-rotate-1",
-    tapeImage: "/images/pdf_extracted/tape_card_2.png",
-    highlights: [
-      "2-Hour Live Sprint: Rapid problem-solving under real constraints",
-      "Real-Time Audience Voting & Live Jury Critiques",
-      "Over ₦1,000,000 in Hardware Prizes & Cash Bounties",
-    ],
-    ctaLabel: "Hackathon Rules",
-    ctaHref: "/hackathon",
-  },
-
-  // 2. Business & Career (Midnight Navy)
+  // 1. Business & Career (Midnight Navy)
   {
     id: "business-career",
     category: "Business & Career",
@@ -60,9 +39,9 @@ const programCards: ProgramItem[] = [
     details:
       "Curated face-to-face dealmaking between business founders seeking top regional talent and practicing designers.",
     bgClass: "bg-[#071135]",
-    colPosition: "right",
-    dogEarCorner: "bottom-right",
-    tapeRotation: "rotate-1",
+    colPosition: "left",
+    dogEarCorner: "bottom-left",
+    tapeRotation: "-rotate-1",
     tapeImage: "/images/pdf_extracted/tape_card_3.png",
     highlights: [
       "Private 1-on-1 dealmaking booths with verified founders",
@@ -73,7 +52,7 @@ const programCards: ProgramItem[] = [
     ctaHref: "/exhibitors",
   },
 
-  // 3. Community & Vibe (Deep Pine Green)
+  // 2. Community & Vibe (Deep Pine Green)
   {
     id: "community-vibe",
     category: "Community & Vibe",
@@ -81,8 +60,8 @@ const programCards: ProgramItem[] = [
     details:
       "Physical exhibition gallery showcasing premier Arewa graphic identity, typography, and community showcases.",
     bgClass: "bg-[#013811]",
-    colPosition: "left",
-    dogEarCorner: "bottom-left",
+    colPosition: "right",
+    dogEarCorner: "bottom-right",
     tapeRotation: "rotate-2",
     tapeImage: "/images/pdf_extracted/tape_card_4.png",
     highlights: [
@@ -94,7 +73,7 @@ const programCards: ProgramItem[] = [
     ctaHref: "/programme",
   },
 
-  // 4. Award Presentation Categories (Tangerine)
+  // 3. Award Presentation Categories (Tangerine)
   {
     id: "award-presentation",
     category: "Recognition & Honors",
@@ -210,10 +189,10 @@ export function ProgrammeHighlightsSection() {
             />
           </div>
 
-          {/* Main Grid: 4 Sticky Cards in Foreground */}
+          {/* Main Grid: 3 Sticky Cards in Foreground */}
           <div className="px-6 sm:px-12 md:px-16 pb-16 relative z-10">
-            {/* 4 Staggered Taped Sticky Cards in 2 columns */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 items-start max-w-5xl mx-auto">
+            {/* 3 Staggered Taped Sticky Cards in 3 columns */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-start max-w-6xl mx-auto">
               {programCards.map((card) => (
                 <div
                   key={card.id}

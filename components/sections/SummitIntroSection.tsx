@@ -146,27 +146,6 @@ export function SummitIntroSection() {
             <p className="type-body text-navy/75 text-base sm:text-lg leading-relaxed font-normal">
               The Northern Creative Designers Summit 2.0 is the premier annual gathering uniting 1,000+ visual thinkers, digital craftspeople, and industry pioneers in Kano. Moving beyond conventional talk shows, the summit functions as an active studio: pairing intensive masterclasses and live build sprints with direct enterprise dealmaking.
             </p>
-
-            {/* Minimalist 3-Pillar Highlights Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-              <div className="p-5 rounded-2xl bg-[#FAFAF8] border border-neutral-border space-y-1.5">
-                <span className="text-xs font-mono font-bold text-pine uppercase tracking-wider block">01 / Craft</span>
-                <p className="text-xs sm:text-sm font-semibold text-pine leading-snug">Industry Masterclasses</p>
-                <p className="text-xs text-navy/65 leading-relaxed">Brand systems, UI/UX, motion, and synthetic AI workflows.</p>
-              </div>
-
-              <div className="p-5 rounded-2xl bg-[#FAFAF8] border border-neutral-border space-y-1.5">
-                <span className="text-xs font-mono font-bold text-tangerine uppercase tracking-wider block">02 / Sprints</span>
-                <p className="text-xs sm:text-sm font-semibold text-pine leading-snug">₦1M+ Live Hackathon</p>
-                <p className="text-xs text-navy/65 leading-relaxed">2-hour live build challenge with transparent audience voting.</p>
-              </div>
-
-              <div className="p-5 rounded-2xl bg-[#FAFAF8] border border-neutral-border space-y-1.5">
-                <span className="text-xs font-mono font-bold text-spring uppercase tracking-wider block">03 / Commerce</span>
-                <p className="text-xs sm:text-sm font-semibold text-pine leading-snug">Client Connect Corner</p>
-                <p className="text-xs text-navy/65 leading-relaxed">Direct business mandates connecting talent with founders.</p>
-              </div>
-            </div>
           </div>
 
           {/* Right Minimalist Visual Card */}
@@ -181,12 +160,6 @@ export function SummitIntroSection() {
                   className="object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-pine/80 via-transparent to-black/20" />
-
-                {/* Floating Minimalist Top Pill */}
-                <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-[11px] font-mono text-white font-medium">
-                  <span className="w-2 h-2 rounded-full bg-spring animate-pulse" />
-                  <span>Kano State Library Complex</span>
-                </div>
 
                 {/* Floating Minimalist Bottom Caption */}
                 <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between text-white text-xs">

@@ -25,26 +25,6 @@ import {
 
 const tierCards = [
   {
-    tier: "Headline Sponsor",
-    investment: "₦2,000,000",
-    status: "Exclusive (1 Available)",
-    headline: "Headline\nSponsor",
-    bgClass: "bg-[#013811]",
-    tapeRotation: "-rotate-1",
-    tapeImage: "/images/pdf_extracted/tape_card_1.png",
-    accentColor: "text-spring",
-    icon: <Crown className="w-5 h-5 text-spring" />,
-    summary: "Exclusive naming rights, opening keynote address, and supreme branding across all stages and physical media.",
-    benefits: [
-      "Exclusive naming rights: 'NCD Summit 2.0 Presented by [Your Brand]'",
-      "Keynote speaking slot during main opening ceremony",
-      "Prominent logo placement on all stage backdrops, banners, and passes",
-      "Roll-up banners and exhibition dominance across all event zones",
-      "Lead feature in regional press releases and broadcast media",
-    ],
-    ctaHref: "/contact?subject=Headline+Sponsorship",
-  },
-  {
     tier: "Platinum Sponsor",
     investment: "₦1,000,000",
     status: "Premier Tier",
@@ -108,6 +88,54 @@ const tierCards = [
 
 export function PartnersSection() {
   const [activeTier, setActiveTier] = useState(tierCards[0]);
+  const [activeBudgetIdx, setActiveBudgetIdx] = useState<number>(0);
+
+  const budgetColors = [
+    "#00CC67", // Venue & Tech: 30%
+    "#F39200", // Branding & Merch: 20%
+    "#453478", // Awards & Prizes: 20%
+    "#013811", // Logistics: 10%
+    "#071135", // Hospitality: 10%
+    "#0284C7", // Media & Marketing: 10%
+  ];
+
+  const inKindFlipStyles = [
+    {
+      backBg: "bg-[#F39200]",
+      backText: "text-white",
+      badge: "Prize Hardware & Cash",
+    },
+    {
+      backBg: "bg-[#453478]",
+      backText: "text-white",
+      badge: "Software & Cloud Credits",
+    },
+    {
+      backBg: "bg-[#00CC67]",
+      backText: "text-[#071135]",
+      badge: "Regional Broadcast Reach",
+    },
+    {
+      backBg: "bg-[#013811]",
+      backText: "text-white",
+      badge: "Hospitality & Networking",
+    },
+  ];
+
+  // Donut chart calculations: Radius = 85, Circumference = 534.07
+  const circumference = 534.07;
+  let cumulativePercent = 0;
+  const budgetSegments = budgetBreakdown.map((item, idx) => {
+    const strokeDasharray = `${(item.allocation / 100) * circumference} ${circumference - (item.allocation / 100) * circumference}`;
+    const strokeDashoffset = -1 * (cumulativePercent / 100) * circumference;
+    cumulativePercent += item.allocation;
+    return {
+      ...item,
+      color: budgetColors[idx % budgetColors.length],
+      strokeDasharray,
+      strokeDashoffset,
+    };
+  });
 
   return (
     <section id="partners" className="w-full py-20 md:py-32 bg-white border-b border-neutral-border relative overflow-hidden">
@@ -167,7 +195,7 @@ export function PartnersSection() {
 
           {/* Staggered Taped Sticky Cards Grid matching Program Features */}
           <div className="px-6 sm:px-12 md:px-16 pb-16 relative z-10">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-8 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start max-w-5xl mx-auto">
               {tierCards.map((tier, idx) => {
                 const isSelected = activeTier.tier === tier.tier;
                 return (
@@ -219,7 +247,7 @@ export function PartnersSection() {
             </div>
 
             {/* Selected Tier Interactive Detail Callout */}
-            <div className="mt-12 p-6 sm:p-10 rounded-[2rem] bg-white border border-neutral-border shadow-xl">
+            <div className="mt-12 p-6 sm:p-10 rounded-[2rem] bg-white border border-neutral-border shadow-xl max-w-5xl mx-auto">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-neutral-border/60">
                 <div className="flex items-center gap-4">
                   <div className={`w-12 h-12 rounded-2xl ${activeTier.bgClass} flex items-center justify-center text-white shadow-md flex-shrink-0`}>
@@ -262,85 +290,253 @@ export function PartnersSection() {
           </div>
         </div>
 
-        {/* 2. Customized In-Kind Partnerships */}
+        {/* 2. Customized In-Kind Partnerships: 3D Flip Card Effect with Dynamic Color Change on Hover */}
         <div className="mb-24 p-6 sm:p-10 md:p-14 rounded-[2.5rem] bg-[#FAFAF8] border border-neutral-border shadow-sm">
           <div className="max-w-2xl mb-8 space-y-2">
             <h3 className="text-2xl sm:text-3xl font-black text-pine tracking-tight">
               Customized In-Kind Partnerships
             </h3>
             <p className="type-body text-navy/70 text-sm sm:text-base leading-relaxed">
-              We welcome tailored in-kind contributions to equip hackathon competitors, provide tool perks, and power hospitality.
+              We welcome tailored in-kind contributions to equip hackathon competitors, provide tool perks, and power hospitality. <span className="font-semibold text-pine">Hover over any card below to flip and inspect full deliverables.</span>
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {customizedPartnerships.map((item, idx) => (
-              <div
-                key={idx}
-                className="p-7 rounded-[2rem] bg-white border border-neutral-border shadow-xs hover:border-spring hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="w-12 h-12 rounded-2xl bg-pine/5 flex items-center justify-center mb-4">
-                    <Award className="w-6 h-6 text-tangerine" />
+            {customizedPartnerships.map((item, idx) => {
+              const style = inKindFlipStyles[idx % inKindFlipStyles.length];
+              return (
+                <div
+                  key={idx}
+                  className="group [perspective:1000px] h-[300px] sm:h-[320px] w-full cursor-pointer"
+                >
+                  <div className="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] rounded-[2rem] shadow-sm hover:shadow-xl">
+                    
+                    {/* FRONT FACE (Clean White Card) */}
+                    <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] rounded-[2rem] p-7 bg-white border border-neutral-border flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="w-12 h-12 rounded-2xl bg-pine/5 flex items-center justify-center">
+                            <Award className="w-6 h-6 text-tangerine" />
+                          </div>
+                          <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-neutral-100 text-pine border border-neutral-200">
+                            In-Kind Tier
+                          </span>
+                        </div>
+                        
+                        <h4 className="font-black text-pine text-xl mb-2.5 leading-snug">
+                          {item.title}
+                        </h4>
+                        <p className="text-navy/70 text-xs sm:text-sm leading-relaxed line-clamp-3">
+                          {item.deliverable}
+                        </p>
+                      </div>
+
+                      <div className="pt-4 border-t border-neutral-border/60 flex items-center justify-between text-xs font-mono text-pine/80 font-bold">
+                        <span className="flex items-center gap-1.5 text-pine">
+                          <Sparkles className="w-3.5 h-3.5 text-spring" />
+                          Hover to flip
+                        </span>
+                        <ArrowDownRight className="w-4 h-4 stroke-[2.5]" />
+                      </div>
+                    </div>
+
+                    {/* BACK FACE (Vibrant Brand Color Change on Flip) */}
+                    <div className={`absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-[2rem] p-7 ${style.backBg} ${style.backText} flex flex-col justify-between shadow-2xl`}>
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="text-[10px] font-mono font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-xs">
+                            {style.badge}
+                          </span>
+                          <Sparkles className="w-4 h-4 text-white" />
+                        </div>
+
+                        <h4 className="font-black text-lg mb-2 leading-tight">
+                          {item.title}
+                        </h4>
+                        
+                        <p className="text-xs sm:text-sm leading-relaxed font-normal opacity-95">
+                          {item.deliverable}
+                        </p>
+                      </div>
+
+                      <div className="pt-4 border-t border-white/20">
+                        <Link
+                          href="/contact?subject=In-Kind+Partnership"
+                          className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full bg-white text-pine font-extrabold text-xs uppercase tracking-wider hover:scale-105 active:scale-95 transition-all shadow-md"
+                        >
+                          <span>Propose Partnership</span>
+                          <ArrowRight className="w-3.5 h-3.5 text-spring" />
+                        </Link>
+                      </div>
+                    </div>
+
                   </div>
-                  <h4 className="font-black text-pine text-lg mb-2 leading-snug">
-                    {item.title}
-                  </h4>
-                  <p className="text-navy/75 text-xs sm:text-sm leading-relaxed font-normal">
-                    {item.deliverable}
-                  </p>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
-        {/* 3. Budget Breakdown & Financial Justification */}
-        <div className="mb-24 p-8 sm:p-12 md:p-14 rounded-[2.5rem] bg-[#F8FFF8] bg-[radial-gradient(#00CC67_1.75px,transparent_1.75px)] [background-size:20px_20px] border border-neutral-border/70 shadow-sm">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-            <div className="space-y-2">
-              <h3 className="text-2xl sm:text-3xl font-black text-pine tracking-tight">
+        {/* 3. Budget Breakdown & Financial Justification: Professional Interactive Donut/Pie Chart */}
+        <div className="mb-24 p-8 sm:p-12 md:p-14 rounded-[2.5rem] bg-[#F8FFF8] bg-[radial-gradient(#00CC67_1.75px,transparent_1.75px)] [background-size:20px_20px] border border-neutral-border/70 shadow-2xl">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div className="space-y-2 max-w-2xl">
+              <h3 className="text-3xl sm:text-4xl font-black text-pine tracking-tight">
                 Budget Breakdown &amp; Financial Justification
               </h3>
               <p className="type-body text-navy/70 text-sm sm:text-base leading-relaxed">
-                Estimated event budget allocation ensuring disciplined stewardship of sponsor funds.
+                Estimated event budget allocation ensuring disciplined stewardship of sponsor funds. Hover or click slices in the chart to inspect itemized deliverables.
               </p>
             </div>
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-pine bg-white px-4 py-2 rounded-full border border-neutral-border shadow-xs">
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-pine bg-white px-4 py-2.5 rounded-full border border-neutral-border shadow-xs">
               <PieChart className="w-4 h-4 text-spring" />
               <span>100% Accountable Allocation</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {budgetBreakdown.map((item, idx) => (
-              <div
-                key={idx}
-                className="p-7 rounded-[2rem] bg-white border border-neutral-border hover:-translate-y-1 hover:border-pine/30 transition-all flex flex-col justify-between shadow-xs"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-black text-pine uppercase tracking-wider">
-                      {item.category}
-                    </span>
-                    <span className="px-3 py-1 rounded-full text-xs font-black bg-pine text-spring font-mono">
-                      {item.allocation}%
-                    </span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-navy/75 leading-relaxed font-normal">
-                    {item.deliverables}
-                  </p>
-                </div>
-                <div className="mt-5 pt-3 border-t border-neutral-border/60">
-                  <div className="w-full bg-neutral-border/50 rounded-full h-2 overflow-hidden">
-                    <div
-                      className="bg-spring h-2 rounded-full"
-                      style={{ width: `${item.allocation * 2}%` }}
-                    />
-                  </div>
+          {/* Interactive Chart Layout: Left Donut Chart, Right Itemized Legend Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            
+            {/* Left Side: Interactive SVG Donut / Pie Chart */}
+            <div className="lg:col-span-5 flex flex-col items-center justify-center p-6 sm:p-8 rounded-3xl bg-white border border-neutral-border shadow-lg">
+              <div className="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
+                <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 280 280">
+                  {/* Background Track Circle */}
+                  <circle
+                    cx="140"
+                    cy="140"
+                    r="85"
+                    className="stroke-neutral-100"
+                    strokeWidth="36"
+                    fill="transparent"
+                  />
+                  {/* Pie / Donut Segments */}
+                  {budgetSegments.map((segment, idx) => {
+                    const isActive = activeBudgetIdx === idx;
+                    return (
+                      <circle
+                        key={idx}
+                        cx="140"
+                        cy="140"
+                        r="85"
+                        stroke={segment.color}
+                        strokeWidth={isActive ? "42" : "36"}
+                        strokeDasharray={segment.strokeDasharray}
+                        strokeDashoffset={segment.strokeDashoffset}
+                        fill="transparent"
+                        className="transition-all duration-300 cursor-pointer hover:opacity-90"
+                        onMouseEnter={() => setActiveBudgetIdx(idx)}
+                        onClick={() => setActiveBudgetIdx(idx)}
+                      />
+                    );
+                  })}
+                </svg>
+
+                {/* Donut Center Display */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none p-6">
+                  <span className="text-3xl sm:text-4xl font-black text-pine tracking-tight font-mono">
+                    {budgetBreakdown[activeBudgetIdx].allocation}%
+                  </span>
+                  <span className="text-xs font-bold text-navy/80 uppercase tracking-wider mt-1 line-clamp-1">
+                    {budgetBreakdown[activeBudgetIdx].category}
+                  </span>
+                  <span className="text-[10px] font-mono text-pine/60 mt-0.5">
+                    Verified Allocation
+                  </span>
                 </div>
               </div>
-            ))}
+
+              {/* Quick Status Pill */}
+              <div className="mt-4 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-pine/5 text-pine text-xs font-mono font-semibold border border-pine/10">
+                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: budgetColors[activeBudgetIdx] }} />
+                <span>Selected: {budgetBreakdown[activeBudgetIdx].category}</span>
+              </div>
+            </div>
+
+            {/* Right Side: Itemized Pillars List synced with Chart */}
+            <div className="lg:col-span-7 space-y-3.5">
+              {budgetBreakdown.map((item, idx) => {
+                const isActive = activeBudgetIdx === idx;
+                const color = budgetColors[idx % budgetColors.length];
+                return (
+                  <div
+                    key={idx}
+                    onMouseEnter={() => setActiveBudgetIdx(idx)}
+                    onClick={() => setActiveBudgetIdx(idx)}
+                    className={`
+                      p-4 sm:p-5 rounded-2xl border transition-all duration-200 cursor-pointer
+                      ${
+                        isActive
+                          ? "bg-white border-spring shadow-md -translate-x-1"
+                          : "bg-white/70 border-neutral-border hover:bg-white hover:border-pine/30"
+                      }
+                    `}
+                  >
+                    <div className="flex items-center justify-between gap-3 mb-1.5">
+                      <div className="flex items-center gap-2.5">
+                        <span
+                          className="w-3 h-3 rounded-full flex-shrink-0 transition-transform"
+                          style={{
+                            backgroundColor: color,
+                            transform: isActive ? "scale(1.3)" : "scale(1)",
+                          }}
+                        />
+                        <h4 className="text-sm sm:text-base font-black text-pine tracking-tight">
+                          {item.category}
+                        </h4>
+                      </div>
+                      
+                      <span
+                        className="px-2.5 py-0.5 rounded-full text-xs font-mono font-black text-white"
+                        style={{ backgroundColor: color }}
+                      >
+                        {item.allocation}%
+                      </span>
+                    </div>
+
+                    <p className="text-xs sm:text-sm text-navy/70 leading-relaxed pl-5 font-normal">
+                      {item.deliverables}
+                    </p>
+
+                    {/* Proportional Mini Bar */}
+                    <div className="mt-2.5 pl-5">
+                      <div className="w-full bg-neutral-100 rounded-full h-1.5 overflow-hidden">
+                        <div
+                          className="h-1.5 rounded-full transition-all duration-500"
+                          style={{
+                            width: `${item.allocation * 3}%`,
+                            backgroundColor: color,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+          </div>
+
+          {/* Full Segmented Budget Stream Bar at Bottom */}
+          <div className="mt-10 pt-6 border-t border-neutral-border/60">
+            <div className="flex items-center justify-between text-xs font-mono text-navy/60 mb-2 font-medium">
+              <span>Overall Capital Distribution</span>
+              <span className="font-bold text-pine font-mono">100% Tracked Stewardship</span>
+            </div>
+            <div className="w-full h-3 rounded-full overflow-hidden flex shadow-xs">
+              {budgetBreakdown.map((item, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    width: `${item.allocation}%`,
+                    backgroundColor: budgetColors[idx % budgetColors.length],
+                  }}
+                  className="h-full hover:opacity-80 transition-opacity cursor-pointer"
+                  title={`${item.category}: ${item.allocation}%`}
+                  onMouseEnter={() => setActiveBudgetIdx(idx)}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
