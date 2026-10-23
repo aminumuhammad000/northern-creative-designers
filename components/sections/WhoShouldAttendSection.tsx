@@ -201,7 +201,7 @@ export function WhoShouldAttendSection() {
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-spring/[0.04] rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-tangerine/[0.03] rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 relative z-10">
         
         {/* Section Header */}
         <div className="max-w-3xl mb-12 space-y-3">

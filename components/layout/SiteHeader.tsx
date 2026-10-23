@@ -32,7 +32,7 @@ export function SiteHeader() {
           : "bg-white border-b border-neutral-border/40 py-4"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 flex items-center justify-between">
         {/* Official Horizontal Logo */}
         <Link
           href="/"

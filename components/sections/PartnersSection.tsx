@@ -59,7 +59,7 @@ export function PartnersSection() {
 
   return (
     <section id="partners" className="py-20 md:py-32 bg-white border-b border-neutral-border relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 relative z-10">
         
         {/* Section Heading with Big Typography */}
         <div className="max-w-3xl mb-14 space-y-3">

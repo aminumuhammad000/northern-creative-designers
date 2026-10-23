@@ -17,8 +17,8 @@ export function RegistrationCTASection() {
       {/* Decorative subtle ambient pattern */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-80 bg-spring/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-5xl mx-auto rounded-[3rem] bg-pine text-white p-8 sm:p-16 md:p-20 border border-spring/30 shadow-2xl text-center space-y-10 relative overflow-hidden">
+      <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 relative z-10">
+        <div className="w-full rounded-[3rem] bg-pine text-white p-8 sm:p-16 md:p-20 border border-spring/30 shadow-2xl text-center space-y-10 relative overflow-hidden">
           {/* Subtle Arewa motif watermark inside card */}
           <div className="absolute -bottom-10 -right-10 w-64 h-64 opacity-5 pointer-events-none select-none">
             <Image

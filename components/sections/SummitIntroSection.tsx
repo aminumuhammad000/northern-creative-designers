@@ -128,7 +128,7 @@ export function SummitIntroSection() {
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-spring/[0.03] rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/3 left-0 w-96 h-96 bg-tangerine/[0.03] rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 relative z-10">
         
         {/* 1. Creative Editorial Layout: About The Summit & Official Artwork */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-24 md:mb-32">
@@ -348,7 +348,7 @@ export function SummitIntroSection() {
               </div>
 
               {/* Tangerine Vision Card (Left Aligned) */}
-              <div className="relative z-10 max-w-xl">
+              <div className="relative z-10 max-w-2xl">
                 <div className="group p-8 sm:p-10 md:p-12 rounded-[2rem] bg-[#F39200] text-white shadow-2xl hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 ease-out">
                   <div className="flex items-start gap-4 mb-5">
                     <ArrowDownRight className="w-9 h-9 sm:w-11 sm:h-11 text-white flex-shrink-0 stroke-[2.5] transition-transform duration-300 group-hover:translate-x-1.5 group-hover:translate-y-1.5" />
@@ -394,7 +394,7 @@ export function SummitIntroSection() {
               </div>
 
               {/* Deep Indigo/Purple Mission Card (Right Aligned) */}
-              <div className="relative z-10 max-w-xl ml-auto">
+              <div className="relative z-10 max-w-2xl ml-auto">
                 <div className="group p-8 sm:p-10 md:p-12 rounded-[2rem] bg-[#453478] text-white shadow-2xl hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 ease-out">
                   <div className="flex items-start gap-4 mb-5">
                     <ArrowDownRight className="w-9 h-9 sm:w-11 sm:h-11 text-white flex-shrink-0 stroke-[2.5] transition-transform duration-300 group-hover:translate-x-1.5 group-hover:translate-y-1.5" />

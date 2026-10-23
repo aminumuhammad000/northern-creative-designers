@@ -18,7 +18,7 @@ export function SiteFooter() {
 
   return (
     <footer className="bg-pine text-white pt-16 pb-12 border-t-4 border-spring">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8 pb-12 border-b border-white/15">
           {/* Brand & Organization Column */}
           <div className="lg:col-span-2 space-y-5">

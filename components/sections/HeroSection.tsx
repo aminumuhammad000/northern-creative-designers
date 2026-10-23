@@ -34,7 +34,7 @@ export function HeroSection() {
         />
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 text-center relative z-10">
         {/* Single, Sleek Unified Pill Badge */}
         <div className="inline-flex items-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2 rounded-full bg-white border border-neutral-border/80 text-xs sm:text-sm font-semibold text-pine shadow-[0_2px_8px_rgba(1,56,17,0.04)] mb-8 transition-all hover:border-spring/50 hover:shadow-sm">
           <span className="w-2 h-2 rounded-full bg-spring animate-pulse flex-shrink-0" />
@@ -46,7 +46,7 @@ export function HeroSection() {
         </div>
 
         {/* Buttery Smooth Display Typography */}
-        <div className="space-y-3 max-w-4xl mx-auto">
+        <div className="space-y-3 max-w-5xl mx-auto">
           <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold text-pine tracking-[-0.025em] leading-[1.04]">
             Roots &amp; Vectors
           </h1>
@@ -56,7 +56,7 @@ export function HeroSection() {
         </div>
 
         {/* Relaxed, Effortless Editorial Body Text */}
-        <p className="mt-7 text-base sm:text-lg md:text-xl text-navy/75 max-w-2xl mx-auto leading-relaxed font-normal">
+        <p className="mt-7 text-base sm:text-lg md:text-xl text-navy/75 max-w-3xl mx-auto leading-relaxed font-normal">
           The premier annual gathering for designers, strategists, developers, and visual storytellers across Northern Nigeria. Bridging rich cultural heritage with modern digital craft, artificial intelligence, and sustainable commercial pathways.
         </p>
 
@@ -79,7 +79,7 @@ export function HeroSection() {
         </div>
 
         {/* Smooth Glass-Style Metric Cards with Gentle Hover Elevation */}
-        <div className="mt-16 pt-10 border-t border-neutral-border/60 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 max-w-4xl mx-auto text-left">
+        <div className="mt-16 pt-10 border-t border-neutral-border/60 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full text-left">
           {/* Metric 1 */}
           <div className="p-5 sm:p-6 rounded-2xl bg-white border border-neutral-border/80 shadow-[0_2px_8px_rgba(1,56,17,0.03)] hover:-translate-y-1 hover:shadow-md hover:border-spring/40 transition-all duration-300">
             <span className="text-[11px] font-bold text-pine/60 uppercase tracking-wider block mb-1">
