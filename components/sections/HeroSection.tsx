@@ -20,7 +20,7 @@ export function HeroSection() {
 
   return (
     <section className="relative overflow-hidden bg-neutral-sand border-b border-neutral-border pt-12 pb-20 lg:pt-16 lg:pb-28">
-      {/* Background Graphic Accents */}
+      {/* Background Graphic Accents using Brand Spring and Tangerine */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-spring/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-tangerine/10 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20" />
 
@@ -38,7 +38,7 @@ export function HeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Column: Core Message & CTAs */}
           <div className="lg:col-span-7 space-y-6 text-left">
-            {/* Pill Badge */}
+            {/* Pill Badge with Pine border & Spring dot */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-pine/15 shadow-xs text-xs font-semibold text-pine">
               <span className="w-2 h-2 rounded-full bg-spring" />
               <span>{hero.badge}</span>
@@ -46,18 +46,18 @@ export function HeroSection() {
               <span className="text-tangerine font-bold">Summit 2.0</span>
             </div>
 
-            {/* Main Theme Headline */}
+            {/* Main Theme Headline (Type-Display & Type-Subheading) */}
             <div className="space-y-2">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-pine leading-[1.05]">
+              <h1 className="type-display text-pine leading-[1.02]">
                 {hero.themeHeadline}
               </h1>
-              <p className="text-2xl sm:text-3xl font-medium text-tangerine tracking-tight">
+              <p className="type-subheading text-tangerine">
                 {hero.themeSubheadline}
               </p>
             </div>
 
-            {/* Event Description */}
-            <p className="text-base sm:text-lg text-navy/80 leading-relaxed max-w-2xl">
+            {/* Event Description (Type-Body) */}
+            <p className="type-body text-navy/80 max-w-2xl text-base sm:text-lg leading-relaxed">
               {hero.description}
             </p>
 
@@ -130,12 +130,12 @@ export function HeroSection() {
                 {/* Header of the visual card */}
                 <div className="flex items-center justify-between border-b border-neutral-border pb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-pine p-1.5 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-lg bg-pine p-2 flex items-center justify-center">
                       <Image
-                        src="/images/logos/symbol.png"
+                        src="/images/logos/symbol-mark.png"
                         alt="NCD Mark"
-                        width={32}
-                        height={32}
+                        width={28}
+                        height={28}
                         className="object-contain"
                       />
                     </div>
@@ -188,10 +188,13 @@ export function HeroSection() {
                 {/* Official Wordmark Lockup at the bottom with 50% clearspace */}
                 <div className="pt-2 border-t border-neutral-border flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-navy/70">Organised by</span>
-                    <span className="font-semibold text-pine text-xs">
-                      Northern Creative Designers
-                    </span>
+                    <Image
+                      src="/images/logos/wordmark-pine.png"
+                      alt="Northern Creative Designers"
+                      width={120}
+                      height={32}
+                      className="object-contain h-6 w-auto"
+                    />
                   </div>
                   <Link
                     href="/about"

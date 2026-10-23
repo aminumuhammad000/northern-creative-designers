@@ -4,8 +4,8 @@
   --color-spring: #03d06b;
   --color-pine: #013811;
   --color-tangerine: #ff8500;
-  --color-navy: #140949;
   --color-white: #ffffff;
+  --color-navy: #140949;
 
   --color-spring-hover: #02b25b;
   --color-pine-light: #02571a;
@@ -18,11 +18,19 @@
 }
 
 :root {
+  /* Brand Exact Color Codes from palette.json / palette.css */
   --spring: #03d06b;
   --pine: #013811;
   --tangerine: #ff8500;
   --white: #ffffff;
   --navy: #140949;
+
+  /* Official Proportions from northern-creative-designers-brand.md */
+  --ratio-spring: 50%;
+  --ratio-pine: 27%;
+  --ratio-tangerine: 13%;
+  --ratio-white: 7%;
+  --ratio-navy: 3%;
 
   --background: #ffffff;
   --foreground: #140949;
@@ -33,11 +41,55 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter), Inter, system-ui, sans-serif;
   overflow-x: hidden;
+  font-size: 16px;
+  line-height: 1.4;
+  letter-spacing: 0;
 }
 
+/* Headings use Cabinet Grotesk */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-cabinet), system-ui, sans-serif;
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Official Typography Roles as defined in northern-creative-designers-brand.md */
+.type-display {
+  font-family: var(--font-cabinet), system-ui, sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem); /* 64px max */
+  line-height: 1;
+  letter-spacing: -0.025em; /* -2.5% */
+  font-weight: 500;
+}
+
+.type-heading {
+  font-family: var(--font-cabinet), system-ui, sans-serif;
+  font-size: clamp(1.875rem, 3.5vw, 2.5rem); /* 40px max */
+  line-height: 1.1;
+  letter-spacing: -0.015em; /* -1.5% */
+  font-weight: 500;
+}
+
+.type-subheading {
+  font-family: var(--font-cabinet), system-ui, sans-serif;
+  font-size: 1.5rem; /* 24px */
+  line-height: 1.25;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+.type-body {
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+  font-size: 1rem; /* 16px */
+  line-height: 1.4;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+.type-caption {
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+  font-size: 0.75rem; /* 12px */
+  line-height: 1.4;
+  letter-spacing: 0.01em; /* 1% */
+  font-weight: 400;
 }
 
 /* Custom focus styles adhering to WCAG 2.2 AA */

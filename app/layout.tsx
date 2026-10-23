@@ -88,8 +88,8 @@ export const metadata: Metadata = {
     images: ["/images/brand/northern-creative-designers-banner.png"],
   },
   icons: {
-    icon: "/images/logos/symbol.png",
-    apple: "/images/logos/symbol.png",
+    icon: "/images/logos/app-icon.png",
+    apple: "/images/logos/app-icon.png",
   },
 };
 

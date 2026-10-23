@@ -39,7 +39,7 @@ export function SectionHeading({
         </div>
       )}
       <h2
-        className={`text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight leading-[1.1] ${
+        className={`type-heading ${
           isDark || isPine ? "text-white" : "text-pine"
         }`}
       >

@@ -26,7 +26,6 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname]);
@@ -66,26 +65,35 @@ export function SiteHeader() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Logo */}
+          {/* Official Brand Logo Lockup with 50% Clear Space */}
           <Link
             href="/"
-            className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-spring rounded-lg p-1"
+            className="flex items-center gap-3.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-spring rounded-lg p-1.5"
+            aria-label="Northern Creative Designers Home"
           >
-            <div className="relative w-10 h-10 flex-shrink-0 bg-spring/15 rounded-lg p-1.5 flex items-center justify-center border border-spring/30">
+            {/* Symbol Mark on Pine background per App Icon spec */}
+            <div className="relative w-11 h-11 flex-shrink-0 bg-pine rounded-lg p-2 flex items-center justify-center border border-pine/20 shadow-xs group-hover:scale-105 transition-transform">
               <Image
-                src="/images/logos/symbol.png"
-                alt="Northern Creative Designers Symbol"
+                src="/images/logos/symbol-mark.png"
+                alt="Northern Creative Designers Mark"
                 width={36}
                 height={36}
                 className="object-contain"
                 priority
               />
             </div>
+
+            {/* Official Wordmark in Pine with Summit 2.0 Subtitle */}
             <div className="flex flex-col">
-              <span className="font-bold text-pine text-base leading-tight tracking-tight">
-                Northern Creative Designers
-              </span>
-              <span className="text-xs font-medium text-navy/70 flex items-center gap-1.5">
+              <Image
+                src="/images/logos/wordmark-pine.png"
+                alt="Northern Creative Designers"
+                width={140}
+                height={36}
+                className="object-contain h-7 w-auto"
+                priority
+              />
+              <span className="text-[11px] font-medium text-navy/70 flex items-center gap-1.5 mt-0.5">
                 <span className="text-tangerine font-bold">Summit 2.0</span>
                 <span className="text-neutral-border">•</span>
                 <span>Roots & Vectors</span>

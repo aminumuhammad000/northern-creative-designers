@@ -20,22 +20,27 @@ export function SiteFooter() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8 pb-12 border-b border-white/15">
           {/* Brand & Organization Column */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-white rounded-lg p-1.5 flex items-center justify-center flex-shrink-0">
+          <div className="lg:col-span-2 space-y-5">
+            {/* Logo in White on Pine background (Strict Brand Guideline Compliance) */}
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-white rounded-lg p-2 flex items-center justify-center flex-shrink-0 shadow-xs">
                 <Image
-                  src="/images/logos/symbol.png"
-                  alt="Northern Creative Designers Logo"
-                  width={42}
-                  height={42}
+                  src="/images/logos/symbol-mark.png"
+                  alt="Northern Creative Designers Mark"
+                  width={38}
+                  height={38}
                   className="object-contain"
                 />
               </div>
-              <div>
-                <h3 className="font-bold text-white text-lg tracking-tight">
-                  Northern Creative Designers
-                </h3>
-                <p className="text-spring text-xs font-semibold uppercase tracking-wider">
+              <div className="flex flex-col">
+                <Image
+                  src="/images/logos/wordmark-white.png"
+                  alt="Northern Creative Designers"
+                  width={150}
+                  height={40}
+                  className="object-contain h-7 w-auto"
+                />
+                <p className="text-spring text-xs font-semibold uppercase tracking-wider mt-1">
                   Summit 2.0 • Roots & Vectors
                 </p>
               </div>
@@ -112,7 +117,7 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          {/* Technology Partner & Legal */}
+          {/* Technology Partner & Socials */}
           <div className="space-y-6">
             <div>
               <h4 className="text-sm font-semibold text-spring uppercase tracking-wider mb-3">
