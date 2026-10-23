@@ -500,41 +500,90 @@ export function SummitIntroSection() {
           </div>
         </div>
 
-        {/* 5. What to Expect */}
-        <div className="mb-24 md:mb-32 p-8 sm:p-12 md:p-14 rounded-[2.5rem] bg-[#FAFAF8] border border-neutral-border">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <h3 className="type-heading text-pine font-black">
-              What to Expect
+        {/* 5. What to Expect: Faithfully Adapted to Reference Brand Design (PDF Page 06) */}
+        <div id="what-to-expect" className="mb-24 md:mb-32">
+          <div className="max-w-3xl mb-12 space-y-3">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-pine tracking-tight leading-tight">
+              What to Expect.
             </h3>
-            <p className="type-body text-navy/70 text-sm mt-2">
-              An action-oriented environment engineered for deep collaboration and career acceleration.
+            <p className="type-body text-navy/70 text-base sm:text-lg leading-relaxed font-normal">
+              An action-oriented environment engineered for deep collaboration, skill mastery, and career acceleration.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {whatToExpect.map((item) => (
-              <div
-                key={item.id}
-                className="p-7 sm:p-8 rounded-3xl bg-white border border-neutral-border flex items-start gap-5 hover:-translate-y-1 hover:shadow-md transition-all duration-300"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-pine flex-shrink-0 flex items-center justify-center">
-                  {expectIcons[item.id] || <Layers className="w-5 h-5 text-spring" />}
-                </div>
-                <div>
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <h4 className="font-bold text-pine text-lg sm:text-xl">
-                      {item.title}
-                    </h4>
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-pine bg-pine/5 px-2.5 py-0.5 rounded-full border border-pine/10">
-                      {item.badge}
-                    </span>
+          {/* Halftone / Dotted Background Canvas matching Core Objectives */}
+          <div className="p-4 sm:p-8 md:p-12 rounded-[2.5rem] bg-[#F6FFF8] bg-[radial-gradient(#00CC67_1.75px,transparent_1.75px)] [background-size:20px_20px] border border-neutral-border/70 shadow-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+              {[
+                {
+                  id: "learning",
+                  title: "Core Practical Learning:",
+                  description:
+                    "Gain industry-defining insights through a high-impact keynote on Northern design history, candid panel sessions tackling pricing models, AI integration, and global market positioning.",
+                  bgClass: "bg-[#F39200]",
+                  badge: "Keynote & Panels",
+                },
+                {
+                  id: "hackathon",
+                  title: "Live Design Hackathon:",
+                  description:
+                    "Experience the final stage of the live sprint, featuring real-time project builds, expert critiquing, and transparent interactive audience voting.",
+                  bgClass: "bg-[#00CC67]",
+                  badge: "2-Hour Sprint",
+                },
+                {
+                  id: "business",
+                  title: "Business & Client Connections:",
+                  description:
+                    "Bridge the gap between talent and opportunity at the Client Connect Corner, participate in dedicated proposal & pricing workshops, and explore tool discounts at the Summit Marketplace.",
+                  bgClass: "bg-[#453478]",
+                  badge: "Dealmaking Booths",
+                },
+                {
+                  id: "community",
+                  title: "Community & Recognition:",
+                  description:
+                    "Celebrate the finest creative achievements across the region through our curated Design Exhibition Wall and the Summit 2.0 Awards Ceremony, wrapping up with an authentic networking evening.",
+                  bgClass: "bg-[#013811]",
+                  badge: "Exhibition & Awards",
+                },
+              ].map((item) => (
+                <div
+                  key={item.id}
+                  className={`
+                    group p-8 sm:p-10 rounded-[2rem] ${item.bgClass} text-white shadow-xl
+                    hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01]
+                    transition-all duration-300 ease-out cursor-default relative overflow-hidden flex flex-col justify-between
+                  `}
+                >
+                  {/* Subtle inner ambient glow */}
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.08] rounded-full blur-2xl pointer-events-none" />
+
+                  <div className="relative z-10">
+                    <div className="flex items-start justify-between gap-3 mb-4">
+                      <div className="flex items-center gap-3">
+                        <ArrowDownRight className="w-8 h-8 sm:w-9 sm:h-9 text-white flex-shrink-0 stroke-[2.5] transition-transform duration-300 group-hover:translate-x-1.5 group-hover:translate-y-1.5" />
+                        <h4 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
+                          {item.title}
+                        </h4>
+                      </div>
+                    </div>
+
+                    <p className="text-white/95 text-sm sm:text-base md:text-lg font-normal leading-relaxed pl-1 sm:pl-2">
+                      {item.description}
+                    </p>
                   </div>
-                  <p className="text-navy/75 text-xs sm:text-sm leading-relaxed">
-                    {item.description}
-                  </p>
+
+                  <div className="relative z-10 pt-6 mt-6 border-t border-white/15 flex items-center justify-between text-xs font-mono text-white/80">
+                    <span className="flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4 text-white opacity-90" />
+                      <span>{item.badge}</span>
+                    </span>
+                    <span className="font-bold opacity-75">Kano 2026</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
