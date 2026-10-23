@@ -105,13 +105,11 @@ The color system strictly adheres to the contrast criteria evaluated in `norther
 
 ---
 
-## 5. Technology Partner Representation
+## 5. Partner & Sponsor Presentation Guidelines
 
-- **Partner Name**: **Amee Technology Ltd**
-- **Agreed Role**: Official Technology Partner.
-- **Website URL**: `https://ameetechnology.com.ng`.
-- **Approved Logo**: `public/images/partners/amee-tech-logo.png` (Light surface) and `amee-tech-logo-white.png` (Dark surface).
-- **Attribution Rule**: Amee Technology Ltd is recognized as the technology partner and website engineering sponsor. It is displayed in the agreed top bar, dedicated partner section, and footer acknowledgment. Northern Creative Designers retains sole summit ownership and executive committee attribution.
+- **Sponsorship Structure**: Corporate partners participate strictly across established tiers (Headline Sponsor ₦2,000,000, Platinum Sponsor ₦1,000,000, Gold Sponsor ₦500,000, Silver Sponsor ₦300,000, and customized in-kind options).
+- **Remittance**: All sponsorship remittances are processed exclusively through the official Northern Creative Designers bank account.
+- **Attribution Rule**: Northern Creative Designers maintains sole summit ownership, executive committee governance, and RC 9930022 attribution across all public pages. Partner logos are incorporated strictly upon executed agreements without diluting summit visual ownership.
 
 ---
 

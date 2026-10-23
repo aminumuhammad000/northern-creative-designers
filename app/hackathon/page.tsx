@@ -116,7 +116,7 @@ export default function HackathonPage() {
               Competition Lifecycle & Voting Architecture
             </h3>
             <p className="text-xs sm:text-sm text-navy/70 mt-1">
-              Audience voting operates under strict anti-tampering rules powered by Amee Technology Ltd.
+              Audience voting operates under strict anti-tampering rules and cryptographic verification.
             </p>
           </div>
 

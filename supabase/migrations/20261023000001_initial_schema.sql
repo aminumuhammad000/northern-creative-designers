@@ -1,6 +1,6 @@
 -- Northern Creative Designers Summit Digital Platform
 -- Initial Database Migration Schema
--- Developed in collaboration with Amee Technology Ltd
+-- Developed for Northern Creative Designers Summit 2.0
 
 -- 1. Events Table
 CREATE TABLE IF NOT EXISTS public.events (

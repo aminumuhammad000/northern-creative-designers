@@ -1,8 +1,6 @@
 import React from "react";
-import Image from "next/image";
 import { Metadata } from "next";
 import {
-  ExternalLink,
   CheckCircle2,
   Building2,
   Sparkles,
@@ -18,7 +16,7 @@ import { Button } from "@/components/ui/Button";
 export const metadata: Metadata = {
   title: "Partners & Sponsors",
   description:
-    "Partner with Northern Creative Designers Summit 2.0. Explore our sponsorship tiers, in-kind options, and official technology partnership with Amee Technology Ltd.",
+    "Partner with Northern Creative Designers Summit 2.0. Explore our sponsorship tiers and customized partnership opportunities.",
 };
 
 export default function PartnersPage() {
@@ -33,51 +31,11 @@ export default function PartnersPage() {
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 space-y-16">
-        {/* Technology Partner Section */}
-        <section className="p-8 sm:p-10 rounded-2xl bg-neutral-sand border-2 border-spring/50 shadow-sm">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-            <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-6">
-              <div className="w-24 h-24 rounded-2xl bg-white p-3 border border-neutral-border shadow-xs flex items-center justify-center flex-shrink-0">
-                <Image
-                  src={siteConfig.technologyPartner.logoLight}
-                  alt={siteConfig.technologyPartner.name}
-                  width={80}
-                  height={80}
-                  className="object-contain"
-                />
-              </div>
-              <div className="space-y-2">
-                <span className="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold bg-spring text-navy uppercase tracking-wider">
-                  Official Technology Partner
-                </span>
-                <h3 className="text-2xl font-bold text-pine">
-                  {siteConfig.technologyPartner.name}
-                </h3>
-                <p className="text-navy/75 text-sm max-w-xl leading-relaxed">
-                  {siteConfig.technologyPartner.description} Powering cloud
-                  infrastructure, dynamic ticket issuance, check-in validation, and
-                  fraud-resistant voting systems for Summit 2.0.
-                </p>
-              </div>
-            </div>
-
-            <a
-              href={siteConfig.technologyPartner.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg bg-pine text-white text-xs font-semibold hover:bg-pine-light transition-colors flex-shrink-0"
-            >
-              Visit Partner Website
-              <ExternalLink className="w-4 h-4 text-spring" />
-            </a>
-          </div>
-        </section>
-
         {/* Sponsorship Tiers */}
         <section id="sponsor-tiers" className="space-y-8">
           <div>
             <span className="text-xs font-bold text-spring uppercase tracking-wider">
-              Investment Tiers
+              Investment Packages
             </span>
             <h2 className="text-2xl sm:text-3xl font-bold text-pine mt-1">
               Summit 2.0 Corporate Sponsorship Packages

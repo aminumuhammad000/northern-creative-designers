@@ -60,10 +60,8 @@ A minimum clear space of **50% of the logo height** is maintained on all four si
 
 ---
 
-## 4. Technology Partnership Representation
+## 4. Brand Governance & Organizer Attribution
 
-- **Partner**: Amee Technology Ltd.
-- **Role**: Official Technology Partner.
-- **Website**: `https://ameetechnology.com.ng`.
-- **Logos**: `public/images/partners/amee-tech-logo.png` & `amee-tech-logo-white.png`.
-- **Attribution**: Displayed prominently in the top navigation bar, partner showcase, and footer, acknowledging technology development while preserving Northern Creative Designers' sole event ownership and organizer credit.
+- **Organisation**: Northern Creative Designers (Executive Committee).
+- **Status**: Registered Entity (RC: 9930022).
+- **Attribution**: Displayed prominently across the header, footer, and official credentials, preserving Northern Creative Designers' sole event ownership and organizer credit.

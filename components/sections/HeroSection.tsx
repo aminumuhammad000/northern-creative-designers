@@ -97,7 +97,7 @@ export function HeroSection() {
               </Button>
             </div>
 
-            {/* Trust and Partner Credentials */}
+            {/* Trust and Governance Credentials */}
             <div className="pt-4 flex flex-wrap items-center gap-6 text-xs text-navy/70 border-t border-neutral-border/80">
               <div className="flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-spring" />
@@ -108,16 +108,7 @@ export function HeroSection() {
                 <span>Executive Committee Organized</span>
               </div>
               <div className="flex items-center gap-1.5 text-pine font-medium">
-                <span>Tech Partner:</span>
-                <a
-                  href={siteConfig.technologyPartner.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-pine font-semibold hover:underline inline-flex items-center gap-0.5"
-                >
-                  Amee Technology Ltd
-                  <ExternalLink className="w-3 h-3" />
-                </a>
+                <span>Annual Flagship Summit • Edition 2.0</span>
               </div>
             </div>
           </div>

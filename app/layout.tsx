@@ -58,7 +58,6 @@ export const metadata: Metadata = {
     "Roots and Vectors",
     "Kano Design Summit 2026",
     "Northern Nigeria Creative Economy",
-    "Amee Technology Ltd",
     "African Product Design",
   ],
   authors: [{ name: "Northern Creative Designers", url: "https://northcdesigners.org" }],

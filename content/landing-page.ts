@@ -43,7 +43,7 @@ export const landingPageContent = {
       text: "Explore the Programme",
       href: "#programme-highlights",
     },
-    metaNote: "RC: 9930022 • In partnership with Amee Technology Ltd",
+    metaNote: "RC: 9930022 • Northern Creative Designers",
   },
 
   introduction: {
@@ -85,7 +85,7 @@ export const landingPageContent = {
       title: "2-Hour Live Design Sprint & Hackathon",
       badge: "Audience Voting",
       description:
-        "Experience the final stage of the Northern Design Hackathon. Top selected teams participate in a 2-hour live design sprint with live project reviews and audience voting powered by Amee Technology's digital platform.",
+        "Experience the final stage of the Northern Design Hackathon. Top selected teams participate in a 2-hour live design sprint with live project reviews and audience voting.",
       deliverables: [
         "Live Design Sprint Challenges",
         "Independent Judge Evaluations",

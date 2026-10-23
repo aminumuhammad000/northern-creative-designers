@@ -82,7 +82,7 @@ export function RegistrationCTASection() {
             </span>
             <span>•</span>
             <span className="flex items-center gap-1.5">
-              Powered by Amee Technology Ltd
+              Northern Creative Designers (RC: 9930022)
             </span>
           </div>
         </div>

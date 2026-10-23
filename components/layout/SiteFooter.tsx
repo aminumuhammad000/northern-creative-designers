@@ -117,44 +117,26 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          {/* Technology Partner & Socials */}
+          {/* Summit Desk & Socials */}
           <div className="space-y-6">
             <div>
               <h4 className="text-sm font-semibold text-spring uppercase tracking-wider mb-3">
-                Technology Partner
+                Secretariat Desk
               </h4>
               <div className="p-3.5 rounded-lg bg-navy/60 border border-white/10 space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded bg-white p-1 flex items-center justify-center">
-                    <Image
-                      src={siteConfig.technologyPartner.logoLight}
-                      alt={siteConfig.technologyPartner.name}
-                      width={30}
-                      height={30}
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-white text-xs">
-                      {siteConfig.technologyPartner.name}
-                    </p>
-                    <p className="text-[11px] text-white/60">
-                      Digital Infrastructure Partner
-                    </p>
-                  </div>
-                </div>
-                <p className="text-xs text-white/70 leading-relaxed">
-                  Powering the summit web engine, ticketing, and hackathon voting infrastructure.
+                <p className="font-semibold text-white text-xs">
+                  Northern Creative Designers
                 </p>
-                <a
-                  href={siteConfig.technologyPartner.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs text-spring hover:underline font-medium"
+                <p className="text-xs text-white/70 leading-relaxed">
+                  Dedicated to empowering Northern Nigeria&apos;s creative talent and establishing world-class design standards.
+                </p>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-1 text-xs text-spring hover:underline font-medium pt-1"
                 >
-                  Visit ameetechnology.com.ng
+                  Contact Secretariat
                   <ArrowUpRight className="w-3 h-3" />
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -198,10 +180,6 @@ export function SiteFooter() {
             <Link href="/voting-rules" className="hover:text-spring transition-colors">
               Voting Policy
             </Link>
-            <span>•</span>
-            <span className="text-white/50">
-              Technology deployed in collaboration with Amee Technology Ltd
-            </span>
           </div>
         </div>
       </div>

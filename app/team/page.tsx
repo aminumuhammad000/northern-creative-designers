@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { Metadata } from "next";
-import { ShieldCheck, Mail, Phone, Users, ExternalLink } from "lucide-react";
+import { ShieldCheck, Mail, Phone, Users, ArrowRight } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/Button";
@@ -36,7 +36,7 @@ export default function TeamPage() {
       title: "Technology & Platform Operations",
       role: "Digital Infrastructure & Systems Management",
       description:
-        "Managed in collaboration with Official Technology Partner Amee Technology Ltd to deliver registration, QR ticketing, and voting engines.",
+        "Oversees cloud web operations, attendee database records, QR ticketing validation, and live voting platform execution.",
     },
     {
       title: "Exhibition & Creative Showcase Team",
@@ -128,40 +128,28 @@ export default function TeamPage() {
           </div>
         </section>
 
-        {/* Technology Partner Collaboration Banner */}
+        {/* Volunteer & Community Callout */}
         <section className="p-8 rounded-2xl bg-pine text-white flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-xl bg-white p-2 flex items-center justify-center flex-shrink-0">
-              <Image
-                src={siteConfig.technologyPartner.logoLight}
-                alt={siteConfig.technologyPartner.name}
-                width={48}
-                height={48}
-                className="object-contain"
-              />
-            </div>
-            <div>
-              <p className="text-xs font-semibold text-spring uppercase tracking-wider">
-                Official Technology Partner
-              </p>
-              <h4 className="text-xl font-bold text-white">
-                {siteConfig.technologyPartner.name}
-              </h4>
-              <p className="text-xs text-white/70 mt-0.5 max-w-lg">
-                Collaborating closely with the executive committee to deliver an enterprise-grade digital experience for Summit 2.0.
-              </p>
-            </div>
+          <div className="space-y-1 max-w-xl">
+            <span className="text-spring text-xs font-semibold uppercase tracking-wider">
+              Get Involved
+            </span>
+            <h4 className="text-xl font-bold text-white">
+              Join the Summit 2.0 Operational Team
+            </h4>
+            <p className="text-xs text-white/70">
+              Passionate about community development, stage logistics, or attendee hospitality? Join our volunteer corps in Kano.
+            </p>
           </div>
 
-          <a
-            href={siteConfig.technologyPartner.website}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-spring text-navy font-semibold text-xs hover:bg-[#02b25b] transition-colors flex-shrink-0"
+          <Button
+            href="/contact?subject=volunteer-enquiry"
+            variant="primary"
+            size="md"
+            icon={<ArrowRight className="w-4 h-4" />}
           >
-            Visit Partner Website
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
+            Volunteer with Us
+          </Button>
         </section>
       </div>
     </main>

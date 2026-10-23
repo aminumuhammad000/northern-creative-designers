@@ -152,7 +152,7 @@ export function HackathonSection() {
             </div>
             <div className="flex items-center gap-2">
               <Vote className="w-4 h-4 text-spring" />
-              <span>Voting engine powered securely by Amee Technology Ltd.</span>
+              <span>Real-time audience voting with anti-tampering verification.</span>
             </div>
           </div>
         </div>

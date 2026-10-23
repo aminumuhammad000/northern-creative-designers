@@ -40,7 +40,7 @@ export default function PrivacyPage() {
         <section className="space-y-3">
           <h2 className="text-xl font-bold text-pine">3. Technology Infrastructure</h2>
           <p>
-            Platform digital services, authentication, and database persistence are hosted in partnership with Amee Technology Ltd. All data transfers utilize encrypted TLS/HTTPS protocols. Service-role credentials and private keys remain strictly server-side.
+            Platform digital services, authentication, and database persistence are hosted on enterprise cloud infrastructure. All data transfers utilize encrypted TLS/HTTPS protocols. Service-role credentials and private keys remain strictly server-side.
           </p>
         </section>
 

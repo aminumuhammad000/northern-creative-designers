@@ -33,7 +33,7 @@ export default function HomePage() {
       {/* 7. Commitment in Action & Past Impact */}
       <CommitmentSection />
 
-      {/* 8. Partners, Sponsors & Amee Technology Ltd Spotlight */}
+      {/* 8. Partners, Sponsors & Packages */}
       <PartnersSection />
 
       {/* 9. High-Conversion Registration CTA */}

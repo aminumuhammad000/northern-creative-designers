@@ -27,7 +27,7 @@ export default function VotingRulesPage() {
             <div>
               <h2 className="text-xl font-bold text-pine">Voting Integrity Guarantee</h2>
               <p className="text-xs text-navy/70">
-                Architected with Official Technology Partner Amee Technology Ltd
+                Audited by Northern Creative Designers Technical Desk
               </p>
             </div>
           </div>

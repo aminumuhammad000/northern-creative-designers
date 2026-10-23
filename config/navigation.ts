@@ -35,7 +35,6 @@ export const footerNavItems = {
   organisation: [
     { title: "Executive Committee & Team", href: "/team" },
     { title: "Official Partners", href: "/partners" },
-    { title: "Amee Technology Ltd (Tech Partner)", href: "https://ameetechnology.com.ng", isExternal: true },
     { title: "Contact & Enquiries", href: "/contact" },
     { title: "Admin Portal", href: "/admin" },
   ],

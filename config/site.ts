@@ -23,13 +23,4 @@ export const siteConfig = {
       accountNumber: "3004513846",
     },
   },
-  technologyPartner: {
-    name: "Amee Technology Ltd",
-    role: "Official Technology Partner",
-    website: "https://ameetechnology.com.ng",
-    logoLight: "/images/partners/amee-tech-logo.png",
-    logoDark: "/images/partners/amee-tech-logo-white.png",
-    description:
-      "Powering the digital infrastructure, ticketing engine, and hackathon voting platform for the Northern Creative Designers Summit.",
-  },
 };

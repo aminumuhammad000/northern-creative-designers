@@ -32,7 +32,7 @@ export function SiteHeader() {
 
   return (
     <>
-      {/* Top Technology Partner Banner */}
+      {/* Top Event Banner */}
       <div className="bg-pine text-white text-xs py-2 px-4 border-b border-white/10">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2">
@@ -41,17 +41,10 @@ export function SiteHeader() {
               Northern Creative Designers Summit 2.0 • 19th December, 2026 • Kano
             </span>
           </div>
-          <div className="flex items-center gap-2 text-white/75 text-xs">
-            <span>Official Technology Partner:</span>
-            <a
-              href={siteConfig.technologyPartner.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 font-semibold text-spring hover:underline"
-            >
-              Amee Technology Ltd
-              <ArrowUpRight className="w-3 h-3" />
-            </a>
+          <div className="flex items-center gap-2 text-white/80 text-xs">
+            <span>Theme: Roots & Vectors</span>
+            <span>•</span>
+            <span className="text-spring font-medium">Attendee Registrations Open</span>
           </div>
         </div>
       </div>
