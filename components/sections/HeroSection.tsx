@@ -33,12 +33,12 @@ export function HeroSection() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         {/* Floating Sticker Badges (Chowdeck Style) */}
         <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
-          {/* Badge 1: Official Summit Pill with Pulse */}
+          {/* Badge 1: Official Organization & Edition Pill */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-neutral-border text-xs font-bold text-pine shadow-sm hover:scale-105 transition-transform cursor-default">
             <span className="w-2.5 h-2.5 rounded-full bg-spring animate-pulse" />
-            <span className="uppercase tracking-wider">Summit 2.0 Active</span>
+            <span className="uppercase tracking-wider">Northern Creative Designers</span>
             <span className="text-neutral-border">•</span>
-            <span className="text-navy/60 font-mono text-[11px]">{eventConfig.rcNumber}</span>
+            <span className="text-tangerine uppercase tracking-wider">Summit 2.0</span>
           </div>
 
           {/* Badge 2: Floating Date Pill (Tilted -2deg) */}
