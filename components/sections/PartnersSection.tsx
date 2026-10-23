@@ -11,6 +11,9 @@ import {
   ArrowDownCircle,
   Award,
   Sparkles,
+  CreditCard,
+  Mail,
+  Phone,
 } from "lucide-react";
 import {
   eventConfig,
@@ -81,7 +84,11 @@ const tierCards = [
   },
 ];
 
-export function PartnersSection() {
+interface PartnersSectionProps {
+  showHeader?: boolean;
+}
+
+export function PartnersSection({ showHeader = true }: PartnersSectionProps) {
   const [activeTier, setActiveTier] = useState(tierCards[0]);
 
   const inKindFlipStyles = [
@@ -108,36 +115,59 @@ export function PartnersSection() {
   ];
 
   return (
-    <section id="partners" className="w-full py-20 md:py-32 bg-white border-b border-neutral-border relative overflow-hidden">
+    <section id="partners" className={`w-full ${showHeader ? "py-20 md:py-32" : "py-10 md:py-16"} bg-white border-b border-neutral-border relative overflow-hidden`}>
       <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 relative z-10">
         
-        {/* Section Heading with Big Typography */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-          <div className="max-w-3xl space-y-3">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-pine tracking-tight leading-tight">
-              Partners &amp; Sponsors.
-            </h2>
-            <p className="type-body text-navy/75 text-base sm:text-xl font-normal leading-relaxed max-w-2xl">
-              Position your organization before Northern Nigeria&apos;s creative and technological ecosystem. We invite corporate partners and stakeholders to power regional design excellence.
-            </p>
-          </div>
+        {/* Section Heading or Quick Actions */}
+        {showHeader ? (
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+            <div className="max-w-3xl space-y-3">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-pine tracking-tight leading-tight">
+                Partners &amp; Sponsors.
+              </h2>
+              <p className="type-body text-navy/75 text-base sm:text-xl font-normal leading-relaxed max-w-2xl">
+                Position your organization before Northern Nigeria&apos;s creative and technological ecosystem. We invite corporate partners and stakeholders to power regional design excellence.
+              </p>
+            </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <Link
-              href="/contact?subject=Sponsorship+Enquiry"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-spring text-navy text-xs sm:text-sm font-black uppercase tracking-wider hover:bg-[#02b25b] hover:scale-105 active:scale-95 transition-all shadow-md"
-            >
-              <span>Register as a Sponsor</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-            <Link
-              href="/NCD Summit 26.pdf"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-pine/30 text-pine text-xs sm:text-sm font-bold uppercase tracking-wider hover:border-pine hover:bg-pine/5 transition-all shadow-xs"
-            >
-              <span>Partnership Deck (PDF)</span>
-            </Link>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link
+                href="/contact?subject=Sponsorship+Enquiry"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-spring text-navy text-xs sm:text-sm font-black uppercase tracking-wider hover:bg-[#02b25b] hover:scale-105 active:scale-95 transition-all shadow-md"
+              >
+                <span>Register as a Sponsor</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+              <Link
+                href="/NCD Summit 26.pdf"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-pine/30 text-pine text-xs sm:text-sm font-bold uppercase tracking-wider hover:border-pine hover:bg-pine/5 transition-all shadow-xs"
+              >
+                <span>Partnership Deck (PDF)</span>
+              </Link>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-10 pb-6 border-b border-neutral-border/60">
+            <div className="text-xs font-mono font-bold uppercase tracking-wider text-pine/80">
+              ✦ Official Corporate &amp; Ecosystem Partnerships Directory
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link
+                href="/contact?subject=Sponsorship+Enquiry"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-spring text-navy text-xs font-black uppercase tracking-wider hover:bg-[#02b25b] hover:scale-105 active:scale-95 transition-all shadow-sm"
+              >
+                <span>Register as Sponsor</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+              <Link
+                href="/NCD Summit 26.pdf"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-pine/30 text-pine text-xs font-bold uppercase tracking-wider hover:border-pine hover:bg-pine/5 transition-all shadow-xs"
+              >
+                <span>Partnership Deck (PDF)</span>
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* Featured Official Software Partner Card: AMEE TECHNOLOGY LTD */}
         <div className="mb-14 p-6 sm:p-10 md:p-12 rounded-[2.5rem] bg-pine text-white border-2 border-spring shadow-2xl relative overflow-hidden">
@@ -428,6 +458,103 @@ export function PartnersSection() {
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* 3. Official Bank Account Details & Secretariat Terms */}
+        <div className="mb-20 p-8 sm:p-12 rounded-[2.5rem] bg-pine text-white border border-white/10 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-spring/10 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-7 space-y-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-mono font-bold text-spring uppercase tracking-wider">
+                <CreditCard className="w-3.5 h-3.5" />
+                <span>Official Sponsorship Escrow &amp; Bank Details</span>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                Secure Account &amp; Commitment Terms
+              </h3>
+              <p className="text-white/80 text-sm leading-relaxed max-w-xl">
+                Official invoices, receipts, and Memoranda of Understanding (MOU) are issued immediately upon sponsor confirmation. Structured milestone payments are supported for corporate partners.
+              </p>
+              <div className="space-y-2 text-xs text-white/70">
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-spring flex-shrink-0" />
+                  <span>Asset submissions (logos, speaker bios, high-res graphics) must be finalized 14 days prior to event print run.</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-spring flex-shrink-0" />
+                  <span>Custom exhibition booth placement allocated on a first-confirmed, first-served basis.</span>
+                </p>
+              </div>
+
+              <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-mono">
+                <a
+                  href={`mailto:${eventConfig.secretariat.email}`}
+                  className="inline-flex items-center gap-2 text-spring hover:underline"
+                >
+                  <Mail className="w-4 h-4" />
+                  <span>{eventConfig.secretariat.email}</span>
+                </a>
+                <span className="text-white/30">•</span>
+                <span className="inline-flex items-center gap-2 text-white/80">
+                  <Phone className="w-4 h-4 text-spring" />
+                  <span>{eventConfig.secretariat.phones.join(" / ")}</span>
+                </span>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5">
+              <div className="p-6 sm:p-8 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-xl space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-white/15">
+                  <span className="text-xs text-white/70 uppercase tracking-wider font-mono">Account Name</span>
+                  <span className="font-bold text-sm text-white font-mono text-right">{eventConfig.banking.accountName}</span>
+                </div>
+                <div className="flex items-center justify-between pb-3 border-b border-white/15">
+                  <span className="text-xs text-white/70 uppercase tracking-wider font-mono">Bank Name</span>
+                  <span className="font-bold text-sm text-spring font-mono">{eventConfig.banking.bankName}</span>
+                </div>
+                <div className="flex items-center justify-between pb-3 border-b border-white/15">
+                  <span className="text-xs text-white/70 uppercase tracking-wider font-mono">Account Number</span>
+                  <span className="font-mono text-xl sm:text-2xl font-black text-white tracking-widest">{eventConfig.banking.accountNumber}</span>
+                </div>
+                <div className="flex items-center justify-between pt-1">
+                  <span className="text-xs text-white/70 uppercase tracking-wider font-mono">Verification</span>
+                  <span className="text-xs font-bold text-spring bg-spring/10 border border-spring/30 px-2.5 py-0.5 rounded-full">✓ Registered RC: 9930022</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 4. Final Registration & Enquiry Banner */}
+        <div className="p-8 sm:p-12 rounded-[2.5rem] bg-neutral-sand border border-neutral-border text-center space-y-6">
+          <div className="max-w-2xl mx-auto space-y-2">
+            <span className="text-xs font-mono font-black uppercase tracking-wider text-pine bg-pine/10 px-3 py-1 rounded-full">
+              Join Our Summit 2.0 Partner Cohort
+            </span>
+            <h3 className="text-2xl sm:text-4xl font-black text-pine tracking-tight">
+              Ready to Spotlight Your Brand Before 500+ Innovators?
+            </h3>
+            <p className="text-navy/75 text-sm sm:text-base leading-relaxed">
+              Speak directly with our Executive Partnership Committee to reserve your tier, negotiate custom activations, or confirm in-kind contributions.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <Link
+              href="/contact?subject=Sponsorship+Enquiry"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-spring text-navy font-black text-sm uppercase tracking-wider hover:bg-[#02b25b] hover:scale-105 active:scale-95 transition-all shadow-md"
+            >
+              <span>Submit Partnership Enquiry</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/NCD Summit 26.pdf"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white border-2 border-pine text-pine font-bold text-sm uppercase tracking-wider hover:bg-pine hover:text-white transition-all shadow-xs"
+            >
+              <span>Download Full Brochure (PDF)</span>
+            </Link>
           </div>
         </div>
 

@@ -7,7 +7,6 @@ import { ProgrammeHighlightsSection } from "@/components/sections/ProgrammeHighl
 import { SpeakersSection } from "@/components/sections/SpeakersSection";
 import { HackathonSection } from "@/components/sections/HackathonSection";
 import { CommitmentSection } from "@/components/sections/CommitmentSection";
-import { PartnersSection } from "@/components/sections/PartnersSection";
 import { RegistrationCTASection } from "@/components/sections/RegistrationCTASection";
 
 export default function HomePage() {
@@ -55,10 +54,7 @@ export default function HomePage() {
       {/* 9. Commitment in Action & Verified Past Impact */}
       <CommitmentSection />
 
-      {/* 10. Partners & Sponsorship Packages */}
-      <PartnersSection />
-
-      {/* 11. High-Conversion Registration CTA */}
+      {/* 10. High-Conversion Registration CTA */}
       <RegistrationCTASection />
     </main>
   );
