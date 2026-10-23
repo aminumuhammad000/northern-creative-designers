@@ -130,92 +130,73 @@ export function SummitIntroSection() {
 
       <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 relative z-10">
         
-        {/* 1. Creative Editorial Layout: About The Summit & Official Artwork */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-24 md:mb-32">
+        {/* 1. Creative Editorial Layout: About The Summit (Minimalist & Polished) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-24 md:mb-32">
           {/* Left Text Column */}
           <div className="lg:col-span-7 space-y-6 text-left">
             <div className="space-y-3">
-              <h2 className="type-heading text-pine text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-pine tracking-tight leading-tight">
                 About The <span className="text-spring">Summit.</span>
               </h2>
-              <p className="text-xl sm:text-2xl font-bold text-tangerine tracking-tight leading-snug">
-                Bridging Indigenous Roots with Modern Digital Vectors.
+              <p className="text-xl sm:text-2xl font-bold text-navy tracking-tight leading-snug">
+                Where indigenous heritage converges with modern digital craft.
               </p>
             </div>
 
-            <p className="type-body text-navy/80 text-base sm:text-lg leading-relaxed font-normal">
-              The Northern Creative Designers Summit 2.0 is the premier annual gathering for designers, strategists, developers, and visual storytellers across Northern Nigeria. Moving beyond conventional talk shows to deliver deep learning, real-time collaboration, and actionable career pathways.
+            <p className="type-body text-navy/75 text-base sm:text-lg leading-relaxed font-normal">
+              The Northern Creative Designers Summit 2.0 is the premier annual gathering uniting 1,000+ visual thinkers, digital craftspeople, and industry pioneers in Kano. Moving beyond conventional talk shows, the summit functions as an active studio: pairing intensive masterclasses and live build sprints with direct enterprise dealmaking.
             </p>
 
-            <p className="type-body text-navy/70 text-sm sm:text-base leading-relaxed font-normal">
-              This year’s theme, <strong className="text-pine font-semibold">&ldquo;Roots &amp; Vectors: Shaping the Future of Arewa Design,&rdquo;</strong> explores the powerful intersection of rich cultural heritage and modern digital innovation. We examine how Northern designers can honor traditional visual languages while leveraging cutting-edge design tools, strategic thinking, and artificial intelligence to compete at a global scale.
-            </p>
+            {/* Minimalist 3-Pillar Highlights Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+              <div className="p-5 rounded-2xl bg-[#FAFAF8] border border-neutral-border space-y-1.5">
+                <span className="text-xs font-mono font-bold text-pine uppercase tracking-wider block">01 / Craft</span>
+                <p className="text-xs sm:text-sm font-semibold text-pine leading-snug">Industry Masterclasses</p>
+                <p className="text-xs text-navy/65 leading-relaxed">Brand systems, UI/UX, motion, and synthetic AI workflows.</p>
+              </div>
 
-            {/* Quick Feature Badges */}
-            <div className="pt-2 flex flex-wrap items-center gap-3 text-xs font-semibold text-pine">
-              <span className="px-3 py-1.5 rounded-full bg-[#FAFAF8] border border-neutral-border">
-                ✦ Immersive Learning
-              </span>
-              <span className="px-3 py-1.5 rounded-full bg-[#FAFAF8] border border-neutral-border">
-                ✦ Direct Client Connections
-              </span>
-              <span className="px-3 py-1.5 rounded-full bg-[#FAFAF8] border border-neutral-border">
-                ✦ 2-Hour Live Sprint
-              </span>
-              <span className="px-3 py-1.5 rounded-full bg-[#FAFAF8] border border-neutral-border">
-                ✦ Audience Voting
-              </span>
+              <div className="p-5 rounded-2xl bg-[#FAFAF8] border border-neutral-border space-y-1.5">
+                <span className="text-xs font-mono font-bold text-tangerine uppercase tracking-wider block">02 / Sprints</span>
+                <p className="text-xs sm:text-sm font-semibold text-pine leading-snug">₦1M+ Live Hackathon</p>
+                <p className="text-xs text-navy/65 leading-relaxed">2-hour live build challenge with transparent audience voting.</p>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-[#FAFAF8] border border-neutral-border space-y-1.5">
+                <span className="text-xs font-mono font-bold text-spring uppercase tracking-wider block">03 / Commerce</span>
+                <p className="text-xs sm:text-sm font-semibold text-pine leading-snug">Client Connect Corner</p>
+                <p className="text-xs text-navy/65 leading-relaxed">Direct business mandates connecting talent with founders.</p>
+              </div>
             </div>
           </div>
 
-          {/* Right Bento Showcase Card with Official Brand Lockup */}
+          {/* Right Minimalist Visual Card */}
           <div className="lg:col-span-5">
-            <div className="p-8 sm:p-10 rounded-[2.5rem] bg-pine text-white relative overflow-hidden shadow-xl border border-white/10 group hover:-translate-y-1 transition-all duration-300">
-              {/* Subtle background motif */}
-              <div className="absolute -bottom-8 -right-8 w-60 h-60 opacity-10 pointer-events-none select-none">
+            <div className="relative rounded-[2rem] overflow-hidden border border-neutral-border shadow-lg bg-neutral-card group">
+              <div className="aspect-[4/3] sm:aspect-[16/11] relative w-full overflow-hidden">
                 <Image
-                  src="/images/pdf_extracted/arewa_motif_pattern.png"
-                  alt=""
-                  width={736}
-                  height={845}
-                  className="w-full h-full object-contain"
+                  src="/images/pdf_extracted/vision_workshop_top.png"
+                  alt="Northern Creative Designers Summit Community"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
                 />
-              </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-pine/80 via-transparent to-black/20" />
 
-              <div className="relative z-10 space-y-6">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-mono font-bold text-spring uppercase tracking-wider bg-white/10 px-3 py-1 rounded-full">
-                    Kano 2026
+                {/* Floating Minimalist Top Pill */}
+                <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-[11px] font-mono text-white font-medium">
+                  <span className="w-2 h-2 rounded-full bg-spring animate-pulse" />
+                  <span>Kano State Library Complex</span>
+                </div>
+
+                {/* Floating Minimalist Bottom Caption */}
+                <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between text-white text-xs">
+                  <div>
+                    <p className="font-bold text-sm tracking-tight">Roots &amp; Vectors 2.0</p>
+                    <p className="text-white/70 text-[11px]">19th December, 2026</p>
+                  </div>
+                  <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-xs font-mono text-[11px] font-bold text-spring">
+                    1,000+ Designers
                   </span>
-                  <span className="text-xs text-white/60 font-mono">
-                    RC: {eventConfig.rcNumber}
-                  </span>
-                </div>
-
-                {/* Official Theme Artwork Lockup from PDF */}
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xs flex items-center justify-center">
-                  <Image
-                    src="/images/pdf_extracted/summit_theme_lockup.png"
-                    alt="Roots & Vectors — Shaping the Future of Arewa Design"
-                    width={400}
-                    height={156}
-                    className="w-full h-auto object-contain max-h-24 brightness-110"
-                  />
-                </div>
-
-                {/* Editorial Quote */}
-                <div className="space-y-2 border-l-2 border-spring pl-4">
-                  <p className="text-sm sm:text-base text-white/90 font-medium italic leading-relaxed">
-                    &ldquo;Where rich cultural heritage and modern design innovation power sustainable economic growth.&rdquo;
-                  </p>
-                  <p className="text-xs text-spring font-bold tracking-wide">
-                    Executive Committee, Northern Creative Designers
-                  </p>
-                </div>
-
-                <div className="pt-2 flex items-center justify-between text-xs text-white/70 border-t border-white/10">
-                  <span>19th December, 2026</span>
-                  <span className="font-bold text-white">Annual Summit 2.0</span>
                 </div>
               </div>
             </div>

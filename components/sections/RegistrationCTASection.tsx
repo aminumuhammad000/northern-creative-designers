@@ -53,27 +53,6 @@ export function RegistrationCTASection() {
             </div>
           </div>
 
-          {/* QR Code & Digital Pass Feature (Chowdeck Badge) */}
-          <div className="max-w-md mx-auto p-5 rounded-3xl bg-white/10 border border-white/15 flex items-center justify-center gap-5 text-left hover:scale-105 transition-transform duration-200 cursor-default">
-            <div className="w-16 h-16 rounded-2xl bg-white p-2 flex-shrink-0 flex items-center justify-center shadow-md">
-              <Image
-                src="/images/pdf_extracted/official_summit_qr.png"
-                alt="Official Summit QR Verification"
-                width={64}
-                height={64}
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <div>
-              <p className="text-xs font-black text-white uppercase tracking-wider">
-                Automated QR Check-in System
-              </p>
-              <p className="text-xs text-white/75 mt-0.5 leading-relaxed">
-                Registered attendees receive a unique cryptographic QR badge for instant physical venue check-in.
-              </p>
-            </div>
-          </div>
-
           {/* Action Buttons with Scale Motion */}
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-5 pt-2">
             <Link
