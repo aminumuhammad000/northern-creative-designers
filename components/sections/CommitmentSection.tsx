@@ -4,7 +4,6 @@ import {
   Trophy,
   Users,
   Layers,
-  Sparkles,
   ArrowRight,
   BookOpen,
   CheckCircle2,

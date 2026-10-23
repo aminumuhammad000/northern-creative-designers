@@ -21,30 +21,26 @@ export function Button({
   className = "",
   ...props
 }: ButtonProps) {
-  // Brand color contrast pairs:
-  // - Primary: Spring (#03D06B) background with Navy (#140949) text (8.8:1 AAA)
-  // - Secondary: Pine (#013811) background with White (#FFFFFF) text (13.3:1 AAA)
-  // - Accent: Tangerine (#FF8500) background with Navy (#140949) text (7.4:1 AAA)
   const baseStyles =
-    "inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none select-none";
+    "inline-flex items-center justify-center font-semibold rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none select-none uppercase tracking-wider";
 
   const sizeStyles = {
-    sm: "text-xs px-3.5 py-1.5 gap-1.5",
-    md: "text-sm px-5 py-2.5 gap-2",
-    lg: "text-base px-6 py-3.5 gap-2.5 font-semibold",
+    sm: "text-[11px] px-4 py-2 gap-1.5",
+    md: "text-xs px-6 py-2.5 gap-2",
+    lg: "text-xs sm:text-sm px-8 py-3.5 gap-2",
   };
 
   const variantStyles = {
     primary:
-      "bg-spring text-navy hover:bg-[#02b25b] shadow-sm hover:shadow-md focus-visible:ring-spring focus-visible:ring-offset-white",
+      "bg-spring text-navy hover:bg-[#02b25b] shadow-xs hover:shadow-sm focus-visible:ring-spring focus-visible:ring-offset-white",
     secondary:
-      "bg-pine text-white hover:bg-pine-light shadow-sm hover:shadow-md focus-visible:ring-pine focus-visible:ring-offset-white",
+      "bg-pine text-white hover:bg-pine-light shadow-xs hover:shadow-sm focus-visible:ring-pine focus-visible:ring-offset-white",
     accent:
-      "bg-tangerine text-navy hover:bg-[#e67700] shadow-sm hover:shadow-md focus-visible:ring-tangerine focus-visible:ring-offset-white",
+      "bg-tangerine text-navy hover:bg-[#e67700] shadow-xs hover:shadow-sm focus-visible:ring-tangerine focus-visible:ring-offset-white",
     outline:
-      "border-2 border-pine text-pine hover:bg-pine/5 focus-visible:ring-pine",
+      "border border-pine/30 text-pine hover:bg-white hover:border-pine focus-visible:ring-pine",
     ghost:
-      "text-pine hover:bg-pine/5 focus-visible:ring-pine",
+      "text-pine hover:bg-neutral-sand focus-visible:ring-pine",
   };
 
   const combinedStyles = `${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;

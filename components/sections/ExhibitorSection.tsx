@@ -4,7 +4,6 @@ import {
   Store,
   Layers,
   ArrowRight,
-  Sparkles,
   CheckCircle,
 } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -48,7 +47,6 @@ export function ExhibitorSection() {
                 href={exhibitors.ctaLink}
                 variant="primary"
                 size="md"
-                icon={<ArrowRight className="w-4 h-4" />}
               >
                 {exhibitors.ctaText}
               </Button>
@@ -91,9 +89,9 @@ export function ExhibitorSection() {
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-spring/15 border border-spring/30 text-xs text-pine font-medium">
-                <Sparkles className="w-4 h-4 text-pine inline mr-1.5" />
-                Limited booth capacity. Applications undergo review within 3 business days.
+              <div className="p-4 rounded-xl bg-spring/15 border border-spring/30 text-xs text-pine font-medium flex items-center">
+                <span className="w-2 h-2 rounded-full bg-spring inline-block mr-2 flex-shrink-0" />
+                <span>Limited booth capacity. Applications undergo review within 3 business days.</span>
               </div>
             </div>
           </div>

@@ -32,7 +32,6 @@ export function HackathonSection() {
               href={hackathon.ctaLink}
               variant="primary"
               size="md"
-              icon={<Zap className="w-4 h-4" />}
             >
               {hackathon.ctaText}
             </Button>

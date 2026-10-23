@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Mic, Sparkles, Send, CheckCircle2 } from "lucide-react";
+import { Mic, Send, CheckCircle2 } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { landingPageContent } from "@/content/landing-page";
 import { Button } from "@/components/ui/Button";
@@ -27,7 +27,7 @@ export function SpeakersSection() {
 
           <div className="space-y-2 max-w-xl mx-auto">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-pine/10 text-pine">
-              <Sparkles className="w-3.5 h-3.5 text-tangerine" />
+              <span className="w-1.5 h-1.5 rounded-full bg-tangerine" />
               Official Lineup Release
             </span>
             <h3 className="text-2xl sm:text-3xl font-bold text-pine">

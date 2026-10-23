@@ -35,7 +35,6 @@ export function ProgrammeHighlightsSection() {
             href="/programme"
             variant="outline"
             size="md"
-            icon={<ArrowRight className="w-4 h-4" />}
           >
             View Full Schedule
           </Button>

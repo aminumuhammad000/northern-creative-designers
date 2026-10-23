@@ -2,16 +2,14 @@ export interface NavItem {
   title: string;
   href: string;
   isExternal?: boolean;
-  badge?: string;
 }
 
 export const mainNavItems: NavItem[] = [
-  { title: "Home", href: "/" },
   { title: "About", href: "/about" },
   { title: "Programme", href: "/programme" },
-  { title: "Hackathon", href: "/hackathon", badge: "Live Sprint" },
+  { title: "Hackathon", href: "/hackathon" },
   { title: "Exhibitors", href: "/exhibitors" },
-  { title: "Partners", href: "/partners" },
+  { title: "Sponsors", href: "/partners" },
   { title: "Past Editions", href: "/past-editions" },
   { title: "Contact", href: "/contact" },
 ];

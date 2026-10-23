@@ -21,29 +21,20 @@ export function SiteFooter() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8 pb-12 border-b border-white/15">
           {/* Brand & Organization Column */}
           <div className="lg:col-span-2 space-y-5">
-            {/* Logo in White on Pine background (Strict Brand Guideline Compliance) */}
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white rounded-lg p-2 flex items-center justify-center flex-shrink-0 shadow-xs">
+            {/* Official Logo on Dark Pine Background */}
+            <div className="flex flex-col space-y-2">
+              <Link href="/" className="inline-block" aria-label="Northern Creative Designers Home">
                 <Image
-                  src="/images/logos/symbol-mark.png"
-                  alt="Northern Creative Designers Mark"
-                  width={38}
-                  height={38}
-                  className="object-contain"
-                />
-              </div>
-              <div className="flex flex-col">
-                <Image
-                  src="/images/logos/wordmark-white.png"
+                  src="/images/brand/logo-footer.png"
                   alt="Northern Creative Designers"
-                  width={150}
-                  height={40}
-                  className="object-contain h-7 w-auto"
+                  width={220}
+                  height={68}
+                  className="h-8 sm:h-9 w-auto object-contain"
                 />
-                <p className="text-spring text-xs font-semibold uppercase tracking-wider mt-1">
-                  Summit 2.0 • Roots & Vectors
-                </p>
-              </div>
+              </Link>
+              <p className="text-spring text-xs font-semibold uppercase tracking-wider">
+                Summit 2.0 • Roots &amp; Vectors
+              </p>
             </div>
 
             <p className="text-white/80 text-sm leading-relaxed pr-4">

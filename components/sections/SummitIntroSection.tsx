@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import {
-  Sparkles,
+  Layers,
   Compass,
   TrendingUp,
   Users,
@@ -16,10 +16,10 @@ export function SummitIntroSection() {
   const { introduction } = landingPageContent;
 
   const iconMap: Record<string, React.ReactNode> = {
-    Sparkles: <Sparkles className="w-6 h-6 text-spring" />,
-    Compass: <Compass className="w-6 h-6 text-tangerine" />,
-    TrendingUp: <TrendingUp className="w-6 h-6 text-spring" />,
-    Users: <Users className="w-6 h-6 text-tangerine" />,
+    Layers: <Layers className="w-5 h-5 text-spring" />,
+    Compass: <Compass className="w-5 h-5 text-tangerine" />,
+    TrendingUp: <TrendingUp className="w-5 h-5 text-spring" />,
+    Users: <Users className="w-5 h-5 text-tangerine" />,
   };
 
   return (
@@ -50,7 +50,7 @@ export function SummitIntroSection() {
             >
               <div>
                 <div className="w-12 h-12 rounded-lg bg-pine flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
-                  {iconMap[obj.icon] || <Sparkles className="w-6 h-6 text-spring" />}
+                  {iconMap[obj.icon] || <Layers className="w-5 h-5 text-spring" />}
                 </div>
                 <h3 className="font-bold text-pine text-lg mb-2 leading-snug">
                   {obj.title}

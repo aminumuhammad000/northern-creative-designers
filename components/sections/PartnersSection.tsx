@@ -4,7 +4,6 @@ import {
   CheckCircle2,
   Building2,
   CreditCard,
-  Sparkles,
   ArrowRight,
   Shield,
 } from "lucide-react";

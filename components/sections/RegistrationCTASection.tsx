@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   Calendar,
   MapPin,
-  Sparkles,
   Download,
   ArrowRight,
   ShieldCheck,
@@ -54,7 +53,6 @@ export function RegistrationCTASection() {
               href={finalCta.primaryButtonText ? finalCta.primaryButtonHref : "/register"}
               variant="primary"
               size="lg"
-              icon={<Sparkles className="w-4 h-4" />}
             >
               {finalCta.primaryButtonText}
             </Button>
@@ -63,7 +61,6 @@ export function RegistrationCTASection() {
               variant="outline"
               size="lg"
               className="text-white border-white/40 hover:bg-white/10"
-              icon={<Download className="w-4 h-4" />}
             >
               {finalCta.secondaryButtonText}
             </Button>

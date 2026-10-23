@@ -35,7 +35,7 @@ export const coreObjectives = [
     title: "Cultivate Skill Excellence",
     description:
       "Deliver practical, specialized masterclasses and live build sprints that equip designers with industry-standard technical and strategic capabilities.",
-    icon: "Sparkles",
+    icon: "Layers",
   },
   {
     id: "culture-modernity",

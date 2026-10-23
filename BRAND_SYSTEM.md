@@ -93,10 +93,10 @@ The color system strictly adheres to the contrast criteria evaluated in `norther
 
 | Logo Variant | Target Background | File Used | Rendering Specification |
 | :--- | :--- | :--- | :--- |
-| **Symbol Mark** | White, Spring, Sand, Dark surfaces | `public/images/logos/symbol-mark.png` | Square icon format (e.g. 40×40px or 48×48px) |
-| **Wordmark (Light)**| White (`#FFFFFF`), Sand (`#FBFBF9`), Spring (`#03D06B`) | `public/images/logos/wordmark-pine.png` | Dark Pine typography (`#013811`) |
-| **Wordmark (Dark)** | Pine (`#013811`), Navy (`#140949`), Dark Media | `public/images/logos/wordmark-white.png` | Pure White typography (`#FFFFFF`) |
-| **App Icon / Favicon**| Browser Tabs, App Docks, PWA Manifest | `public/images/logos/app-icon.png` | Centered symbol on Pine canvas |
+| **Header Logo Lockup** | White (`#FFFFFF`), Sand (`#FAFAF8`) | `public/images/brand/logo-header.png` | Standalone horizontal mark in Pine (`h-8 sm:h-9 w-auto`) |
+| **Footer Logo Lockup** | Pine (`#013811`), Navy (`#140949`) | `public/images/brand/logo-footer.png` | Standalone horizontal mark in White (`h-8 sm:h-9 w-auto`) |
+| **Favicon & App Icon** | Browser Tabs, PWA, App Docks | `public/favicon.ico`<br>`public/apple-touch-icon.png` | Official multi-size icon (16px, 32px, 48px, 180px, 192px, 512px) |
+| **Symbol Mark** | General media | `public/images/logos/symbol-mark.png` | Standalone square symbol |
 
 ### 4.2 Proportions and Clear Space Rules
 1. **Clear Space**: A minimum boundary of **50% of the logo's height** is maintained on all four sides across all viewports.
