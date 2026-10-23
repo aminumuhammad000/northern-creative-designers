@@ -64,7 +64,7 @@ export function HackathonSection() {
             <div className="lg:col-span-5 relative">
               <div className="relative w-full aspect-[4/3] rounded-[2rem] overflow-hidden border border-pine/20 shadow-xl group">
                 <Image
-                  src="/images/community/Polished Modern Office Meeting Scene.png"
+                  src="/images/community/live_hackathon_sprint.jpg"
                   alt="Northern Creative Designers live design sprint collaboration"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
