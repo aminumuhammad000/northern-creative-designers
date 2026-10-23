@@ -439,48 +439,6 @@ export function SummitIntroSection() {
             ))}
           </div>
         </div>
-
-        {/* 6. Who Should Attend? (Chowdeck Pill Cloud) */}
-        <div className="p-8 sm:p-12 md:p-16 rounded-[2.5rem] bg-pine text-white shadow-xl relative overflow-hidden">
-          <div className="max-w-3xl mb-8 relative z-10">
-            <span className="text-spring text-xs font-bold uppercase tracking-wider">
-              Ecosystem Cohort
-            </span>
-            <h3 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mt-1 text-white">
-              Who Should Attend?
-            </h3>
-            <p className="text-white/85 text-sm sm:text-base mt-3 leading-relaxed">
-              Whether you are an emerging creative building your foundational skills,
-              an established practitioner expanding into international markets, or a
-              business owner seeking top-tier creative talent, Northern Creative
-              Designers Summit 2.0 is your platform to connect, grow, and shape the
-              future of Arewa design.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-2.5 sm:gap-3 relative z-10">
-            {whoShouldAttend.map((role) => (
-              <div
-                key={role}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/10 border border-white/15 text-white text-xs sm:text-sm font-semibold hover:bg-spring hover:text-navy hover:scale-105 active:scale-95 transition-all duration-200 cursor-default"
-              >
-                <CheckCircle2 className="w-4 h-4 text-spring flex-shrink-0" />
-                <span>{role}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-10 pt-8 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs text-white/70 relative z-10">
-            <span>Connect with 1,000+ creative innovators and founders in Kano</span>
-            <Link
-              href="/register"
-              className="inline-flex items-center gap-2 text-spring font-extrabold hover:underline uppercase tracking-wider"
-            >
-              <span>Secure Your Delegate Pass</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
       </div>
     </section>
   );
