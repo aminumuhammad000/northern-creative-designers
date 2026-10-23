@@ -20,6 +20,7 @@ import {
   Video,
   Building,
   Brush,
+  ArrowDownRight,
 } from "lucide-react";
 import {
   eventConfig,
@@ -363,39 +364,94 @@ export function SummitIntroSection() {
           </div>
         </div>
 
-        {/* 4. Core Objectives: Bento Grid with Hover Elevation */}
-        <div className="mb-24 md:mb-32">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="text-xs font-bold text-pine uppercase tracking-wider px-3.5 py-1.5 rounded-full bg-pine/5 border border-pine/10">
-              Foundational Pillars
+        {/* 4. Core Objectives: Faithfully Adapted to core objectives.png (PDF Page 05) */}
+        <div id="core-objectives" className="mb-24 md:mb-32">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+            <div className="max-w-2xl space-y-3">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pine/5 border border-pine/10 text-xs font-extrabold text-pine uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-spring" />
+                <span>Foundational Pillars • Page 05</span>
+              </div>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-pine tracking-tight leading-tight">
+                Core Objectives.
+              </h3>
+              <p className="type-body text-navy/70 text-base sm:text-lg leading-relaxed font-normal">
+                Four strategic pillars driving every masterclass, panel discussion, live sprint, and exhibition at Summit 2.0.
+              </p>
+            </div>
+            <span className="text-xs font-mono font-bold text-pine/80 bg-[#FAFAF8] px-4 py-2 rounded-full border border-neutral-border">
+              NCD Summit 2.0 • Kano 2026
             </span>
-            <h3 className="type-heading text-pine mt-3 font-black">
-              Core Objectives
-            </h3>
-            <p className="type-body text-navy/70 text-sm sm:text-base mt-2">
-              Four concrete pillars driving every masterclass, panel, and exhibition.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {coreObjectives.map((obj) => (
-              <div
-                key={obj.id}
-                className="p-8 rounded-[2rem] bg-white border border-neutral-border hover:border-spring hover:-translate-y-2 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-              >
-                <div>
-                  <div className="w-14 h-14 rounded-2xl bg-pine/5 border border-pine/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-pine group-hover:text-spring transition-all duration-300">
-                    {objectiveIcons[obj.icon] || <Layers className="w-6 h-6 text-spring" />}
+          {/* Halftone / Dotted Background Container matching core objectives.png */}
+          <div className="p-4 sm:p-8 md:p-12 rounded-[2.5rem] bg-[#F6FFF8] bg-[radial-gradient(#00CC67_1.75px,transparent_1.75px)] [background-size:20px_20px] border border-neutral-border/70 shadow-sm">
+            <div className="space-y-6 sm:space-y-8">
+              {[
+                {
+                  id: "skill-excellence",
+                  title: "Cultivate Skill Excellence:",
+                  description:
+                    "Deliver practical, specialized master classes and live build sprints that equip designers with industry-standard technical and strategic capabilities.",
+                  bgClass: "bg-[#F39200]",
+                  pillarNumber: "01",
+                },
+                {
+                  id: "culture-modernity",
+                  title: "Bridge Culture & Modernity:",
+                  description:
+                    "Preserve and celebrate Northern visual identity by integrating traditional motifs into modern digital products, branding, and media.",
+                  bgClass: "bg-[#00CC67]",
+                  pillarNumber: "02",
+                },
+                {
+                  id: "sustainable-monetization",
+                  title: "Drive Sustainable Monetization:",
+                  description:
+                    "Teach sustainable pricing, proposal writing, and client negotiation, directly connecting regional creatives with paying business opportunities.",
+                  bgClass: "bg-[#453478]",
+                  pillarNumber: "03",
+                },
+                {
+                  id: "community-recognition",
+                  title: "Foster Community & Recognition:",
+                  description:
+                    "Build a supportive network across Arewa through collaborative Hackathon, public exhibitions, and awards that spotlight regional talent.",
+                  bgClass: "bg-[#013811]",
+                  pillarNumber: "04",
+                },
+              ].map((obj) => (
+                <div
+                  key={obj.id}
+                  className={`
+                    group p-8 sm:p-10 md:p-12 rounded-[2rem] sm:rounded-[2.25rem] ${obj.bgClass} text-white shadow-xl
+                    hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01]
+                    transition-all duration-300 ease-out cursor-default relative overflow-hidden
+                  `}
+                >
+                  {/* Subtle inner ambient glow */}
+                  <div className="absolute top-0 right-0 w-80 h-80 bg-white/[0.08] rounded-full blur-2xl pointer-events-none" />
+
+                  <div className="relative z-10 flex flex-col justify-between">
+                    <div className="flex items-start justify-between gap-4 mb-4 sm:mb-5">
+                      <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+                        <ArrowDownRight className="w-8 h-8 sm:w-10 sm:h-10 text-white flex-shrink-0 stroke-[2.5] transition-transform duration-300 group-hover:translate-x-1.5 group-hover:translate-y-1.5" />
+                        <h4 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
+                          {obj.title}
+                        </h4>
+                      </div>
+                      <span className="text-xs sm:text-sm font-mono font-black uppercase tracking-wider px-3.5 py-1 rounded-full bg-white/15 text-white/90 border border-white/20 flex-shrink-0">
+                        Pillar {obj.pillarNumber}
+                      </span>
+                    </div>
+
+                    <p className="text-white/95 text-base sm:text-xl md:text-2xl font-normal leading-relaxed pl-1 sm:pl-2">
+                      {obj.description}
+                    </p>
                   </div>
-                  <h4 className="font-extrabold text-pine text-lg mb-2 leading-snug">
-                    {obj.title}
-                  </h4>
-                  <p className="text-navy/75 text-xs sm:text-sm leading-relaxed">
-                    {obj.description}
-                  </p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
