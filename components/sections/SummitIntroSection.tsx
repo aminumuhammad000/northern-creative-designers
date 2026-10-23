@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Layers,
   Compass,
@@ -121,38 +122,117 @@ export function SummitIntroSection() {
   const currentCohort = verticalCohorts[activeTab];
 
   return (
-    <section id="about-summit" className="py-20 md:py-32 bg-white border-b border-neutral-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* 1. About The Summit (Chowdeck-Inspired Big Typography) */}
-        <div className="max-w-4xl mx-auto text-center mb-20 md:mb-28">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pine text-white text-xs font-bold uppercase tracking-wider mb-5 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-spring" />
-            <span>Official Summit 2.0 Overview</span>
+    <section id="about-summit" className="py-20 md:py-32 bg-white border-b border-neutral-border relative overflow-hidden">
+      {/* Soft background ambient illumination */}
+      <div className="absolute top-1/4 right-0 w-96 h-96 bg-spring/[0.03] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/3 left-0 w-96 h-96 bg-tangerine/[0.03] rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        {/* 1. Creative Editorial Layout: About The Summit & Official Artwork */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-24 md:mb-32">
+          {/* Left Text Column */}
+          <div className="lg:col-span-7 space-y-6 text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pine text-white text-xs font-bold uppercase tracking-wider shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-spring" />
+              <span>Official Summit 2.0 Manifesto</span>
+            </div>
+
+            <div className="space-y-3">
+              <h2 className="type-heading text-pine text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
+                About The <span className="text-spring">Summit.</span>
+              </h2>
+              <p className="text-xl sm:text-2xl font-bold text-tangerine tracking-tight leading-snug">
+                Bridging Indigenous Roots with Modern Digital Vectors.
+              </p>
+            </div>
+
+            <p className="type-body text-navy/80 text-base sm:text-lg leading-relaxed font-normal">
+              The Northern Creative Designers Summit 2.0 is the premier annual gathering for designers, strategists, developers, and visual storytellers across Northern Nigeria. Moving beyond conventional talk shows to deliver deep learning, real-time collaboration, and actionable career pathways.
+            </p>
+
+            <p className="type-body text-navy/70 text-sm sm:text-base leading-relaxed font-normal">
+              This year’s theme, <strong className="text-pine font-semibold">&ldquo;Roots &amp; Vectors: Shaping the Future of Arewa Design,&rdquo;</strong> explores the powerful intersection of rich cultural heritage and modern digital innovation. We examine how Northern designers can honor traditional visual languages while leveraging cutting-edge design tools, strategic thinking, and artificial intelligence to compete at a global scale.
+            </p>
+
+            {/* Quick Feature Badges */}
+            <div className="pt-2 flex flex-wrap items-center gap-3 text-xs font-semibold text-pine">
+              <span className="px-3 py-1.5 rounded-full bg-[#FAFAF8] border border-neutral-border">
+                ✦ Immersive Learning
+              </span>
+              <span className="px-3 py-1.5 rounded-full bg-[#FAFAF8] border border-neutral-border">
+                ✦ Direct Client Connections
+              </span>
+              <span className="px-3 py-1.5 rounded-full bg-[#FAFAF8] border border-neutral-border">
+                ✦ 2-Hour Live Sprint
+              </span>
+              <span className="px-3 py-1.5 rounded-full bg-[#FAFAF8] border border-neutral-border">
+                ✦ Audience Voting
+              </span>
+            </div>
           </div>
 
-          <h2 className="type-section-title text-pine mb-6 tracking-tight">
-            About The <span className="text-spring">Summit.</span>
-          </h2>
+          {/* Right Bento Showcase Card with Official Brand Lockup */}
+          <div className="lg:col-span-5">
+            <div className="p-8 sm:p-10 rounded-[2.5rem] bg-pine text-white relative overflow-hidden shadow-xl border border-white/10 group hover:-translate-y-1 transition-all duration-300">
+              {/* Subtle background motif */}
+              <div className="absolute -bottom-8 -right-8 w-60 h-60 opacity-10 pointer-events-none select-none">
+                <Image
+                  src="/images/pdf_extracted/arewa_motif_pattern.png"
+                  alt=""
+                  width={736}
+                  height={845}
+                  className="w-full h-full object-contain"
+                />
+              </div>
 
-          <p className="type-body text-navy/85 text-lg sm:text-2xl max-w-3xl mx-auto leading-relaxed font-normal">
-            Northern Creative Designers Summit 2.0 is the premier annual
-            gathering for designers, strategists, developers, and visual storytellers
-            across Northern Nigeria. Moving beyond conventional talk shows to
-            deliver deep learning, real-time collaboration, and actionable career pathways.
-          </p>
+              <div className="relative z-10 space-y-6">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-mono font-bold text-spring uppercase tracking-wider bg-white/10 px-3 py-1 rounded-full">
+                    Kano 2026
+                  </span>
+                  <span className="text-xs text-white/60 font-mono">
+                    RC: {eventConfig.rcNumber}
+                  </span>
+                </div>
 
-          <p className="type-body text-navy/70 text-sm sm:text-base max-w-2xl mx-auto mt-5 leading-relaxed">
-            This year’s theme, <strong className="text-pine font-semibold">&ldquo;Roots &amp; Vectors: Shaping the Future of Arewa Design,&rdquo;</strong> explores the powerful intersection of rich cultural heritage and modern digital innovation. We examine how Northern designers can honor traditional visual languages while leveraging cutting-edge design tools, strategic thinking, and artificial intelligence to compete at a global scale.
-          </p>
+                {/* Official Theme Artwork Lockup from PDF */}
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xs flex items-center justify-center">
+                  <Image
+                    src="/images/pdf_extracted/summit_theme_lockup.png"
+                    alt="Roots & Vectors — Shaping the Future of Arewa Design"
+                    width={400}
+                    height={156}
+                    className="w-full h-auto object-contain max-h-24 brightness-110"
+                  />
+                </div>
+
+                {/* Editorial Quote */}
+                <div className="space-y-2 border-l-2 border-spring pl-4">
+                  <p className="text-sm sm:text-base text-white/90 font-medium italic leading-relaxed">
+                    &ldquo;Where rich cultural heritage and modern design innovation power sustainable economic growth.&rdquo;
+                  </p>
+                  <p className="text-xs text-spring font-bold tracking-wide">
+                    Executive Committee, Northern Creative Designers
+                  </p>
+                </div>
+
+                <div className="pt-2 flex items-center justify-between text-xs text-white/70 border-t border-white/10">
+                  <span>19th December, 2026</span>
+                  <span className="font-bold text-white">Annual Summit 2.0</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* 2. Chowdeck-Style Interactive "What's on Deck?" Vertical Switcher */}
-        <div className="mb-24 p-8 sm:p-12 md:p-16 rounded-[2.5rem] bg-[#FAFAF8] border border-neutral-border shadow-sm">
+        <div className="mb-24 md:mb-32 p-8 sm:p-12 md:p-16 rounded-[2.5rem] bg-[#FAFAF8] border border-neutral-border shadow-sm">
           <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
             <span className="text-xs font-extrabold text-tangerine uppercase tracking-wider px-3.5 py-1 rounded-full bg-tangerine/10">
               Interactive Explorer
             </span>
-            <h3 className="type-heading text-pine mt-3">
+            <h3 className="type-heading text-pine mt-3 font-black">
               What&apos;s on Deck for You?
             </h3>
             <p className="type-body text-navy/70 text-sm sm:text-base mt-2">
@@ -236,10 +316,10 @@ export function SummitIntroSection() {
           </div>
         </div>
 
-        {/* 3. Vision & Mission Statement (Adapted from PDF Page 04 with Chunky Rounded Style) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+        {/* 3. Vision & Mission Statement: Creative Side-by-Side Duo */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24 md:mb-32">
           {/* Vision Card */}
-          <div className="p-8 sm:p-12 rounded-[2rem] bg-pine text-white relative overflow-hidden flex flex-col justify-between shadow-md hover:-translate-y-1.5 transition-transform duration-300">
+          <div className="p-8 sm:p-12 rounded-[2.5rem] bg-pine text-white relative overflow-hidden flex flex-col justify-between shadow-lg hover:-translate-y-1.5 transition-transform duration-300">
             <div className="relative z-10">
               <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center mb-6">
                 <Eye className="w-7 h-7 text-spring" />
@@ -247,7 +327,7 @@ export function SummitIntroSection() {
               <span className="text-spring text-xs font-bold uppercase tracking-wider">
                 Strategic Horizon
               </span>
-              <h3 className="type-subheading text-white text-2xl sm:text-3xl mt-1 mb-4 font-extrabold">
+              <h3 className="type-subheading text-white text-2xl sm:text-3xl mt-1 mb-4 font-black">
                 {visionAndMission.vision.title}
               </h3>
               <p className="text-white/85 text-base sm:text-lg leading-relaxed font-normal">
@@ -261,7 +341,7 @@ export function SummitIntroSection() {
           </div>
 
           {/* Mission Card */}
-          <div className="p-8 sm:p-12 rounded-[2rem] bg-[#FAFAF8] border-2 border-neutral-border text-navy relative overflow-hidden flex flex-col justify-between shadow-sm hover:-translate-y-1.5 transition-transform duration-300">
+          <div className="p-8 sm:p-12 rounded-[2.5rem] bg-[#FAFAF8] border-2 border-neutral-border text-navy relative overflow-hidden flex flex-col justify-between shadow-sm hover:-translate-y-1.5 transition-transform duration-300">
             <div className="relative z-10">
               <div className="w-14 h-14 rounded-2xl bg-pine/5 border border-pine/10 flex items-center justify-center mb-6">
                 <Target className="w-7 h-7 text-tangerine" />
@@ -269,7 +349,7 @@ export function SummitIntroSection() {
               <span className="text-tangerine text-xs font-bold uppercase tracking-wider">
                 Execution Mandate
               </span>
-              <h3 className="type-subheading text-pine text-2xl sm:text-3xl mt-1 mb-4 font-extrabold">
+              <h3 className="type-subheading text-pine text-2xl sm:text-3xl mt-1 mb-4 font-black">
                 {visionAndMission.mission.title}
               </h3>
               <p className="text-navy/80 text-base sm:text-lg leading-relaxed font-normal">
@@ -283,13 +363,13 @@ export function SummitIntroSection() {
           </div>
         </div>
 
-        {/* 4. Core Objectives (Adapted from PDF Page 05 with Hover Lift) */}
-        <div className="mb-24">
+        {/* 4. Core Objectives: Bento Grid with Hover Elevation */}
+        <div className="mb-24 md:mb-32">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <span className="text-xs font-bold text-pine uppercase tracking-wider px-3.5 py-1.5 rounded-full bg-pine/5 border border-pine/10">
               Foundational Pillars
             </span>
-            <h3 className="type-heading text-pine mt-3 font-extrabold">
+            <h3 className="type-heading text-pine mt-3 font-black">
               Core Objectives
             </h3>
             <p className="type-body text-navy/70 text-sm sm:text-base mt-2">
@@ -301,7 +381,7 @@ export function SummitIntroSection() {
             {coreObjectives.map((obj) => (
               <div
                 key={obj.id}
-                className="p-8 rounded-3xl bg-white border border-neutral-border hover:border-spring hover:-translate-y-2 hover:shadow-lg transition-all duration-300 flex flex-col justify-between group"
+                className="p-8 rounded-[2rem] bg-white border border-neutral-border hover:border-spring hover:-translate-y-2 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
               >
                 <div>
                   <div className="w-14 h-14 rounded-2xl bg-pine/5 border border-pine/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-pine group-hover:text-spring transition-all duration-300">
@@ -320,12 +400,12 @@ export function SummitIntroSection() {
         </div>
 
         {/* 5. What to Expect (Adapted from PDF Page 06) */}
-        <div className="mb-24 p-8 sm:p-12 md:p-14 rounded-[2.5rem] bg-[#FAFAF8] border border-neutral-border">
+        <div className="mb-24 md:mb-32 p-8 sm:p-12 md:p-14 rounded-[2.5rem] bg-[#FAFAF8] border border-neutral-border">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-xs font-bold text-spring uppercase tracking-wider px-3.5 py-1 rounded-full bg-pine text-white">
               Summit Experience
             </span>
-            <h3 className="type-heading text-pine mt-3 font-extrabold">
+            <h3 className="type-heading text-pine mt-3 font-black">
               What to Expect
             </h3>
             <p className="type-body text-navy/70 text-sm mt-2">
@@ -360,8 +440,8 @@ export function SummitIntroSection() {
           </div>
         </div>
 
-        {/* 6. Who Should Attend? (Chowdeck Pill Badges) */}
-        <div className="p-8 sm:p-12 md:p-14 rounded-[2.5rem] bg-pine text-white shadow-xl relative overflow-hidden">
+        {/* 6. Who Should Attend? (Chowdeck Pill Cloud) */}
+        <div className="p-8 sm:p-12 md:p-16 rounded-[2.5rem] bg-pine text-white shadow-xl relative overflow-hidden">
           <div className="max-w-3xl mb-8 relative z-10">
             <span className="text-spring text-xs font-bold uppercase tracking-wider">
               Ecosystem Cohort
