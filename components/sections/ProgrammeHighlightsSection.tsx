@@ -35,7 +35,7 @@ const programCards: ProgramItem[] = [
   {
     id: "business-career",
     category: "Business & Career",
-    headline: "Business & Career\nClient Connect Corner",
+    headline: "Client Connect Corner",
     details:
       "Curated face-to-face dealmaking between business founders seeking top regional talent and practicing designers.",
     bgClass: "bg-[#071135]",
@@ -46,17 +46,17 @@ const programCards: ProgramItem[] = [
     highlights: [
       "Private 1-on-1 dealmaking booths with verified founders",
       "Portfolio reviews with senior creative directors",
-      "Exclusive Marketplace commercial discounts",
+      "Direct talent-founder business mandates & contracts",
     ],
-    ctaLabel: "Client Booths",
-    ctaHref: "/exhibitors",
+    ctaLabel: "Connect With Founders",
+    ctaHref: "/programme",
   },
 
   // 2. Community & Vibe (Deep Pine Green)
   {
     id: "community-vibe",
     category: "Community & Vibe",
-    headline: "Community & Vibe\nDesign Exhibition Wall",
+    headline: "Design Exhibition Wall",
     details:
       "Physical exhibition gallery showcasing premier Arewa graphic identity, typography, and community showcases.",
     bgClass: "bg-[#013811]",
@@ -77,7 +77,7 @@ const programCards: ProgramItem[] = [
   {
     id: "award-presentation",
     category: "Recognition & Honors",
-    headline: "Award Presentation\nCategories",
+    headline: "Award Categories",
     details:
       "Summit 2.0 trophy honors celebrating exceptional craftsmanship across brand identity, digital product, and cultural design.",
     bgClass: "bg-[#F39200]",
@@ -121,19 +121,19 @@ export function ProgrammeHighlightsSection() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <Button
               href="/programme"
               variant="outline"
-              size="lg"
+              size="md"
               className="hover:scale-105 active:scale-95 transition-all shadow-xs"
             >
               Full Schedule
             </Button>
             <Button
               href="/register"
-              variant="primary"
-              size="lg"
+              variant="secondary"
+              size="md"
               className="hover:scale-105 active:scale-95 transition-all shadow-md"
             >
               Get Delegate Pass
@@ -222,36 +222,50 @@ export function ProgrammeHighlightsSection() {
             </div>
 
             {/* Selected Card Interactive Detail Callout */}
-            <div className="mt-12 p-6 sm:p-8 rounded-[2rem] bg-white/95 backdrop-blur-xs border border-neutral-border shadow-lg max-w-5xl mx-auto">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-neutral-border/60">
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-xl ${activeCard.bgClass} flex items-center justify-center text-white font-bold text-xs`}>
+            <div className="mt-12 p-6 sm:p-8 rounded-[2rem] bg-white border border-neutral-border/80 shadow-xl max-w-5xl mx-auto">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-neutral-border/60">
+                <div className="flex items-center gap-3.5">
+                  <div className={`w-11 h-11 rounded-2xl ${activeCard.bgClass} flex items-center justify-center text-white font-black text-sm shadow-sm flex-shrink-0`}>
                     ✦
                   </div>
                   <div>
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-pine/70 bg-pine/5 px-2.5 py-0.5 rounded-full border border-pine/10">
-                      {activeCard.category}
-                    </span>
-                    <h4 className="text-xl sm:text-2xl font-black text-pine mt-0.5 tracking-tight">
-                      {activeCard.headline.replace("\n", " — ")}
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-pine/80 bg-pine/5 px-2.5 py-0.5 rounded-full border border-pine/10">
+                        {activeCard.category}
+                      </span>
+                    </div>
+                    <h4 className="text-xl sm:text-2xl font-black text-pine mt-1 tracking-tight">
+                      {activeCard.headline}
                     </h4>
                   </div>
                 </div>
 
                 <Link
                   href={activeCard.ctaHref}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-pine hover:bg-[#024a18] text-white text-xs font-extrabold tracking-wider uppercase hover:scale-105 active:scale-95 transition-all shadow-sm flex-shrink-0"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-pine hover:bg-[#024a18] text-white text-xs font-bold uppercase tracking-wider hover:scale-105 active:scale-95 transition-all shadow-sm w-fit flex-shrink-0"
                 >
                   <span>{activeCard.ctaLabel}</span>
-                  <ArrowRight className="w-4 h-4 text-spring" />
+                  <ArrowRight className="w-3.5 h-3.5 text-spring" />
                 </Link>
               </div>
 
-              <div className="pt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="pt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                 {activeCard.highlights.map((item, i) => (
-                  <div key={i} className="flex items-start gap-2 text-xs sm:text-sm text-navy/80">
-                    <CheckCircle2 className="w-4 h-4 text-spring flex-shrink-0 mt-0.5" />
-                    <span className="leading-snug">{item}</span>
+                  <div
+                    key={i}
+                    className="p-4 rounded-xl bg-[#FAFAF8] border border-neutral-border/60 flex items-start gap-3 hover:border-spring/50 transition-colors"
+                  >
+                    <div className="w-6 h-6 rounded-full bg-spring/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-pine/50 block mb-1">
+                        Highlight 0{i + 1}
+                      </span>
+                      <p className="text-xs sm:text-sm font-medium text-navy/85 leading-snug">
+                        {item}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>

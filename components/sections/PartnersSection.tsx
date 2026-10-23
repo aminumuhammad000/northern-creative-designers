@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   CheckCircle2,
-  PieChart,
   Building2,
   ArrowRight,
   ArrowDownRight,
@@ -17,7 +16,6 @@ import {
   eventConfig,
   sponsorshipTiers,
   customizedPartnerships,
-  budgetBreakdown,
 } from "@/config/event";
 
 const tierCards = [
@@ -85,16 +83,6 @@ const tierCards = [
 
 export function PartnersSection() {
   const [activeTier, setActiveTier] = useState(tierCards[0]);
-  const [activeBudgetIdx, setActiveBudgetIdx] = useState<number>(0);
-
-  const budgetColors = [
-    "#00CC67", // Venue & Tech: 30%
-    "#F39200", // Branding & Merch: 20%
-    "#453478", // Awards & Prizes: 20%
-    "#013811", // Logistics: 10%
-    "#071135", // Hospitality: 10%
-    "#0284C7", // Media & Marketing: 10%
-  ];
 
   const inKindFlipStyles = [
     {
@@ -118,21 +106,6 @@ export function PartnersSection() {
       badge: "Hospitality & Networking",
     },
   ];
-
-  // Donut chart calculations: Radius = 85, Circumference = 534.07
-  const circumference = 534.07;
-  let cumulativePercent = 0;
-  const budgetSegments = budgetBreakdown.map((item, idx) => {
-    const strokeDasharray = `${(item.allocation / 100) * circumference} ${circumference - (item.allocation / 100) * circumference}`;
-    const strokeDashoffset = -1 * (cumulativePercent / 100) * circumference;
-    cumulativePercent += item.allocation;
-    return {
-      ...item,
-      color: budgetColors[idx % budgetColors.length],
-      strokeDasharray,
-      strokeDashoffset,
-    };
-  });
 
   return (
     <section id="partners" className="w-full py-20 md:py-32 bg-white border-b border-neutral-border relative overflow-hidden">
@@ -371,169 +344,6 @@ export function PartnersSection() {
                 </div>
               );
             })}
-          </div>
-        </div>
-
-        {/* 3. Budget Breakdown & Financial Justification: Professional Interactive Donut/Pie Chart */}
-        <div className="mb-24 p-8 sm:p-12 md:p-14 rounded-[2.5rem] bg-[#F8FFF8] bg-[radial-gradient(#00CC67_1.75px,transparent_1.75px)] [background-size:20px_20px] border border-neutral-border/70 shadow-2xl">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <div className="space-y-2 max-w-2xl">
-              <h3 className="text-3xl sm:text-4xl font-black text-pine tracking-tight">
-                Budget Breakdown &amp; Financial Justification
-              </h3>
-              <p className="type-body text-navy/70 text-sm sm:text-base leading-relaxed">
-                Estimated event budget allocation ensuring disciplined stewardship of sponsor funds. Hover or click slices in the chart to inspect itemized deliverables.
-              </p>
-            </div>
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-pine bg-white px-4 py-2.5 rounded-full border border-neutral-border shadow-xs">
-              <PieChart className="w-4 h-4 text-spring" />
-              <span>100% Accountable Allocation</span>
-            </div>
-          </div>
-
-          {/* Interactive Chart Layout: Left Donut Chart, Right Itemized Legend Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            
-            {/* Left Side: Interactive SVG Donut / Pie Chart */}
-            <div className="lg:col-span-5 flex flex-col items-center justify-center p-6 sm:p-8 rounded-3xl bg-white border border-neutral-border shadow-lg">
-              <div className="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
-                <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 280 280">
-                  {/* Background Track Circle */}
-                  <circle
-                    cx="140"
-                    cy="140"
-                    r="85"
-                    className="stroke-neutral-100"
-                    strokeWidth="36"
-                    fill="transparent"
-                  />
-                  {/* Pie / Donut Segments */}
-                  {budgetSegments.map((segment, idx) => {
-                    const isActive = activeBudgetIdx === idx;
-                    return (
-                      <circle
-                        key={idx}
-                        cx="140"
-                        cy="140"
-                        r="85"
-                        stroke={segment.color}
-                        strokeWidth={isActive ? "42" : "36"}
-                        strokeDasharray={segment.strokeDasharray}
-                        strokeDashoffset={segment.strokeDashoffset}
-                        fill="transparent"
-                        className="transition-all duration-300 cursor-pointer hover:opacity-90"
-                        onMouseEnter={() => setActiveBudgetIdx(idx)}
-                        onClick={() => setActiveBudgetIdx(idx)}
-                      />
-                    );
-                  })}
-                </svg>
-
-                {/* Donut Center Display */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none p-6">
-                  <span className="text-3xl sm:text-4xl font-black text-pine tracking-tight font-mono">
-                    {budgetBreakdown[activeBudgetIdx].allocation}%
-                  </span>
-                  <span className="text-xs font-bold text-navy/80 uppercase tracking-wider mt-1 line-clamp-1">
-                    {budgetBreakdown[activeBudgetIdx].category}
-                  </span>
-                  <span className="text-[10px] font-mono text-pine/60 mt-0.5">
-                    Verified Allocation
-                  </span>
-                </div>
-              </div>
-
-              {/* Quick Status Pill */}
-              <div className="mt-4 inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-pine/5 text-pine text-xs font-mono font-semibold border border-pine/10">
-                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: budgetColors[activeBudgetIdx] }} />
-                <span>Selected: {budgetBreakdown[activeBudgetIdx].category}</span>
-              </div>
-            </div>
-
-            {/* Right Side: Itemized Pillars List synced with Chart */}
-            <div className="lg:col-span-7 space-y-3.5">
-              {budgetBreakdown.map((item, idx) => {
-                const isActive = activeBudgetIdx === idx;
-                const color = budgetColors[idx % budgetColors.length];
-                return (
-                  <div
-                    key={idx}
-                    onMouseEnter={() => setActiveBudgetIdx(idx)}
-                    onClick={() => setActiveBudgetIdx(idx)}
-                    className={`
-                      p-4 sm:p-5 rounded-2xl border transition-all duration-200 cursor-pointer
-                      ${
-                        isActive
-                          ? "bg-white border-spring shadow-md -translate-x-1"
-                          : "bg-white/70 border-neutral-border hover:bg-white hover:border-pine/30"
-                      }
-                    `}
-                  >
-                    <div className="flex items-center justify-between gap-3 mb-1.5">
-                      <div className="flex items-center gap-2.5">
-                        <span
-                          className="w-3 h-3 rounded-full flex-shrink-0 transition-transform"
-                          style={{
-                            backgroundColor: color,
-                            transform: isActive ? "scale(1.3)" : "scale(1)",
-                          }}
-                        />
-                        <h4 className="text-sm sm:text-base font-black text-pine tracking-tight">
-                          {item.category}
-                        </h4>
-                      </div>
-                      
-                      <span
-                        className="px-2.5 py-0.5 rounded-full text-xs font-mono font-black text-white"
-                        style={{ backgroundColor: color }}
-                      >
-                        {item.allocation}%
-                      </span>
-                    </div>
-
-                    <p className="text-xs sm:text-sm text-navy/70 leading-relaxed pl-5 font-normal">
-                      {item.deliverables}
-                    </p>
-
-                    {/* Proportional Mini Bar */}
-                    <div className="mt-2.5 pl-5">
-                      <div className="w-full bg-neutral-100 rounded-full h-1.5 overflow-hidden">
-                        <div
-                          className="h-1.5 rounded-full transition-all duration-500"
-                          style={{
-                            width: `${item.allocation * 3}%`,
-                            backgroundColor: color,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-          </div>
-
-          {/* Full Segmented Budget Stream Bar at Bottom */}
-          <div className="mt-10 pt-6 border-t border-neutral-border/60">
-            <div className="flex items-center justify-between text-xs font-mono text-navy/60 mb-2 font-medium">
-              <span>Overall Capital Distribution</span>
-              <span className="font-bold text-pine font-mono">100% Tracked Stewardship</span>
-            </div>
-            <div className="w-full h-3 rounded-full overflow-hidden flex shadow-xs">
-              {budgetBreakdown.map((item, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    width: `${item.allocation}%`,
-                    backgroundColor: budgetColors[idx % budgetColors.length],
-                  }}
-                  className="h-full hover:opacity-80 transition-opacity cursor-pointer"
-                  title={`${item.category}: ${item.allocation}%`}
-                  onMouseEnter={() => setActiveBudgetIdx(idx)}
-                />
-              ))}
-            </div>
           </div>
         </div>
 

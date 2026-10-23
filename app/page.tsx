@@ -6,7 +6,6 @@ import { WhoShouldAttendSection } from "@/components/sections/WhoShouldAttendSec
 import { ProgrammeHighlightsSection } from "@/components/sections/ProgrammeHighlightsSection";
 import { SpeakersSection } from "@/components/sections/SpeakersSection";
 import { HackathonSection } from "@/components/sections/HackathonSection";
-import { ExhibitorSection } from "@/components/sections/ExhibitorSection";
 import { CommitmentSection } from "@/components/sections/CommitmentSection";
 import { PartnersSection } from "@/components/sections/PartnersSection";
 import { RegistrationCTASection } from "@/components/sections/RegistrationCTASection";
@@ -53,16 +52,13 @@ export default function HomePage() {
       {/* 8. Live Hackathon & 2-Hour Sprint Feature */}
       <HackathonSection />
 
-      {/* 9. Exhibitors, Vendors & Summit Marketplace */}
-      <ExhibitorSection />
-
-      {/* 10. Commitment in Action & Verified Past Impact */}
+      {/* 9. Commitment in Action & Verified Past Impact */}
       <CommitmentSection />
 
-      {/* 11. Partners, Sponsorship Packages & 100% Budget Transparency */}
+      {/* 10. Partners & Sponsorship Packages */}
       <PartnersSection />
 
-      {/* 12. High-Conversion Registration CTA with Official QR Verification */}
+      {/* 11. High-Conversion Registration CTA */}
       <RegistrationCTASection />
     </main>
   );
