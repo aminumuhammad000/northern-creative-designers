@@ -33,23 +33,28 @@ export function SiteHeader() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Actual Official Logo: Single clean horizontal lockup */}
-        <Link
-          href="/"
-          className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-spring rounded-md py-1 transition-opacity duration-200 hover:opacity-90"
-          aria-label="Northern Creative Designers Summit Home"
-        >
-          <div className="relative h-8 sm:h-9 w-auto flex items-center">
-            <Image
-              src="/images/brand/logo-header.png"
-              alt="Northern Creative Designers"
-              width={230}
-              height={78}
-              className="h-8 sm:h-9 w-auto object-contain"
-              priority
-            />
-          </div>
-        </Link>
+        {/* Actual Official Logo: Single clean horizontal lockup + RC Badge */}
+        <div className="flex items-center gap-3">
+          <Link
+            href="/"
+            className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-spring rounded-md py-1 transition-opacity duration-200 hover:opacity-90"
+            aria-label="Northern Creative Designers Summit Home"
+          >
+            <div className="relative h-8 sm:h-9 w-auto flex items-center">
+              <Image
+                src="/images/brand/logo-header.png"
+                alt="Northern Creative Designers"
+                width={230}
+                height={78}
+                className="h-8 sm:h-9 w-auto object-contain"
+                priority
+              />
+            </div>
+          </Link>
+          <span className="hidden xl:inline-flex items-center text-[10px] font-mono tracking-wider text-pine/70 bg-pine/5 border border-pine/10 px-2.5 py-0.5 rounded-full">
+            RC: 9930022
+          </span>
+        </div>
 
         {/* Desktop Minimalist Navigation with Micro-Interactions */}
         <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
@@ -78,70 +83,80 @@ export function SiteHeader() {
           })}
         </nav>
 
-        {/* Right CTA Area: Clean, professional, subtle */}
-        <div className="hidden sm:flex items-center gap-4">
-          <span className="hidden xl:inline-block text-[11px] font-medium text-navy/50 tracking-wider uppercase">
-            19 Dec 2026 • Kano
-          </span>
-
+        {/* Minimalist Action CTA */}
+        <div className="hidden lg:flex items-center space-x-3">
+          <Link
+            href="/NCD Summit 26.pdf"
+            className="inline-flex items-center justify-center px-4 py-2 rounded-full border border-pine/20 text-pine text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:bg-pine hover:text-white"
+          >
+            Brochure
+          </Link>
           <Link
             href="/register"
-            className="inline-flex items-center justify-center px-5 py-2 rounded-full bg-spring text-navy text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:bg-[#02b25b] hover:shadow-sm active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-spring focus-visible:ring-offset-2"
+            className="inline-flex items-center justify-center px-5 py-2 rounded-full bg-spring text-navy text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:bg-[#02b25b] hover:shadow-sm active:scale-98 focus:outline-none focus-visible:ring-2 focus-visible:ring-spring focus-visible:ring-offset-2"
           >
-            Register to Attend
+            Register
           </Link>
         </div>
 
-        {/* Mobile Hamburger Menu Toggle */}
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-2 rounded-md text-pine hover:bg-neutral-sand transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-spring"
-          aria-label="Toggle navigation menu"
-          aria-expanded={mobileMenuOpen}
-        >
-          {mobileMenuOpen ? (
-            <X className="w-5 h-5 text-pine transition-transform duration-200 rotate-90" />
-          ) : (
-            <Menu className="w-5 h-5 text-pine transition-transform duration-200" />
-          )}
-        </button>
+        {/* Mobile menu button */}
+        <div className="flex lg:hidden items-center">
+          <button
+            type="button"
+            className="p-2 rounded-lg text-pine hover:bg-pine/5 focus:outline-none focus:ring-2 focus:ring-spring"
+            aria-label="Toggle navigation menu"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? (
+              <X className="w-6 h-6 text-pine" />
+            ) : (
+              <Menu className="w-6 h-6 text-pine" />
+            )}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile menu dropdown */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white/98 backdrop-blur-md border-b border-neutral-border px-5 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2 duration-200">
-          <div className="flex flex-col space-y-1">
+        <div className="lg:hidden border-b border-neutral-border bg-white px-4 pt-4 pb-6 space-y-3 animate-in fade-in duration-200">
+          <div className="flex items-center justify-between pb-3 border-b border-neutral-border/60">
+            <span className="text-xs font-bold text-pine uppercase tracking-wider">
+              Navigation
+            </span>
+            <span className="text-[10px] font-mono text-pine/70 bg-pine/5 px-2 py-0.5 rounded-full border border-pine/10">
+              RC: 9930022
+            </span>
+          </div>
+          <nav className="flex flex-col space-y-1">
             {mainNavItems.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-sm font-medium py-2.5 px-3 rounded-lg transition-colors ${
+                  className={`px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     isActive
-                      ? "text-pine font-semibold bg-spring/10"
-                      : "text-navy/80 hover:text-pine hover:bg-neutral-sand"
+                      ? "bg-pine/5 text-pine font-semibold"
+                      : "text-navy/80 hover:bg-pine/5 hover:text-pine"
                   }`}
                 >
                   {item.title}
                 </Link>
               );
             })}
-          </div>
-
-          <div className="pt-3 border-t border-neutral-border flex flex-col gap-2">
+          </nav>
+          <div className="pt-4 border-t border-neutral-border flex flex-col space-y-2">
             <Link
-              href="/register"
-              className="w-full text-center py-3 rounded-xl bg-spring text-navy font-semibold text-xs uppercase tracking-wider shadow-xs hover:bg-[#02b25b] transition-colors"
+              href="/NCD Summit 26.pdf"
+              className="w-full inline-flex items-center justify-center px-4 py-3 rounded-full border border-pine/30 text-pine text-xs font-semibold uppercase tracking-wider hover:bg-pine hover:text-white transition-colors"
             >
-              Register to Attend
+              Download PDF Brochure
             </Link>
             <Link
-              href="/exhibitors/apply"
-              className="w-full text-center py-2.5 rounded-xl border border-neutral-border text-pine text-xs font-medium hover:bg-neutral-sand transition-colors"
+              href="/register"
+              className="w-full inline-flex items-center justify-center px-4 py-3 rounded-full bg-spring text-navy text-xs font-semibold uppercase tracking-wider hover:bg-[#02b25b] transition-colors"
             >
-              Apply for Exhibition Booth
+              Register to Attend
             </Link>
           </div>
         </div>

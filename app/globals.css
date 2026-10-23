@@ -13,12 +13,13 @@
   --color-neutral-sand: #fbfbf9;
   --color-neutral-border: #e8eae8;
 
-  --font-cabinet: var(--font-cabinet), system-ui, -apple-system, sans-serif;
-  --font-inter: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-cabinet: var(--font-cabinet), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-inter: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 :root {
-  /* Brand Exact Color Codes from palette.json / palette.css */
+  /* Brand Exact Color Codes from palette.json / palette.css / NCD Summit 26.pdf */
   --spring: #03d06b;
   --pine: #013811;
   --tangerine: #ff8500;
@@ -36,60 +37,89 @@
   --foreground: #140949;
 }
 
+html {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
   font-size: 16px;
-  line-height: 1.4;
-  letter-spacing: 0;
+  line-height: 1.6;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* Headings use Cabinet Grotesk */
+/* Headings use Cabinet Grotesk with anti-aliasing */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-cabinet), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* Official Typography Roles as defined in northern-creative-designers-brand.md */
+/* Typography Scale adapted to NCD Summit 26 Editorial Standard */
 .type-display {
   font-family: var(--font-cabinet), system-ui, sans-serif;
-  font-size: clamp(2.5rem, 5vw, 4rem); /* 64px max */
-  line-height: 1;
-  letter-spacing: -0.025em; /* -2.5% */
-  font-weight: 500;
+  font-size: clamp(2.25rem, 5vw, 3.85rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 .type-heading {
   font-family: var(--font-cabinet), system-ui, sans-serif;
-  font-size: clamp(1.875rem, 3.5vw, 2.5rem); /* 40px max */
-  line-height: 1.1;
-  letter-spacing: -0.015em; /* -1.5% */
-  font-weight: 500;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 .type-subheading {
   font-family: var(--font-cabinet), system-ui, sans-serif;
-  font-size: 1.5rem; /* 24px */
-  line-height: 1.25;
-  letter-spacing: 0;
-  font-weight: 500;
+  font-size: 1.35rem;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  font-weight: 600;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 .type-body {
-  font-family: var(--font-inter), Inter, system-ui, sans-serif;
-  font-size: 1rem; /* 16px */
-  line-height: 1.4;
-  letter-spacing: 0;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65;
+  letter-spacing: -0.005em;
   font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 .type-caption {
-  font-family: var(--font-inter), Inter, system-ui, sans-serif;
-  font-size: 0.75rem; /* 12px */
-  line-height: 1.4;
-  letter-spacing: 0.01em; /* 1% */
-  font-weight: 400;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Custom focus styles adhering to WCAG 2.2 AA */
@@ -98,17 +128,21 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   outline-offset: 2px;
 }
 
-/* Custom scrollbar */
+/* Custom subtle scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
+
 ::-webkit-scrollbar-track {
-  background: #f7faf8;
+  background: #f1f3f1;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #01381140;
+  background: #013811;
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #01381180;
+  background: #02571a;
 }

@@ -7,8 +7,8 @@ import {
   Users2,
   Clock,
   CheckCircle2,
-  Lock,
   ArrowRight,
+  Sparkles,
 } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { landingPageContent } from "@/content/landing-page";
@@ -18,22 +18,22 @@ export function HackathonSection() {
   const { hackathon } = landingPageContent;
 
   return (
-    <section id="hackathon" className="py-20 bg-pine text-white border-b border-spring/20">
+    <section id="hackathon" className="py-20 md:py-28 bg-pine text-white border-b border-spring/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16">
           <SectionHeading
             theme="pine"
-            tag={hackathon.tag}
-            title={hackathon.title}
-            description={hackathon.description}
+            tag="2-Hour Live Design Sprint"
+            title="Live Design Hackathon & Audience Voting"
+            description="Experience high-intensity real-time creative problem-solving. Finalists pitch live on stage, with judges and the registered audience voting in real time."
           />
           <div className="flex flex-wrap items-center gap-3">
             <Button
-              href={hackathon.ctaLink}
+              href="/hackathon/register"
               variant="primary"
               size="md"
             >
-              {hackathon.ctaText}
+              Enter Hackathon
             </Button>
             <Button
               href="/voting-rules"
@@ -48,19 +48,32 @@ export function HackathonSection() {
 
         {/* 3 Challenge Tracks */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {hackathon.tracks.map((track, idx) => (
+          {[
+            {
+              title: "Arewa Cultural Identity & Systems",
+              description: "Reimagining traditional Hausa, Kanuri, and Nupe geometric motifs and calligraphy into scalable contemporary digital brand identities.",
+            },
+            {
+              title: "Digital Product & Civic Tech UX",
+              description: "Designing hyper-functional, culturally grounded mobile interfaces and web experiences solving real socio-economic problems in the North.",
+            },
+            {
+              title: "AI-Augmented Visual Craft",
+              description: "Leveraging generative tools and custom vector models to produce world-class motion graphics, 3D assets, and visual storytelling.",
+            },
+          ].map((track, idx) => (
             <div
               key={idx}
-              className="p-6 rounded-xl bg-white/5 border border-white/15 hover:border-spring/50 transition-colors flex flex-col justify-between"
+              className="p-7 rounded-2xl bg-white/5 border border-white/15 hover:border-spring/50 transition-colors flex flex-col justify-between"
             >
               <div>
-                <div className="w-10 h-10 rounded-lg bg-spring/20 text-spring flex items-center justify-center font-bold text-sm mb-4">
+                <div className="w-10 h-10 rounded-xl bg-spring/20 text-spring flex items-center justify-center font-bold text-sm mb-4">
                   0{idx + 1}
                 </div>
                 <h4 className="text-lg font-bold text-white mb-2 leading-snug">
                   {track.title}
                 </h4>
-                <p className="text-white/80 text-sm leading-relaxed">
+                <p className="text-white/80 text-xs sm:text-sm leading-relaxed">
                   {track.description}
                 </p>
               </div>
@@ -68,90 +81,77 @@ export function HackathonSection() {
           ))}
         </div>
 
-        {/* Hackathon Workflow Stages: Clear distinction between Registration, Submission, Judging & Voting */}
-        <div className="rounded-2xl bg-white/10 border border-white/15 p-6 sm:p-8">
-          <h4 className="text-base font-semibold text-spring uppercase tracking-wider mb-6 flex items-center gap-2">
+        {/* Hackathon Progression & Voting Workflow */}
+        <div className="rounded-3xl bg-white/10 border border-white/15 p-6 sm:p-10">
+          <h4 className="text-sm font-semibold text-spring uppercase tracking-wider mb-6 flex items-center gap-2">
             <Clock className="w-4 h-4 text-spring" />
-            Hackathon Progression & Public Voting Status
+            Hackathon Progression &amp; Live Audience Voting
           </h4>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Step 1: Registration */}
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2">
+            <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-spring">Phase 01</span>
+                <span className="text-xs font-semibold text-spring font-mono">Phase 01</span>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-spring text-navy">
                   ACTIVE
                 </span>
               </div>
-              <h5 className="font-bold text-white text-base">Participant Registration</h5>
-              <p className="text-xs text-white/75">
-                Register as an individual creator or form a multi-disciplinary team of up to 4.
+              <h5 className="font-bold text-white text-base">Registration</h5>
+              <p className="text-xs text-white/75 leading-relaxed">
+                Register individually or assemble a squad of up to 4 designers, developers, and visual storytellers.
               </p>
               <Link
                 href="/hackathon/register"
-                className="inline-flex items-center gap-1 text-xs text-spring font-medium hover:underline pt-2"
+                className="inline-flex items-center gap-1 text-xs text-spring font-semibold hover:underline pt-2"
               >
                 Apply to Compete <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
 
             {/* Step 2: Live Sprint */}
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2">
+            <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-white/60">Phase 02</span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-white/20 text-white/80">
-                  EVENT DAY
+                <span className="text-xs font-semibold text-tangerine font-mono">Phase 02</span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 text-white">
+                  19 DEC
                 </span>
               </div>
               <h5 className="font-bold text-white text-base">2-Hour Live Sprint</h5>
-              <p className="text-xs text-white/75">
-                Finalist teams build live at the summit hall in Kano under strict time conditions.
+              <p className="text-xs text-white/75 leading-relaxed">
+                Prompt revealed live at the summit hall. Teams build, refine, and package assets in real time.
               </p>
+              <span className="text-[11px] text-white/50 block pt-2">Hall Main Stage</span>
             </div>
 
-            {/* Step 3: Judging */}
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2">
+            {/* Step 3: Jury Evaluation */}
+            <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-white/60">Phase 03</span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-white/20 text-white/80">
-                  CRITERIA
+                <span className="text-xs font-semibold text-white/60 font-mono">Phase 03</span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 text-white">
+                  CURATED
                 </span>
               </div>
-              <h5 className="font-bold text-white text-base">Grand Jury Scoring</h5>
-              <p className="text-xs text-white/75">
-                Evaluated on cultural authenticity, problem-solution fit, and execution craft.
+              <h5 className="font-bold text-white text-base">Jury Scoring</h5>
+              <p className="text-xs text-white/75 leading-relaxed">
+                Industry judges evaluate submissions against cultural resonance, technical polish, and creative innovation.
               </p>
+              <span className="text-[11px] text-white/50 block pt-2">Rubric: Cultural + Technical</span>
             </div>
 
             {/* Step 4: Audience Voting */}
-            <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2">
+            <div className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-white/60">Phase 04</span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-white/20 text-white/80 flex items-center gap-1">
-                  <Lock className="w-2.5 h-2.5" /> OPENS ON STAGE
+                <span className="text-xs font-semibold text-spring font-mono">Phase 04</span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-spring/20 text-spring">
+                  INTERACTIVE
                 </span>
               </div>
-              <h5 className="font-bold text-white text-base">Audience Voting</h5>
-              <p className="text-xs text-white/75">
-                Live voting unlocks during final project pitches with verified anti-duplicate tokens.
+              <h5 className="font-bold text-white text-base">Live Audience Voting</h5>
+              <p className="text-xs text-white/75 leading-relaxed">
+                Verified attendees cast real-time digital votes via their summit badges to crown the People&apos;s Choice Champion.
               </p>
-              <span className="inline-block text-[11px] text-white/50 pt-2 italic">
-                Voting opens 19th Dec on stage
-              </span>
-            </div>
-          </div>
-
-          <div className="mt-6 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs text-white/70">
-            <div className="flex items-center gap-2">
-              <Trophy className="w-4 h-4 text-tangerine" />
-              <span>
-                Prizes: Cash awards, hardware tablets, subscriptions, and exhibition spotlight.
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Vote className="w-4 h-4 text-spring" />
-              <span>Real-time audience voting with anti-tampering verification.</span>
+              <span className="text-[11px] text-spring/80 block pt-2">Anti-tamper verified</span>
             </div>
           </div>
         </div>

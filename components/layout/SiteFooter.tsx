@@ -7,9 +7,10 @@ import {
   MapPin,
   ArrowUpRight,
   ShieldCheck,
-  Award,
+  FileText,
+  CreditCard,
 } from "lucide-react";
-import { siteConfig } from "@/config/site";
+import { eventConfig } from "@/config/event";
 import { footerNavItems } from "@/config/navigation";
 
 export function SiteFooter() {
@@ -40,28 +41,28 @@ export function SiteFooter() {
             <p className="text-white/80 text-sm leading-relaxed pr-4">
               The premier annual gathering for designers, strategists, developers,
               and visual storytellers across Northern Nigeria. Dedicated to
-              bridging indigenous heritage with cutting-edge digital craft.
+              bridging indigenous heritage with modern digital craft.
             </p>
 
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white/10 text-white/90 text-xs border border-white/10">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/90 text-xs border border-white/10">
               <ShieldCheck className="w-4 h-4 text-spring" />
-              <span>Registered Entity: RC 9930022</span>
+              <span className="font-mono">Registered Entity: {eventConfig.secretariat.rcNumber}</span>
             </div>
 
-            {/* Official Contact Details */}
-            <div className="space-y-2 pt-2 text-sm text-white/85">
+            {/* Official Secretariat Contacts directly from PDF */}
+            <div className="space-y-2.5 pt-2 text-xs sm:text-sm text-white/85">
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-spring flex-shrink-0" />
                 <a
-                  href={`mailto:${siteConfig.organization.email}`}
+                  href={`mailto:${eventConfig.secretariat.email}`}
                   className="hover:text-spring transition-colors"
                 >
-                  {siteConfig.organization.email}
+                  {eventConfig.secretariat.email}
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-spring flex-shrink-0" />
-                <span>{siteConfig.organization.phones.join(" • ")}</span>
+                <span>{eventConfig.secretariat.phones.join(" • ")}</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <MapPin className="w-4 h-4 text-spring flex-shrink-0" />
@@ -75,7 +76,7 @@ export function SiteFooter() {
             <h4 className="text-sm font-semibold text-spring uppercase tracking-wider mb-4">
               Summit
             </h4>
-            <ul className="space-y-2.5 text-sm">
+            <ul className="space-y-2.5 text-xs sm:text-sm">
               {footerNavItems.summit.map((item) => (
                 <li key={item.href}>
                   <Link
@@ -86,6 +87,17 @@ export function SiteFooter() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <a
+                  href="/NCD Summit 26.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-spring font-medium hover:underline inline-flex items-center gap-1.5 pt-1"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  PDF Brochure (17 pgs)
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -94,7 +106,7 @@ export function SiteFooter() {
             <h4 className="text-sm font-semibold text-spring uppercase tracking-wider mb-4">
               Participate
             </h4>
-            <ul className="space-y-2.5 text-sm">
+            <ul className="space-y-2.5 text-xs sm:text-sm">
               {footerNavItems.participate.map((item) => (
                 <li key={item.href}>
                   <Link
@@ -108,26 +120,22 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          {/* Summit Desk & Socials */}
-          <div className="space-y-6">
+          {/* Secretariat & Banking Channel */}
+          <div className="space-y-5">
             <div>
               <h4 className="text-sm font-semibold text-spring uppercase tracking-wider mb-3">
-                Secretariat Desk
+                Official Settlement
               </h4>
-              <div className="p-3.5 rounded-lg bg-navy/60 border border-white/10 space-y-2">
-                <p className="font-semibold text-white text-xs">
-                  Northern Creative Designers
+              <div className="p-3.5 rounded-xl bg-white/10 border border-white/10 space-y-1.5 text-xs">
+                <p className="font-semibold text-white">
+                  {eventConfig.banking.bankName}
                 </p>
-                <p className="text-xs text-white/70 leading-relaxed">
-                  Dedicated to empowering Northern Nigeria&apos;s creative talent and establishing world-class design standards.
+                <p className="text-white/70">
+                  Account: <span className="font-mono text-spring font-bold">{eventConfig.banking.accountNumber}</span>
                 </p>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-1 text-xs text-spring hover:underline font-medium pt-1"
-                >
-                  Contact Secretariat
-                  <ArrowUpRight className="w-3 h-3" />
-                </Link>
+                <p className="text-white/60 text-[11px]">
+                  {eventConfig.banking.accountName}
+                </p>
               </div>
             </div>
 
@@ -135,17 +143,14 @@ export function SiteFooter() {
               <h4 className="text-sm font-semibold text-spring uppercase tracking-wider mb-2">
                 Official Socials
               </h4>
-              <p className="text-xs text-white/75 mb-2">
-                Follow all live updates and announcements:
-              </p>
-              <div className="flex items-center gap-2 text-sm font-medium">
+              <div className="flex items-center gap-2">
                 <a
-                  href={siteConfig.organization.socialLinks.twitter}
+                  href={`https://twitter.com/${eventConfig.secretariat.handle.replace('@', '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-2.5 py-1 rounded bg-white/10 hover:bg-spring hover:text-navy transition-colors text-xs"
+                  className="px-3 py-1 rounded-full bg-white/10 hover:bg-spring hover:text-navy transition-colors text-xs font-medium"
                 >
-                  @northcdesigners
+                  {eventConfig.secretariat.handle}
                 </a>
               </div>
             </div>
