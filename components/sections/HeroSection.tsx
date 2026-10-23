@@ -35,16 +35,6 @@ export function HeroSection() {
       </div>
 
       <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 text-center relative z-10">
-        {/* Single, Sleek Unified Pill Badge */}
-        <div className="inline-flex items-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2 rounded-full bg-white border border-neutral-border/80 text-xs sm:text-sm font-semibold text-pine shadow-[0_2px_8px_rgba(1,56,17,0.04)] mb-8 transition-all hover:border-spring/50 hover:shadow-sm">
-          <span className="w-2 h-2 rounded-full bg-spring animate-pulse flex-shrink-0" />
-          <span className="font-bold tracking-wide text-pine">Northern Creative Designers</span>
-          <span className="text-neutral-border">•</span>
-          <span className="text-tangerine font-bold">Summit 2.0</span>
-          <span className="text-neutral-border hidden sm:inline">•</span>
-          <span className="text-navy/65 font-medium hidden sm:inline">19th Dec, 2026</span>
-        </div>
-
         {/* Buttery Smooth Display Typography */}
         <div className="space-y-3 max-w-5xl mx-auto">
           <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold text-pine tracking-[-0.025em] leading-[1.04]">

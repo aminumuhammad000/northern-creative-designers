@@ -36,9 +36,6 @@ export default function HackathonPage() {
         {/* Hackathon Summary Banner */}
         <section className="p-8 sm:p-10 rounded-2xl bg-pine text-white flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="space-y-4 max-w-2xl">
-            <span className="text-spring text-xs font-bold uppercase tracking-wider">
-              Building on 2025 Success
-            </span>
             <h2 className="text-3xl font-bold text-white">
               The 2-Hour Live Design Sprint
             </h2>
@@ -83,9 +80,6 @@ export default function HackathonPage() {
         {/* 3 Challenge Tracks */}
         <section className="space-y-6">
           <div>
-            <span className="text-xs font-bold text-spring uppercase tracking-wider">
-              Competition Focus
-            </span>
             <h3 className="text-2xl sm:text-3xl font-bold text-pine mt-1">
               Three Official Challenge Tracks
             </h3>

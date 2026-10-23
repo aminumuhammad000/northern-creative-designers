@@ -34,9 +34,6 @@ export default function PartnersPage() {
         {/* Sponsorship Tiers */}
         <section id="sponsor-tiers" className="space-y-8">
           <div>
-            <span className="text-xs font-bold text-spring uppercase tracking-wider">
-              Investment Packages
-            </span>
             <h2 className="text-2xl sm:text-3xl font-bold text-pine mt-1">
               Summit 2.0 Corporate Sponsorship Packages
             </h2>
@@ -108,9 +105,6 @@ export default function PartnersPage() {
         {/* Banking and Terms */}
         <section className="p-8 rounded-2xl bg-pine text-white flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="space-y-2 max-w-xl text-center lg:text-left">
-            <span className="text-spring text-xs font-semibold uppercase tracking-wider">
-              Direct Corporate Remittance
-            </span>
             <h3 className="text-2xl font-bold text-white">
               Official Bank Account Details
             </h3>

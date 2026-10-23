@@ -28,7 +28,6 @@ export default function AboutPage() {
   return (
     <main className="flex-1 pb-20">
       <PageHeader
-        tag="Manifesto & Mission"
         title="About Northern Creative Designers"
         description="A structured ecosystem dedicated to the advancement, skill acquisition, and global connectivity of creative professionals across Northern Nigeria."
       />
@@ -37,9 +36,6 @@ export default function AboutPage() {
         {/* Organisation Overview & RC */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 space-y-6">
-            <span className="text-xs font-bold text-spring uppercase tracking-wider">
-              Who We Are
-            </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-pine leading-tight">
               A Premier Catalyst for Northern Nigeria&apos;s Creative Economy
             </h2>
@@ -114,9 +110,6 @@ export default function AboutPage() {
         {/* Mission & Vision Cards */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="p-8 rounded-2xl bg-pine text-white space-y-4">
-            <span className="text-spring text-xs font-bold uppercase tracking-wider">
-              Strategic Direction
-            </span>
             <h3 className="text-2xl font-bold text-white">Our Mission</h3>
             <p className="text-white/80 text-sm sm:text-base leading-relaxed">
               To be the premier catalyst for a thriving, globally competitive design
@@ -126,9 +119,6 @@ export default function AboutPage() {
           </div>
 
           <div className="p-8 rounded-2xl bg-neutral-sand border border-neutral-border text-navy space-y-4">
-            <span className="text-tangerine text-xs font-bold uppercase tracking-wider">
-              Long-Term Horizon
-            </span>
             <h3 className="text-2xl font-bold text-pine">Our Vision</h3>
             <p className="text-navy/80 text-sm sm:text-base leading-relaxed">
               To empower Northern Nigerian design professionals by providing a
@@ -143,9 +133,6 @@ export default function AboutPage() {
         {/* 4 Pillars in Detail */}
         <section className="space-y-8">
           <div>
-            <span className="text-xs font-bold text-spring uppercase tracking-wider">
-              Guiding Beliefs
-            </span>
             <h2 className="text-2xl sm:text-3xl font-bold text-pine mt-1">
               Four Beliefs Behind Everything We Build
             </h2>

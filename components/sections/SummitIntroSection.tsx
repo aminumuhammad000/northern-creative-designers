@@ -259,9 +259,6 @@ export function SummitIntroSection() {
           {/* Dynamic Animated Content Card */}
           <div className="bg-white rounded-3xl p-8 sm:p-12 border border-neutral-border shadow-md grid grid-cols-1 lg:grid-cols-12 gap-8 items-center transition-all duration-300">
             <div className="lg:col-span-7 space-y-4 text-left">
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-spring/15 text-pine border border-spring/30">
-                {currentCohort.tag}
-              </span>
               <h4 className="type-subheading text-pine text-2xl sm:text-3xl font-extrabold tracking-tight">
                 {currentCohort.heading}
               </h4>
@@ -285,9 +282,6 @@ export function SummitIntroSection() {
 
             <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-pine text-white space-y-5">
               <div>
-                <span className="text-spring text-xs font-mono font-bold uppercase tracking-wider">
-                  Registration Access
-                </span>
                 <p className="text-2xl font-black text-white mt-1">
                   Delegate Pass 2.0
                 </p>

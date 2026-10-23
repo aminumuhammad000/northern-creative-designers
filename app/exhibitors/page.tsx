@@ -25,9 +25,6 @@ export default function ExhibitorsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 space-y-16">
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 space-y-6">
-            <span className="text-xs font-bold text-spring uppercase tracking-wider">
-              Exhibitor Value Proposition
-            </span>
             <h2 className="text-3xl font-bold text-pine leading-tight">
               An Immersive Space for Creative and Technical Brands
             </h2>

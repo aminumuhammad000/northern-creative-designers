@@ -95,9 +95,6 @@ export default function TeamPage() {
         {/* Committee Functional Structure */}
         <section className="space-y-6">
           <div>
-            <span className="text-xs font-bold text-spring uppercase tracking-wider">
-              Operational Structure
-            </span>
             <h3 className="text-2xl sm:text-3xl font-bold text-pine mt-1">
               Summit 2.0 Working Committees
             </h3>
@@ -131,9 +128,6 @@ export default function TeamPage() {
         {/* Volunteer & Community Callout */}
         <section className="p-8 rounded-2xl bg-pine text-white flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-1 max-w-xl">
-            <span className="text-spring text-xs font-semibold uppercase tracking-wider">
-              Get Involved
-            </span>
             <h4 className="text-xl font-bold text-white">
               Join the Summit 2.0 Operational Team
             </h4>

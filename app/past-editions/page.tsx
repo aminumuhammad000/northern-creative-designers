@@ -63,9 +63,6 @@ export default function PastEditionsPage() {
         {/* Documented Historical Initiatives */}
         <section className="space-y-6">
           <div>
-            <span className="text-xs font-bold text-spring uppercase tracking-wider">
-              Documented Record
-            </span>
             <h3 className="text-2xl sm:text-3xl font-bold text-pine mt-1">
               Verified Bootcamps & Competitions
             </h3>

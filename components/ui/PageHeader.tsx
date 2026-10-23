@@ -43,13 +43,6 @@ export function PageHeader({
           </span>
         </nav>
 
-        {tag && (
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase mb-3 bg-pine/5 text-pine border border-pine/15">
-            <span className="w-1.5 h-1.5 rounded-full bg-spring" />
-            {tag}
-          </div>
-        )}
-
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-pine leading-tight">
           {title}
         </h1>

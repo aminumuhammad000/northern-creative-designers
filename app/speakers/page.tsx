@@ -60,9 +60,6 @@ export default function SpeakersPage() {
         {/* Call for Speakers Submission */}
         <div className="max-w-4xl mx-auto p-8 rounded-2xl bg-white border border-neutral-border space-y-6">
           <div className="space-y-2">
-            <span className="text-xs font-bold text-spring uppercase tracking-wider">
-              Contribute Your Expertise
-            </span>
             <h3 className="text-2xl font-bold text-pine">
               Call for Session Proposals & Workshop Hosts
             </h3>
