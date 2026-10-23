@@ -1,5 +1,6 @@
 import React from "react";
 import { HeroSection } from "@/components/sections/HeroSection";
+import { MarqueeTicker } from "@/components/ui/MarqueeTicker";
 import { SummitIntroSection } from "@/components/sections/SummitIntroSection";
 import { ProgrammeHighlightsSection } from "@/components/sections/ProgrammeHighlightsSection";
 import { SpeakersSection } from "@/components/sections/SpeakersSection";
@@ -12,31 +13,52 @@ import { RegistrationCTASection } from "@/components/sections/RegistrationCTASec
 export default function HomePage() {
   return (
     <main className="flex-1">
-      {/* 1. Hero Section */}
+      {/* 1. Hero Section with Chowdeck-Inspired Big Typography & Floating Stickers */}
       <HeroSection />
 
-      {/* 2. Summit Introduction & Objectives */}
+      {/* 2. Full-Width Infinite Marquee Ticker (Pine Theme, Scrolling Left) */}
+      <MarqueeTicker theme="pine" />
+
+      {/* 3. Summit Introduction, Interactive Cohort Switcher & Objectives */}
       <SummitIntroSection />
 
-      {/* 3. Programme Highlights */}
+      {/* 4. Secondary Reverse Marquee Ticker (Spring Theme, Scrolling Right) */}
+      <MarqueeTicker
+        theme="spring"
+        reverse
+        items={[
+          "UI/UX DESIGN",
+          "BRAND IDENTITY",
+          "MOTION & 3D",
+          "CIVIC TECH",
+          "AI CRAFT",
+          "ILLUSTRATION",
+          "TYPOGRAPHY",
+          "CLIENT CONNECT CORNER",
+          "LIVE 2-HOUR SPRINT",
+          "PEOPLE'S CHOICE VOTING",
+        ]}
+      />
+
+      {/* 5. Programme Highlights & Structure */}
       <ProgrammeHighlightsSection />
 
-      {/* 4. Curated Speakers Announcement State */}
+      {/* 6. Curated Speakers Announcement State */}
       <SpeakersSection />
 
-      {/* 5. Live Hackathon & 2-Hour Sprint Feature */}
+      {/* 7. Live Hackathon & 2-Hour Sprint Feature */}
       <HackathonSection />
 
-      {/* 6. Exhibitors, Vendors & Summit Marketplace */}
+      {/* 8. Exhibitors, Vendors & Summit Marketplace */}
       <ExhibitorSection />
 
-      {/* 7. Commitment in Action & Past Impact */}
+      {/* 9. Commitment in Action & Verified Past Impact */}
       <CommitmentSection />
 
-      {/* 8. Partners, Sponsors & Packages */}
+      {/* 10. Partners, Sponsorship Packages & 100% Budget Transparency */}
       <PartnersSection />
 
-      {/* 9. High-Conversion Registration CTA */}
+      {/* 11. High-Conversion Registration CTA with Official QR Verification */}
       <RegistrationCTASection />
     </main>
   );

@@ -1,19 +1,23 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ArrowRight, Sparkles, Trophy, Calendar, MapPin, Users } from "lucide-react";
 import { eventConfig } from "@/config/event";
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-[#FAFAF8] border-b border-neutral-border/70 pt-16 pb-20 md:pt-24 md:pb-32">
-      {/* Authentic Arewa Geometric Motif Watermark from NCD Summit 26.pdf */}
-      <div className="absolute -top-12 -right-12 w-72 h-80 opacity-[0.06] pointer-events-none select-none">
+    <section className="relative overflow-hidden bg-[#FAFAF8] border-b border-neutral-border pt-16 pb-20 md:pt-24 md:pb-32">
+      {/* Authentic Arewa Geometric Watermarks floating in corners */}
+      <div className="absolute -top-10 -right-10 w-80 h-96 opacity-[0.06] pointer-events-none select-none">
         <Image
           src="/images/pdf_extracted/arewa_motif_pattern.png"
           alt=""
           width={736}
           height={845}
           className="w-full h-full object-contain"
+          priority
         />
       </div>
       <div className="absolute -bottom-16 -left-16 w-80 h-96 opacity-[0.05] pointer-events-none select-none -scale-x-100">
@@ -26,86 +30,115 @@ export function HeroSection() {
         />
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        {/* Official Entity & Summit 2.0 Identifier Badge */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-neutral-border text-xs font-medium text-pine shadow-[0_1px_3px_rgba(1,56,17,0.04)] mb-8">
-          <span className="w-2 h-2 rounded-full bg-spring" />
-          <span className="font-semibold tracking-wide">Northern Creative Designers</span>
-          <span className="text-neutral-border">•</span>
-          <span className="text-tangerine font-semibold">Summit 2.0</span>
-          <span className="text-neutral-border">•</span>
-          <span className="text-navy/60 font-mono text-[11px]">{eventConfig.rcNumber}</span>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        {/* Floating Sticker Badges (Chowdeck Style) */}
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+          {/* Badge 1: Official Summit Pill with Pulse */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-neutral-border text-xs font-bold text-pine shadow-sm hover:scale-105 transition-transform cursor-default">
+            <span className="w-2.5 h-2.5 rounded-full bg-spring animate-pulse" />
+            <span className="uppercase tracking-wider">Summit 2.0 Active</span>
+            <span className="text-neutral-border">•</span>
+            <span className="text-navy/60 font-mono text-[11px]">{eventConfig.rcNumber}</span>
+          </div>
+
+          {/* Badge 2: Floating Date Pill (Tilted -2deg) */}
+          <div className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-spring text-navy text-xs font-extrabold uppercase tracking-wider shadow-sm -rotate-2 hover:rotate-0 transition-transform cursor-default">
+            <Calendar className="w-3.5 h-3.5" />
+            <span>19th Dec 2026 • Kano</span>
+          </div>
+
+          {/* Badge 3: Floating Prize Pill (Tilted +2deg) */}
+          <div className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-tangerine text-navy text-xs font-extrabold uppercase tracking-wider shadow-sm rotate-2 hover:rotate-0 transition-transform cursor-default">
+            <Trophy className="w-3.5 h-3.5" />
+            <span>₦1.5M Prize Pool</span>
+          </div>
         </div>
 
-        {/* Confident Typographic Theme adapted from PDF */}
-        <div className="space-y-4 max-w-4xl mx-auto">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[4.75rem] font-bold tracking-tight text-pine leading-[1.12]">
-            Roots &amp; Vectors
+        {/* Chowdeck-Style Giant, Confident Display Headline */}
+        <div className="space-y-4 max-w-5xl mx-auto">
+          <h1 className="type-hero-display text-pine tracking-tight">
+            ROOTS &amp; VECTORS
           </h1>
-          <p className="text-xl sm:text-3xl md:text-4xl font-semibold text-tangerine tracking-tight leading-snug">
-            Shaping the Future of Arewa Design
+          <p className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-tangerine tracking-tight leading-tight">
+            Shaping the Future of Arewa Design.
           </p>
         </div>
 
-        {/* Smooth, Legible Editorial Summary */}
-        <p className="mt-8 text-base sm:text-lg md:text-xl text-navy/80 max-w-2xl mx-auto leading-relaxed font-normal">
-          The premier annual gathering for designers, strategists, developers,
-          and visual storytellers across Northern Nigeria. Moving beyond conventional
-          talk shows to deliver deep learning, real-time collaboration, and actionable
-          career pathways.
+        {/* Crisp, Smooth Body Typography */}
+        <p className="mt-8 text-base sm:text-xl md:text-2xl text-navy/80 max-w-3xl mx-auto leading-relaxed font-normal">
+          The premier annual gathering for designers, strategists, developers, and visual storytellers across Northern Nigeria. Bridging rich cultural heritage with modern digital innovation, artificial intelligence, and global market positioning.
         </p>
 
-        {/* Event Date & Location Pill Strip matching PDF Cover */}
-        <div className="mt-9 inline-flex flex-wrap items-center justify-center gap-3 sm:gap-6 px-6 py-3 rounded-full bg-pine text-white text-xs sm:text-sm font-medium shadow-md">
-          <div className="flex items-center gap-2">
-            <span className="text-spring font-bold">Date:</span>
-            <span>{eventConfig.date}</span>
-          </div>
-          <span className="text-white/30 hidden sm:inline">|</span>
-          <div className="flex items-center gap-2">
-            <span className="text-tangerine font-bold">Venue:</span>
-            <span>{eventConfig.venue}</span>
-          </div>
-          <span className="text-white/30 hidden sm:inline">|</span>
-          <div className="flex items-center gap-2 text-white/70">
-            <span>{eventConfig.secretariat.handle}</span>
-          </div>
-        </div>
-
-        {/* Minimalist Action Buttons */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+        {/* Chowdeck-Style Chunky Action Buttons */}
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-5">
           <Link
             href="/register"
-            className="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-spring text-navy text-xs sm:text-sm font-semibold tracking-wider uppercase transition-all duration-200 hover:bg-[#02b25b] hover:shadow active:scale-98 focus:outline-none focus-visible:ring-2 focus-visible:ring-spring focus-visible:ring-offset-2"
+            className="inline-flex items-center justify-center px-9 py-4 rounded-full bg-spring text-navy text-sm font-extrabold tracking-wider uppercase shadow-md hover:bg-[#02b25b] hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-spring focus-visible:ring-offset-2"
           >
-            Register to Attend
+            <span>Register to Attend</span>
+            <ArrowRight className="w-4 h-4 ml-2" />
           </Link>
 
           <Link
-            href="#about-summit"
-            className="inline-flex items-center justify-center px-8 py-3.5 rounded-full border border-pine/30 text-pine text-xs sm:text-sm font-medium tracking-wider uppercase transition-all duration-200 hover:bg-white hover:border-pine active:scale-98 focus:outline-none focus-visible:ring-2 focus-visible:ring-pine"
+            href="/NCD Summit 26.pdf"
+            className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-white border-2 border-pine text-pine text-sm font-extrabold tracking-wider uppercase hover:bg-pine hover:text-white hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-pine"
           >
-            Explore Brochure
+            <span>View PDF Brochure</span>
           </Link>
         </div>
 
-        {/* Verified Track Record Highlights Bar */}
-        <div className="mt-16 pt-10 border-t border-neutral-border/60 grid grid-cols-2 md:grid-cols-4 gap-6 text-center max-w-4xl mx-auto">
-          <div className="space-y-1">
-            <p className="text-2xl sm:text-3xl font-bold text-pine">2.0</p>
-            <p className="text-xs text-navy/70 uppercase tracking-wider font-medium">Annual Summit</p>
+        {/* Chowdeck-Inspired Big Metric Cards with Hover Motion */}
+        <div className="mt-16 pt-12 border-t border-neutral-border/80 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto text-left">
+          {/* Card 1 */}
+          <div className="p-5 sm:p-6 rounded-3xl bg-white border border-neutral-border hover:-translate-y-1.5 hover:shadow-md transition-all duration-300">
+            <span className="text-[11px] font-bold text-pine/60 uppercase tracking-wider block mb-1">
+              Confirmed Edition
+            </span>
+            <p className="text-4xl sm:text-5xl font-black text-pine font-cabinet tracking-tight">
+              2.0
+            </p>
+            <p className="text-xs text-navy/70 mt-2 font-medium">
+              Roots &amp; Vectors Theme
+            </p>
           </div>
-          <div className="space-y-1">
-            <p className="text-2xl sm:text-3xl font-bold text-spring">₦100,000</p>
-            <p className="text-xs text-navy/70 uppercase tracking-wider font-medium">Hackathon Awarded</p>
+
+          {/* Card 2 */}
+          <div className="p-5 sm:p-6 rounded-3xl bg-white border border-neutral-border hover:-translate-y-1.5 hover:shadow-md transition-all duration-300">
+            <span className="text-[11px] font-bold text-spring uppercase tracking-wider block mb-1">
+              Hackathon Prizes
+            </span>
+            <p className="text-4xl sm:text-5xl font-black text-spring font-cabinet tracking-tight">
+              ₦1.5M
+            </p>
+            <p className="text-xs text-navy/70 mt-2 font-medium">
+              Hardware &amp; Cash Awards
+            </p>
           </div>
-          <div className="space-y-1">
-            <p className="text-2xl sm:text-3xl font-bold text-tangerine">225+</p>
-            <p className="text-xs text-navy/70 uppercase tracking-wider font-medium">Creatives Trained</p>
+
+          {/* Card 3 */}
+          <div className="p-5 sm:p-6 rounded-3xl bg-white border border-neutral-border hover:-translate-y-1.5 hover:shadow-md transition-all duration-300">
+            <span className="text-[11px] font-bold text-tangerine uppercase tracking-wider block mb-1">
+              Community Scale
+            </span>
+            <p className="text-4xl sm:text-5xl font-black text-tangerine font-cabinet tracking-tight">
+              1,000+
+            </p>
+            <p className="text-xs text-navy/70 mt-2 font-medium">
+              Attendees Across Arewa
+            </p>
           </div>
-          <div className="space-y-1">
-            <p className="text-2xl sm:text-3xl font-bold text-pine">100%</p>
-            <p className="text-xs text-navy/70 uppercase tracking-wider font-medium">Practical Execution</p>
+
+          {/* Card 4 */}
+          <div className="p-5 sm:p-6 rounded-3xl bg-white border border-neutral-border hover:-translate-y-1.5 hover:shadow-md transition-all duration-300">
+            <span className="text-[11px] font-bold text-pine/60 uppercase tracking-wider block mb-1">
+              Venue Location
+            </span>
+            <p className="text-3xl sm:text-4xl font-black text-pine font-cabinet tracking-tight mt-1">
+              Kano
+            </p>
+            <p className="text-xs text-navy/70 mt-2 font-medium">
+              Northern Nigeria
+            </p>
           </div>
         </div>
       </div>
