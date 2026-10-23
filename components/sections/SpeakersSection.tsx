@@ -39,7 +39,7 @@ export function SpeakersSection() {
   const { speakersAnnouncement } = landingPageContent;
 
   return (
-    <section id="speakers" className="py-20 md:py-32 bg-white border-b border-neutral-border relative overflow-hidden">
+    <section id="speakers" className="w-full py-20 md:py-32 bg-white border-b border-neutral-border relative overflow-hidden">
       <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 relative z-10">
         
         {/* Section Heading */}

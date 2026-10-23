@@ -123,7 +123,7 @@ export function SummitIntroSection() {
   const currentCohort = verticalCohorts[activeTab];
 
   return (
-    <section id="about-summit" className="py-20 md:py-32 bg-white border-b border-neutral-border relative overflow-hidden">
+    <section id="about-summit" className="w-full py-20 md:py-32 bg-white border-b border-neutral-border relative overflow-hidden">
       {/* Soft background ambient illumination */}
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-spring/[0.03] rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/3 left-0 w-96 h-96 bg-tangerine/[0.03] rounded-full blur-3xl pointer-events-none" />

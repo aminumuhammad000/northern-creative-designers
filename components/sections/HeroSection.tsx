@@ -8,7 +8,7 @@ import { eventConfig } from "@/config/event";
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-[#FAFAF8] border-b border-neutral-border/60 pt-16 pb-20 md:pt-24 md:pb-32">
+    <section className="w-full relative overflow-hidden bg-[#FAFAF8] border-b border-neutral-border/60 pt-16 pb-20 md:pt-24 md:pb-32">
       {/* Silky ambient background radial glows */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(3,208,107,0.08),rgba(255,255,255,0))] pointer-events-none" />
       <div className="absolute top-1/3 -right-24 w-96 h-96 bg-tangerine/[0.04] rounded-full blur-3xl pointer-events-none" />

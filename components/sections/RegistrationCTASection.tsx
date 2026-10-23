@@ -13,7 +13,7 @@ import { eventConfig } from "@/config/event";
 
 export function RegistrationCTASection() {
   return (
-    <section className="py-20 md:py-32 bg-[#FAFAF8] relative overflow-hidden border-b border-neutral-border">
+    <section className="w-full py-20 md:py-32 bg-[#FAFAF8] relative overflow-hidden border-b border-neutral-border">
       {/* Decorative subtle ambient pattern */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-80 bg-spring/10 rounded-full blur-3xl pointer-events-none" />
 

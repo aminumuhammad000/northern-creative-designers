@@ -195,7 +195,7 @@ export function WhoShouldAttendSection() {
   return (
     <section
       id="who-should-attend"
-      className="py-20 md:py-32 bg-[#F8FFF8] border-b border-neutral-border relative overflow-hidden"
+      className="w-full py-20 md:py-32 bg-[#F8FFF8] border-b border-neutral-border relative overflow-hidden"
     >
       {/* Background Ambient Glows */}
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-spring/[0.04] rounded-full blur-3xl pointer-events-none" />
@@ -214,7 +214,7 @@ export function WhoShouldAttendSection() {
         </div>
 
         {/* Outer Card Container (Faithfully adapted to who to expecxt full section.png) */}
-        <div className="rounded-[2.5rem] bg-[#F8FFF8] bg-[radial-gradient(#00CC67_1.75px,transparent_1.75px)] [background-size:20px_20px] border border-neutral-border/70 shadow-2xl overflow-hidden relative">
+        <div className="w-full rounded-[2.5rem] bg-[#F8FFF8] bg-[radial-gradient(#00CC67_1.75px,transparent_1.75px)] [background-size:20px_20px] border border-neutral-border/70 shadow-2xl overflow-hidden relative">
           
           {/* Top Banner (Deep Pine with Arewa Motif Pattern Overlay) */}
           <div className="p-8 sm:p-12 md:p-16 bg-[#013811] text-white relative overflow-hidden">
@@ -362,76 +362,67 @@ export function WhoShouldAttendSection() {
               ))}
             </div>
 
-            {/* Selected Role Interactive Takeaway Feedback Card */}
-            <div className="mt-8 p-6 sm:p-8 rounded-[2rem] bg-white border border-neutral-border shadow-lg transition-all duration-300">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-neutral-border/60">
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md"
-                    style={{ backgroundColor: selectedRole.bgHex }}
-                  >
-                    {selectedRole.icon}
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-pine/70 bg-pine/5 px-2.5 py-0.5 rounded-full border border-pine/10">
-                      {selectedRole.category}
-                    </span>
-                    <h3 className="text-xl sm:text-2xl font-black text-pine mt-0.5 tracking-tight">
-                      {selectedRole.name}
-                    </h3>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-navy/60 font-medium">Pass:</span>
-                  <span className="px-3 py-1 rounded-full bg-spring/15 text-pine font-extrabold text-xs uppercase tracking-wide border border-spring/30">
-                    {selectedRole.recommendedPass}
-                  </span>
+            {/* Bottom Row: Cutout Portrait on the LEFT, Compact Selected Role Card on the RIGHT */}
+            <div className="mt-10 pt-8 border-t border-neutral-border/50 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
+              
+              {/* Left Side: Real Northern Designers with MacBooks */}
+              <div className="lg:col-span-5 relative flex justify-center items-end">
+                <div className="relative w-full aspect-[1408/768] max-h-[260px] sm:max-h-[320px]">
+                  <Image
+                    src="/images/pdf_extracted/attendees_portraits.png"
+                    alt="Northern Creative Designers Summit Attendees"
+                    fill
+                    className="object-contain object-bottom drop-shadow-md"
+                    priority
+                  />
                 </div>
               </div>
 
-              <div className="pt-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <p className="text-navy/85 text-sm sm:text-base leading-relaxed font-normal max-w-3xl">
-                  {selectedRole.takeaway}
-                </p>
+              {/* Right Side: Smaller, Sleek Selected Role Interactive Feedback Card */}
+              <div className="lg:col-span-7">
+                <div className="p-5 sm:p-6 rounded-2xl bg-white border border-neutral-border shadow-md transition-all duration-300">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-neutral-border/60">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-sm flex-shrink-0"
+                        style={{ backgroundColor: selectedRole.bgHex }}
+                      >
+                        {selectedRole.icon}
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-pine/70 bg-pine/5 px-2 py-0.5 rounded-full border border-pine/10">
+                          {selectedRole.category}
+                        </span>
+                        <h3 className="text-lg sm:text-xl font-black text-pine mt-0.5 tracking-tight">
+                          {selectedRole.name}
+                        </h3>
+                      </div>
+                    </div>
 
-                <Link
-                  href="/register"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-pine hover:bg-[#024a18] text-white text-xs font-extrabold tracking-wider uppercase hover:scale-105 active:scale-95 transition-all shadow-sm flex-shrink-0"
-                >
-                  <span>Register Now</span>
-                  <ArrowRight className="w-4 h-4 text-spring" />
-                </Link>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-navy/60 font-medium">Pass:</span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-spring/15 text-pine font-extrabold text-xs uppercase tracking-wide border border-spring/30">
+                        {selectedRole.recommendedPass}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <p className="text-navy/85 text-xs sm:text-sm leading-relaxed font-normal">
+                      {selectedRole.takeaway}
+                    </p>
+
+                    <Link
+                      href="/register"
+                      className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-pine hover:bg-[#024a18] text-white text-xs font-extrabold tracking-wider uppercase hover:scale-105 active:scale-95 transition-all shadow-sm flex-shrink-0"
+                    >
+                      <span>Register Now</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-spring" />
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </div>
 
-          </div>
-
-          {/* Bottom Section: Real Cutout Portrait of Northern Designers with MacBooks */}
-          <div className="relative pt-6 overflow-hidden flex justify-center items-end">
-            
-            {/* 3D Vector Metallic Graphic on the Bottom Right */}
-            <div className="hidden lg:block absolute bottom-2 right-4 w-52 h-52 z-10 pointer-events-none transition-transform duration-700 hover:-rotate-6 hover:scale-105">
-              <Image
-                src="/images/pdf_extracted/vector_3d_hook.png"
-                alt="Vector 3D Graphic"
-                width={220}
-                height={220}
-                className="w-full h-full object-contain drop-shadow-2xl"
-              />
-            </div>
-
-            {/* Real Northern Designers with MacBooks */}
-            <div className="relative z-10 w-full max-w-2xl px-4 flex justify-center">
-              <div className="relative w-full aspect-[1408/768] max-h-[360px] sm:max-h-[440px]">
-                <Image
-                  src="/images/pdf_extracted/attendees_portraits.png"
-                  alt="Northern Creative Designers Summit Attendees"
-                  fill
-                  className="object-contain object-bottom"
-                  priority
-                />
-              </div>
             </div>
 
           </div>
