@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Trophy,
   Users,
@@ -54,93 +55,123 @@ export function CommitmentSection() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             
             {/* 1. Hackathons Card: Spring Green */}
-            <div className="group p-8 sm:p-10 rounded-[2rem] bg-[#00CC67] text-white shadow-xl hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 ease-out flex flex-col justify-between relative overflow-hidden">
+            <div className="group p-6 sm:p-8 rounded-[2rem] bg-[#00CC67] text-white shadow-xl hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 ease-out flex flex-col justify-between relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.08] rounded-full blur-2xl pointer-events-none" />
 
               <div className="relative z-10">
-                <div className="flex items-start justify-between gap-3 mb-5">
-                  <ArrowDownRight className="w-8 h-8 sm:w-10 sm:h-10 text-white flex-shrink-0 stroke-[2.5] transition-transform duration-300 group-hover:translate-x-1.5 group-hover:translate-y-1.5" />
-                  <span className="text-xs font-mono font-black uppercase tracking-wider px-3.5 py-1 rounded-full bg-white/20 text-white border border-white/25">
+                {/* Real Hackathon Photo */}
+                <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-5 border border-white/20 shadow-md">
+                  <Image
+                    src="/images/community/Polished Modern Office Meeting Scene.png"
+                    alt="Northern Design Hackathon 2025 Live Sprint"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  <span className="absolute top-3 right-3 text-xs font-mono font-black uppercase tracking-wider px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/20">
                     ₦100k Bounties
                   </span>
                 </div>
 
-                <span className="text-xs font-bold uppercase tracking-wider text-white/80 block mb-1">
-                  Hackathons &amp; Competitions
-                </span>
+                <div className="flex items-start justify-between gap-3 mb-2">
+                  <ArrowDownRight className="w-7 h-7 text-white flex-shrink-0 stroke-[2.5] transition-transform duration-300 group-hover:translate-x-1.5 group-hover:translate-y-1.5" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-white/80">
+                    Hackathons &amp; Sprints
+                  </span>
+                </div>
                 
-                <h3 className="text-2xl sm:text-3xl font-black text-white mb-3 tracking-tight leading-tight">
+                <h3 className="text-xl sm:text-2xl font-black text-white mb-2 tracking-tight leading-tight">
                   Northern Design Hackathon (2025)
                 </h3>
 
-                <p className="text-white/90 text-sm sm:text-base leading-relaxed font-normal mb-6">
+                <p className="text-white/90 text-xs sm:text-sm leading-relaxed font-normal mb-5">
                   Organized a multi-round regional sprint awarding cash bounties and live mentorship to top Arewa design talents.
                 </p>
               </div>
 
-              <div className="relative z-10 pt-5 border-t border-white/20 flex items-center justify-between text-xs font-mono text-white/90">
+              <div className="relative z-10 pt-4 border-t border-white/20 flex items-center justify-between text-xs font-mono text-white/90">
                 <span className="font-bold">Verified Competition</span>
                 <span>2025 Edition</span>
               </div>
             </div>
 
             {/* 2. Flagship Summit: Tangerine */}
-            <div className="group p-8 sm:p-10 rounded-[2rem] bg-[#F39200] text-white shadow-xl hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 ease-out flex flex-col justify-between relative overflow-hidden">
+            <div className="group p-6 sm:p-8 rounded-[2rem] bg-[#F39200] text-white shadow-xl hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 ease-out flex flex-col justify-between relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.08] rounded-full blur-2xl pointer-events-none" />
 
               <div className="relative z-10">
-                <div className="flex items-start justify-between gap-3 mb-5">
-                  <ArrowDownRight className="w-8 h-8 sm:w-10 sm:h-10 text-white flex-shrink-0 stroke-[2.5] transition-transform duration-300 group-hover:translate-x-1.5 group-hover:translate-y-1.5" />
-                  <span className="text-xs font-mono font-black uppercase tracking-wider px-3.5 py-1 rounded-full bg-white/20 text-white border border-white/25">
+                {/* Real Summit 1.0 Photo */}
+                <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-5 border border-white/20 shadow-md">
+                  <Image
+                    src="/images/pdf_extracted/vision_workshop_top.png"
+                    alt="Northern Creative Summit 1.0 Gathering"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  <span className="absolute top-3 right-3 text-xs font-mono font-black uppercase tracking-wider px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/20">
                     Inaugural
                   </span>
                 </div>
 
-                <span className="text-xs font-bold uppercase tracking-wider text-white/80 block mb-1">
-                  Conferences &amp; Flagship
-                </span>
+                <div className="flex items-start justify-between gap-3 mb-2">
+                  <ArrowDownRight className="w-7 h-7 text-white flex-shrink-0 stroke-[2.5] transition-transform duration-300 group-hover:translate-x-1.5 group-hover:translate-y-1.5" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-white/80">
+                    Flagship Convention
+                  </span>
+                </div>
                 
-                <h3 className="text-2xl sm:text-3xl font-black text-white mb-3 tracking-tight leading-tight">
+                <h3 className="text-xl sm:text-2xl font-black text-white mb-2 tracking-tight leading-tight">
                   Northern Creative Summit 1.0
                 </h3>
 
-                <p className="text-white/90 text-sm sm:text-base leading-relaxed font-normal mb-6">
+                <p className="text-white/90 text-xs sm:text-sm leading-relaxed font-normal mb-5">
                   Convened over 400 creative practitioners, founders, and community leads across Northern Nigeria to establish the inaugural charter.
                 </p>
               </div>
 
-              <div className="relative z-10 pt-5 border-t border-white/20 flex items-center justify-between text-xs font-mono text-white/90">
+              <div className="relative z-10 pt-4 border-t border-white/20 flex items-center justify-between text-xs font-mono text-white/90">
                 <span className="font-bold">Flagship Gathering</span>
                 <span>Kano, Nigeria</span>
               </div>
             </div>
 
             {/* 3. Intensive Training: Deep Purple */}
-            <div className="group p-8 sm:p-10 rounded-[2rem] bg-[#453478] text-white shadow-xl hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 ease-out flex flex-col justify-between relative overflow-hidden">
+            <div className="group p-6 sm:p-8 rounded-[2rem] bg-[#453478] text-white shadow-xl hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 ease-out flex flex-col justify-between relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.08] rounded-full blur-2xl pointer-events-none" />
 
               <div className="relative z-10">
-                <div className="flex items-start justify-between gap-3 mb-5">
-                  <ArrowDownRight className="w-8 h-8 sm:w-10 sm:h-10 text-white flex-shrink-0 stroke-[2.5] transition-transform duration-300 group-hover:translate-x-1.5 group-hover:translate-y-1.5" />
-                  <span className="text-xs font-mono font-black uppercase tracking-wider px-3.5 py-1 rounded-full bg-white/20 text-white border border-white/25">
+                {/* Real Masterclass Photo */}
+                <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-5 border border-white/20 shadow-md">
+                  <Image
+                    src="/images/pdf_extracted/mission_workshop_bottom.png"
+                    alt="Northern Creative Designers Intensive Training"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  <span className="absolute top-3 right-3 text-xs font-mono font-black uppercase tracking-wider px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/20">
                     225+ Alumni
                   </span>
                 </div>
 
-                <span className="text-xs font-bold uppercase tracking-wider text-white/80 block mb-1">
-                  Bootcamps &amp; Masterlabs
-                </span>
+                <div className="flex items-start justify-between gap-3 mb-2">
+                  <ArrowDownRight className="w-7 h-7 text-white flex-shrink-0 stroke-[2.5] transition-transform duration-300 group-hover:translate-x-1.5 group-hover:translate-y-1.5" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-white/80">
+                    Bootcamps &amp; Masterclasses
+                  </span>
+                </div>
                 
-                <h3 className="text-2xl sm:text-3xl font-black text-white mb-3 tracking-tight leading-tight">
+                <h3 className="text-xl sm:text-2xl font-black text-white mb-2 tracking-tight leading-tight">
                   Intensive Technical Masterclasses
                 </h3>
 
-                <p className="text-white/90 text-sm sm:text-base leading-relaxed font-normal mb-6">
+                <p className="text-white/90 text-xs sm:text-sm leading-relaxed font-normal mb-5">
                   Delivered physical bootcamps including Brand Identity Masterlab (50 alumni), The Design Code (75 alumni), and UI/UX Bootcamp (100 alumni).
                 </p>
               </div>
 
-              <div className="relative z-10 pt-5 border-t border-white/20 flex items-center justify-between text-xs font-mono text-white/90">
+              <div className="relative z-10 pt-4 border-t border-white/20 flex items-center justify-between text-xs font-mono text-white/90">
                 <span className="font-bold">Hands-On Sprints</span>
                 <span>3 Programs</span>
               </div>
