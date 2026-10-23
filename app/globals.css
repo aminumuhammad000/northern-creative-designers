@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --color-spring: #03d06b;
+  --color-pine: #013811;
+  --color-tangerine: #ff8500;
+  --color-navy: #140949;
+  --color-white: #ffffff;
+
+  --color-spring-hover: #02b25b;
+  --color-pine-light: #02571a;
+  --color-navy-muted: #241473;
+  --color-neutral-sand: #fbfbf9;
+  --color-neutral-border: #e8eae8;
+
+  --font-cabinet: var(--font-cabinet), system-ui, -apple-system, sans-serif;
+  --font-inter: var(--font-inter), system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  --spring: #03d06b;
+  --pine: #013811;
+  --tangerine: #ff8500;
+  --white: #ffffff;
+  --navy: #140949;
+
+  --background: #ffffff;
+  --foreground: #140949;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-cabinet), system-ui, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Custom focus styles adhering to WCAG 2.2 AA */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid #03d06b;
+  outline-offset: 2px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f7faf8;
+}
+::-webkit-scrollbar-thumb {
+  background: #01381140;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #01381180;
+}
