@@ -317,50 +317,132 @@ export function SummitIntroSection() {
           </div>
         </div>
 
-        {/* 3. Vision & Mission Statement: Creative Side-by-Side Duo */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24 md:mb-32">
-          {/* Vision Card */}
-          <div className="p-8 sm:p-12 rounded-[2.5rem] bg-pine text-white relative overflow-hidden flex flex-col justify-between shadow-lg hover:-translate-y-1.5 transition-transform duration-300">
-            <div className="relative z-10">
-              <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center mb-6">
-                <Eye className="w-7 h-7 text-spring" />
+        {/* 3. Vision & Mission Statement: Faithfully Adapted to PDF Page 04 & make the vision and mission section to be exartly like this.png */}
+        <div id="vision-and-mission" className="mb-24 md:mb-32">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+            <div className="max-w-2xl space-y-3">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pine/5 border border-pine/10 text-xs font-extrabold text-pine uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-spring" />
+                <span>Strategic Horizon • Page 04</span>
               </div>
-              <span className="text-spring text-xs font-bold uppercase tracking-wider">
-                Strategic Horizon
-              </span>
-              <h3 className="type-subheading text-white text-2xl sm:text-3xl mt-1 mb-4 font-black">
-                {visionAndMission.vision.title}
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-pine tracking-tight leading-tight">
+                Vision &amp; Mission.
               </h3>
-              <p className="text-white/85 text-base sm:text-lg leading-relaxed font-normal">
-                {visionAndMission.vision.content}
+              <p className="type-body text-navy/70 text-base sm:text-lg leading-relaxed font-normal">
+                Anchoring regional creative talent with high-impact global ambition and indigenous cultural excellence.
               </p>
             </div>
-            <div className="pt-6 mt-8 border-t border-white/10 flex items-center justify-between text-xs text-white/60">
-              <span className="font-mono text-spring font-bold">Roots &amp; Vectors</span>
-              <span>Summit 2.0</span>
-            </div>
+            <span className="text-xs font-mono font-bold text-pine/80 bg-[#FAFAF8] px-4 py-2 rounded-full border border-neutral-border">
+              Summit 2.0 • Kano 2026
+            </span>
           </div>
 
-          {/* Mission Card */}
-          <div className="p-8 sm:p-12 rounded-[2.5rem] bg-[#FAFAF8] border-2 border-neutral-border text-navy relative overflow-hidden flex flex-col justify-between shadow-sm hover:-translate-y-1.5 transition-transform duration-300">
-            <div className="relative z-10">
-              <div className="w-14 h-14 rounded-2xl bg-pine/5 border border-pine/10 flex items-center justify-center mb-6">
-                <Target className="w-7 h-7 text-tangerine" />
+          {/* Canvas Wrapper matching Page 04 */}
+          <div className="rounded-[2.5rem] bg-[#F6FFF8] bg-[radial-gradient(#00CC67_1.75px,transparent_1.75px)] [background-size:20px_20px] border border-neutral-border/70 shadow-xl overflow-hidden relative">
+            
+            {/* Top Section: Vision Statement with Real Workshop Photo & 3D Torus Ring */}
+            <div className="relative p-6 sm:p-10 md:p-14 overflow-hidden border-b border-neutral-border/40">
+              {/* Real Background Photo with Pine/Emerald Overlay */}
+              <div className="absolute inset-0 z-0">
+                <Image
+                  src="/images/pdf_extracted/vision_workshop_top.png"
+                  alt="Northern Creative Designers Workshop"
+                  fill
+                  className="object-cover object-center opacity-35 mix-blend-multiply"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-pine/90 via-pine/70 to-pine/50" />
               </div>
-              <span className="text-tangerine text-xs font-bold uppercase tracking-wider">
-                Execution Mandate
+
+              {/* 3D Iridescent Coil Element on the Right */}
+              <div className="hidden lg:block absolute -top-8 right-6 w-72 h-72 z-10 pointer-events-none transition-transform duration-700 hover:rotate-6 hover:scale-105">
+                <Image
+                  src="/images/pdf_extracted/vector_3d_torus.png"
+                  alt="Vector 3D Art Element"
+                  width={320}
+                  height={320}
+                  className="w-full h-full object-contain drop-shadow-2xl"
+                />
+              </div>
+
+              {/* Tangerine Vision Card (Left Aligned) */}
+              <div className="relative z-10 max-w-xl">
+                <div className="group p-8 sm:p-10 md:p-12 rounded-[2rem] bg-[#F39200] text-white shadow-2xl hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 ease-out">
+                  <div className="flex items-start gap-4 mb-5">
+                    <ArrowDownRight className="w-9 h-9 sm:w-11 sm:h-11 text-white flex-shrink-0 stroke-[2.5] transition-transform duration-300 group-hover:translate-x-1.5 group-hover:translate-y-1.5" />
+                    <div>
+                      <h4 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-none">
+                        Vision
+                      </h4>
+                      <h4 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
+                        Statement
+                      </h4>
+                    </div>
+                  </div>
+
+                  <p className="text-white text-base sm:text-lg md:text-xl font-normal leading-relaxed pl-1">
+                    To establish Northern Nigeria as a globally competitive hub of creative talent, where rich cultural heritage and modern design innovation power sustainable economic growth.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Section: Mission Statement with Real Workshop Photo & 3D Metallic Hook */}
+            <div className="relative p-6 sm:p-10 md:p-14 overflow-hidden">
+              {/* Real Background Photo with Pine/Emerald Overlay */}
+              <div className="absolute inset-0 z-0">
+                <Image
+                  src="/images/pdf_extracted/mission_workshop_bottom.png"
+                  alt="Northern Creative Designers Masterclass Space"
+                  fill
+                  className="object-cover object-center opacity-40 mix-blend-multiply"
+                />
+                <div className="absolute inset-0 bg-gradient-to-l from-pine/90 via-pine/70 to-pine/50" />
+              </div>
+
+              {/* 3D Vector Metallic Element on the Bottom Right */}
+              <div className="hidden lg:block absolute -bottom-10 right-4 w-60 h-60 z-10 pointer-events-none transition-transform duration-700 hover:-rotate-6 hover:scale-105">
+                <Image
+                  src="/images/pdf_extracted/vector_3d_hook.png"
+                  alt="Vector 3D Graphic"
+                  width={260}
+                  height={260}
+                  className="w-full h-full object-contain drop-shadow-2xl"
+                />
+              </div>
+
+              {/* Deep Indigo/Purple Mission Card (Right Aligned) */}
+              <div className="relative z-10 max-w-xl ml-auto">
+                <div className="group p-8 sm:p-10 md:p-12 rounded-[2rem] bg-[#453478] text-white shadow-2xl hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01] transition-all duration-300 ease-out">
+                  <div className="flex items-start gap-4 mb-5">
+                    <ArrowDownRight className="w-9 h-9 sm:w-11 sm:h-11 text-white flex-shrink-0 stroke-[2.5] transition-transform duration-300 group-hover:translate-x-1.5 group-hover:translate-y-1.5" />
+                    <div>
+                      <h4 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-none">
+                        Mission
+                      </h4>
+                      <h4 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
+                        Statement
+                      </h4>
+                    </div>
+                  </div>
+
+                  <p className="text-white text-base sm:text-lg md:text-xl font-normal leading-relaxed pl-1">
+                    To empower Northern designers, strategists, and creators through immersive learning, hands-on collaboration, and direct business connections — bridging indigenous storytelling with cutting-edge tools to elevate local craft into high-value global impact.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Indicator Pill Badge */}
+            <div className="py-4 bg-[#013811]/90 border-t border-white/10 flex items-center justify-between px-6 sm:px-10 text-xs text-white/70 relative z-10 font-mono">
+              <span className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-spring" />
+                <span>Foundational Charter</span>
               </span>
-              <h3 className="type-subheading text-pine text-2xl sm:text-3xl mt-1 mb-4 font-black">
-                {visionAndMission.mission.title}
-              </h3>
-              <p className="text-navy/80 text-base sm:text-lg leading-relaxed font-normal">
-                {visionAndMission.mission.content}
-              </p>
+              <span className="px-3 py-0.5 rounded-full bg-spring text-[#071135] font-black text-xs">
+                Page 04
+              </span>
             </div>
-            <div className="pt-6 mt-8 border-t border-neutral-border flex items-center justify-between text-xs text-navy/60">
-              <span className="font-mono text-tangerine font-bold">High-Value Impact</span>
-              <span>RC: {eventConfig.rcNumber}</span>
-            </div>
+
           </div>
         </div>
 
