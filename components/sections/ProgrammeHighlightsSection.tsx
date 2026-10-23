@@ -188,66 +188,62 @@ export function ProgrammeHighlightsSection() {
             </div>
           </div>
 
-          {/* Main Grid: Kano Landmark on LEFT, 4 Sticky Cards on RIGHT */}
+          {/* Big Kano Landmark in Background at Bottom-Left Corner */}
+          <div className="absolute -bottom-10 -left-10 w-[380px] sm:w-[560px] md:w-[700px] lg:w-[840px] xl:w-[920px] aspect-[1625/1401] pointer-events-none select-none z-0">
+            <Image
+              src="/images/pdf_extracted/kano_bridge_landmark.png"
+              alt="Iconic Kano City Flyover Landmark and I Love Kano Monument"
+              fill
+              className="object-contain object-bottom-left grayscale contrast-125 opacity-35 sm:opacity-40 lg:opacity-45 mix-blend-multiply"
+              priority
+            />
+          </div>
+
+          {/* 3D Vector Metallic Graphic in Bottom-Left Background */}
+          <div className="hidden lg:block absolute bottom-8 left-8 w-32 h-32 lg:w-40 lg:h-40 z-0 pointer-events-none transition-transform duration-700 hover:-rotate-6 hover:scale-105 opacity-50">
+            <Image
+              src="/images/pdf_extracted/vector_3d_hook.png"
+              alt="Vector 3D Graphic"
+              width={160}
+              height={160}
+              className="w-full h-full object-contain drop-shadow-xl"
+            />
+          </div>
+
+          {/* Main Grid: 4 Sticky Cards in Foreground */}
           <div className="px-6 sm:px-12 md:px-16 pb-16 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-              
-              {/* Left Side: Real Kano Flyover Landmark & "I ❤️ KANO" Monument */}
-              <div className="lg:col-span-5 relative flex flex-col justify-center items-center">
-                <div className="relative w-full aspect-[1625/1401] max-h-[380px] sm:max-h-[460px]">
-                  <Image
-                    src="/images/pdf_extracted/kano_bridge_landmark.png"
-                    alt="Iconic Kano City Flyover Landmark and I Love Kano Monument"
-                    fill
-                    className="object-contain grayscale contrast-110 drop-shadow-md"
-                  />
+            {/* 4 Staggered Taped Sticky Cards in 2 columns */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 items-start max-w-5xl mx-auto">
+              {programCards.map((card) => (
+                <div
+                  key={card.id}
+                  onClick={() => setActiveCard(card)}
+                  className={`
+                    group relative p-6 sm:p-8 ${card.bgClass} text-white shadow-xl
+                    hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl
+                    transition-all duration-300 ease-out cursor-pointer
+                    rounded-tr-2xl rounded-tl-2xl rounded-br-2xl rounded-bl-[2.5rem]
+                    ${activeCard.id === card.id ? "ring-4 ring-spring/50 scale-[1.02]" : ""}
+                  `}
+                >
+                  {/* Brown Craft Tape on Top */}
+                  <div className={`absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-6 bg-[#CA8A04]/80 border-y border-[#A16207] shadow-sm transform ${card.tapeRotation} pointer-events-none rounded-xs`} />
+                  
+                  {/* Dog-ear fold corner indicator */}
+                  <div className="absolute bottom-0 left-0 w-7 h-7 bg-black/25 rounded-tr-xl pointer-events-none" />
+
+                  <h4 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug whitespace-pre-line mb-2">
+                    {card.headline}
+                  </h4>
+                  <p className="text-white/90 text-xs sm:text-sm leading-relaxed font-normal">
+                    {card.details}
+                  </p>
                 </div>
-                {/* 3D Vector Metallic Graphic */}
-                <div className="hidden lg:block absolute -bottom-6 -left-6 w-36 h-36 z-10 pointer-events-none transition-transform duration-700 hover:-rotate-6 hover:scale-105">
-                  <Image
-                    src="/images/pdf_extracted/vector_3d_hook.png"
-                    alt="Vector 3D Graphic"
-                    width={150}
-                    height={150}
-                    className="w-full h-full object-contain drop-shadow-xl"
-                  />
-                </div>
-              </div>
-
-              {/* Right Side: 4 Staggered Taped Sticky Cards in 2 columns */}
-              <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10 items-start">
-                {programCards.map((card) => (
-                  <div
-                    key={card.id}
-                    onClick={() => setActiveCard(card)}
-                    className={`
-                      group relative p-6 sm:p-8 ${card.bgClass} text-white shadow-xl
-                      hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl
-                      transition-all duration-300 ease-out cursor-pointer
-                      rounded-tr-2xl rounded-tl-2xl rounded-br-2xl rounded-bl-[2.5rem]
-                      ${activeCard.id === card.id ? "ring-4 ring-spring/50 scale-[1.02]" : ""}
-                    `}
-                  >
-                    {/* Brown Craft Tape on Top */}
-                    <div className={`absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-6 bg-[#CA8A04]/80 border-y border-[#A16207] shadow-sm transform ${card.tapeRotation} pointer-events-none rounded-xs`} />
-                    
-                    {/* Dog-ear fold corner indicator */}
-                    <div className="absolute bottom-0 left-0 w-7 h-7 bg-black/25 rounded-tr-xl pointer-events-none" />
-
-                    <h4 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug whitespace-pre-line mb-2">
-                      {card.headline}
-                    </h4>
-                    <p className="text-white/90 text-xs sm:text-sm leading-relaxed font-normal">
-                      {card.details}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
+              ))}
             </div>
 
             {/* Selected Card Interactive Detail Callout */}
-            <div className="mt-12 p-6 sm:p-8 rounded-[2rem] bg-white border border-neutral-border shadow-lg">
+            <div className="mt-12 p-6 sm:p-8 rounded-[2rem] bg-white/95 backdrop-blur-xs border border-neutral-border shadow-lg max-w-5xl mx-auto">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-neutral-border/60">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-xl ${activeCard.bgClass} flex items-center justify-center text-white font-bold text-xs`}>

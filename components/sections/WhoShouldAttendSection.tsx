@@ -362,24 +362,24 @@ export function WhoShouldAttendSection() {
               ))}
             </div>
 
-            {/* Bottom Row: Cutout Portrait on the LEFT, Compact Selected Role Card on the RIGHT */}
-            <div className="mt-10 pt-8 border-t border-neutral-border/50 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
+            {/* Bottom Row: Cutout Portrait at the BOTTOM-LEFT CORNER, Sleek Interactive Card on the RIGHT */}
+            <div className="mt-12 pt-8 border-t border-neutral-border/50 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
               
-              {/* Left Side: Real Northern Designers with MacBooks */}
-              <div className="lg:col-span-5 relative flex justify-center items-end">
-                <div className="relative w-full aspect-[1408/768] max-h-[260px] sm:max-h-[320px]">
+              {/* Bottom-Left Corner: Real Northern Designers with MacBooks (Enlarged & Flushed to Bottom-Left) */}
+              <div className="lg:col-span-5 xl:col-span-6 relative flex justify-start items-end self-end -mb-8 sm:-mb-12 md:-mb-16 -ml-8 sm:-ml-12 md:-ml-16">
+                <div className="relative w-full max-w-[580px] aspect-[1408/768] h-[280px] sm:h-[360px] lg:h-[430px]">
                   <Image
                     src="/images/pdf_extracted/attendees_portraits.png"
                     alt="Northern Creative Designers Summit Attendees"
                     fill
-                    className="object-contain object-bottom drop-shadow-md"
+                    className="object-contain object-bottom-left drop-shadow-xl"
                     priority
                   />
                 </div>
               </div>
 
               {/* Right Side: Smaller, Sleek Selected Role Interactive Feedback Card */}
-              <div className="lg:col-span-7">
+              <div className="lg:col-span-7 xl:col-span-6 pb-4 sm:pb-8 lg:pb-10">
                 <div className="p-5 sm:p-6 rounded-2xl bg-white border border-neutral-border shadow-md transition-all duration-300">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-neutral-border/60">
                     <div className="flex items-center gap-3">
