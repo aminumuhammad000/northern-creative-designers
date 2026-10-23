@@ -33,46 +33,41 @@ export function SiteHeader() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Actual Official Logo: Single clean horizontal lockup + RC Badge */}
-        <div className="flex items-center gap-3">
-          <Link
-            href="/"
-            className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-spring rounded-md py-1 transition-opacity duration-200 hover:opacity-90"
-            aria-label="Northern Creative Designers Summit Home"
-          >
-            <div className="relative h-8 sm:h-9 w-auto flex items-center">
-              <Image
-                src="/images/brand/logo-header.png"
-                alt="Northern Creative Designers"
-                width={230}
-                height={78}
-                className="h-8 sm:h-9 w-auto object-contain"
-                priority
-              />
-            </div>
-          </Link>
-          <span className="hidden xl:inline-flex items-center text-[10px] font-mono tracking-wider text-pine/70 bg-pine/5 border border-pine/10 px-2.5 py-0.5 rounded-full">
-            RC: 9930022
-          </span>
-        </div>
+        {/* Official Horizontal Logo */}
+        <Link
+          href="/"
+          className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-spring rounded-md py-1 transition-opacity duration-200 hover:opacity-90"
+          aria-label="Northern Creative Designers Summit Home"
+        >
+          <div className="relative h-8 sm:h-9 w-auto flex items-center">
+            <Image
+              src="/images/brand/logo-header.png"
+              alt="Northern Creative Designers"
+              width={220}
+              height={74}
+              className="h-8 sm:h-9 w-auto object-contain"
+              priority
+            />
+          </div>
+        </Link>
 
-        {/* Desktop Minimalist Navigation with Micro-Interactions */}
-        <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
+        {/* Minimalist Professional Navigation (4 Core Items) */}
+        <nav className="hidden md:flex items-center space-x-1 lg:space-x-4">
           {mainNavItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative px-3.5 py-2 text-xs font-medium uppercase tracking-wider transition-colors duration-200 group ${
-                  isActive ? "text-pine font-semibold" : "text-navy/70 hover:text-pine"
+                className={`relative px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-colors duration-200 group ${
+                  isActive ? "text-pine font-bold" : "text-navy/70 hover:text-pine"
                 }`}
               >
                 <span>{item.title}</span>
 
-                {/* Micro-interaction: Animated underline glide */}
+                {/* Subtle animated underline glide on hover */}
                 <span
-                  className={`absolute bottom-0 left-3.5 right-3.5 h-[2px] bg-spring rounded-full transition-all duration-300 ease-out ${
+                  className={`absolute bottom-0 left-4 right-4 h-[2px] bg-spring rounded-full transition-all duration-300 ease-out ${
                     isActive
                       ? "opacity-100 scale-x-100"
                       : "opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100"
@@ -83,24 +78,18 @@ export function SiteHeader() {
           })}
         </nav>
 
-        {/* Minimalist Action CTA */}
-        <div className="hidden lg:flex items-center space-x-3">
-          <Link
-            href="/NCD Summit 26.pdf"
-            className="inline-flex items-center justify-center px-4 py-2 rounded-full border border-pine/20 text-pine text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:bg-pine hover:text-white"
-          >
-            Brochure
-          </Link>
+        {/* Single Sleek Action CTA */}
+        <div className="hidden md:flex items-center">
           <Link
             href="/register"
-            className="inline-flex items-center justify-center px-5 py-2 rounded-full bg-spring text-navy text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:bg-[#02b25b] hover:shadow-sm active:scale-98 focus:outline-none focus-visible:ring-2 focus-visible:ring-spring focus-visible:ring-offset-2"
+            className="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-spring text-navy text-xs font-bold uppercase tracking-wider shadow-xs hover:bg-[#02b25b] hover:shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-spring focus-visible:ring-offset-2"
           >
             Register
           </Link>
         </div>
 
         {/* Mobile menu button */}
-        <div className="flex lg:hidden items-center">
+        <div className="flex md:hidden items-center">
           <button
             type="button"
             className="p-2 rounded-lg text-pine hover:bg-pine/5 focus:outline-none focus:ring-2 focus:ring-spring"
@@ -118,15 +107,7 @@ export function SiteHeader() {
 
       {/* Mobile menu dropdown */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-b border-neutral-border bg-white px-4 pt-4 pb-6 space-y-3 animate-in fade-in duration-200">
-          <div className="flex items-center justify-between pb-3 border-b border-neutral-border/60">
-            <span className="text-xs font-bold text-pine uppercase tracking-wider">
-              Navigation
-            </span>
-            <span className="text-[10px] font-mono text-pine/70 bg-pine/5 px-2 py-0.5 rounded-full border border-pine/10">
-              RC: 9930022
-            </span>
-          </div>
+        <div className="md:hidden border-b border-neutral-border bg-white px-5 pt-3 pb-6 space-y-3 animate-in fade-in duration-200">
           <nav className="flex flex-col space-y-1">
             {mainNavItems.map((item) => {
               const isActive = pathname === item.href;
@@ -134,9 +115,9 @@ export function SiteHeader() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  className={`px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
                     isActive
-                      ? "bg-pine/5 text-pine font-semibold"
+                      ? "bg-pine/5 text-pine font-bold"
                       : "text-navy/80 hover:bg-pine/5 hover:text-pine"
                   }`}
                 >
@@ -145,18 +126,19 @@ export function SiteHeader() {
               );
             })}
           </nav>
+
           <div className="pt-4 border-t border-neutral-border flex flex-col space-y-2">
             <Link
-              href="/NCD Summit 26.pdf"
-              className="w-full inline-flex items-center justify-center px-4 py-3 rounded-full border border-pine/30 text-pine text-xs font-semibold uppercase tracking-wider hover:bg-pine hover:text-white transition-colors"
-            >
-              Download PDF Brochure
-            </Link>
-            <Link
               href="/register"
-              className="w-full inline-flex items-center justify-center px-4 py-3 rounded-full bg-spring text-navy text-xs font-semibold uppercase tracking-wider hover:bg-[#02b25b] transition-colors"
+              className="w-full inline-flex items-center justify-center px-4 py-3 rounded-full bg-spring text-navy text-xs font-bold uppercase tracking-wider hover:bg-[#02b25b] transition-colors"
             >
               Register to Attend
+            </Link>
+            <Link
+              href="/NCD Summit 26.pdf"
+              className="w-full inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-pine/30 text-pine text-xs font-semibold uppercase tracking-wider hover:bg-pine hover:text-white transition-colors"
+            >
+              Download PDF Brochure
             </Link>
           </div>
         </div>

@@ -8,10 +8,7 @@ export const mainNavItems: NavItem[] = [
   { title: "About", href: "/about" },
   { title: "Programme", href: "/programme" },
   { title: "Hackathon", href: "/hackathon" },
-  { title: "Exhibitors", href: "/exhibitors" },
-  { title: "Sponsors", href: "/partners" },
-  { title: "Past Editions", href: "/past-editions" },
-  { title: "Contact", href: "/contact" },
+  { title: "Partners", href: "/partners" },
 ];
 
 export const footerNavItems = {
