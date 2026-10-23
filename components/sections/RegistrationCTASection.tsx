@@ -30,12 +30,6 @@ export function RegistrationCTASection() {
             />
           </div>
 
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/10 text-white text-xs font-bold border border-white/15 uppercase tracking-wider">
-            <span className="w-2.5 h-2.5 rounded-full bg-spring animate-pulse" />
-            <span>Registration Active • Summit 2.0</span>
-          </div>
-
           {/* Chowdeck-Style Giant Call-To-Action Heading */}
           <div className="space-y-5 max-w-3xl mx-auto">
             <h2 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-[1.02]">

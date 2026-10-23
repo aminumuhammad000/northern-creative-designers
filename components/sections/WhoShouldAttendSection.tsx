@@ -204,22 +204,13 @@ export function WhoShouldAttendSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-          <div className="max-w-2xl space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pine/5 border border-pine/10 text-xs font-extrabold text-pine uppercase tracking-wider">
-              <span className="w-2 h-2 rounded-full bg-spring" />
-              <span>Target Cohort • Page 05</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-pine tracking-tight leading-tight">
-              Who Should Attend?
-            </h2>
-            <p className="text-navy/75 text-base sm:text-lg font-normal leading-relaxed">
-              Tailored pathways engineered for every creative discipline across Northern Nigeria.
-            </p>
-          </div>
-          <span className="text-xs font-mono font-bold text-pine/80 bg-white px-4 py-2 rounded-full border border-neutral-border shadow-xs">
-            12+ Specialized Design Disciplines
-          </span>
+        <div className="max-w-3xl mb-12 space-y-3">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-pine tracking-tight leading-tight">
+            Who Should Attend?
+          </h2>
+          <p className="text-navy/75 text-base sm:text-lg font-normal leading-relaxed">
+            Tailored pathways engineered for every creative discipline across Northern Nigeria.
+          </p>
         </div>
 
         {/* Outer Card Container (Faithfully adapted to who to expecxt full section.png) */}
@@ -441,17 +432,6 @@ export function WhoShouldAttendSection() {
                   priority
                 />
               </div>
-            </div>
-
-            {/* Bottom Footer Strip */}
-            <div className="absolute bottom-0 inset-x-0 py-3 bg-[#013811]/90 border-t border-white/10 flex items-center justify-between px-6 sm:px-10 text-xs text-white/70 z-20 font-mono">
-              <span className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-spring" />
-                <span>1,000+ Creative Innovators • Kano 2026</span>
-              </span>
-              <span className="px-3 py-0.5 rounded-md bg-[#F39200] text-white font-black text-xs">
-                Page 05
-              </span>
             </div>
 
           </div>

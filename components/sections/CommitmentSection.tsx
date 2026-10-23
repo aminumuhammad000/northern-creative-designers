@@ -17,10 +17,7 @@ export function CommitmentSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16">
           <div className="max-w-2xl">
-            <span className="text-xs font-semibold text-pine uppercase tracking-wider px-3 py-1 rounded-full bg-pine/5 border border-pine/10">
-              Verified Track Record
-            </span>
-            <h2 className="type-heading text-pine mt-3">
+            <h2 className="type-heading text-pine">
               Our Commitment in Action
             </h2>
             <p className="type-body text-navy/75 text-base sm:text-lg mt-3 leading-relaxed">

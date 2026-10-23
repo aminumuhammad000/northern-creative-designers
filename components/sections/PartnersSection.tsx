@@ -23,10 +23,6 @@ export function PartnersSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Heading with Big Typography */}
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pine text-white text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-spring" />
-            <span>Sponsorship &amp; Partnerships</span>
-          </div>
           <h2 className="type-section-title text-pine font-black tracking-tight">
             Sponsorship Tiers &amp; Benefits.
           </h2>

@@ -154,11 +154,6 @@ export function ProgrammeHighlightsSection() {
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
           <div className="max-w-3xl space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pine/5 border border-pine/10 text-xs font-extrabold text-pine uppercase tracking-wider">
-              <span className="w-2 h-2 rounded-full bg-spring" />
-              <span>Program Architecture • Page 06</span>
-            </div>
-            
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-pine tracking-tight leading-tight">
               Program Features &amp; Structure.
             </h2>
@@ -412,17 +407,6 @@ export function ProgrammeHighlightsSection() {
                   className="object-contain object-bottom grayscale contrast-110"
                 />
               </div>
-            </div>
-
-            {/* Bottom Footer Strip */}
-            <div className="relative inset-x-0 w-full py-3 bg-[#013811]/90 border-t border-white/10 flex items-center justify-between px-6 sm:px-10 text-xs text-white/70 z-20 font-mono">
-              <span className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-spring" />
-                <span>Kano State • 19th December, 2026</span>
-              </span>
-              <span className="px-3 py-0.5 rounded-md bg-[#00CC67] text-[#071135] font-black text-xs">
-                06
-              </span>
             </div>
 
           </div>

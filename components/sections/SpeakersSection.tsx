@@ -12,7 +12,6 @@ export function SpeakersSection() {
     <section id="speakers" className="py-20 md:py-28 bg-white border-b border-neutral-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          tag={speakersAnnouncement.tag}
           title={speakersAnnouncement.title}
           description={speakersAnnouncement.description}
           centered
@@ -26,10 +25,6 @@ export function SpeakersSection() {
           </div>
 
           <div className="space-y-3 max-w-xl mx-auto">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-pine/5 text-pine border border-pine/10">
-              <span className="w-1.5 h-1.5 rounded-full bg-tangerine" />
-              Official Lineup Release
-            </span>
             <h3 className="type-subheading text-pine">
               {speakersAnnouncement.statusNote}
             </h3>

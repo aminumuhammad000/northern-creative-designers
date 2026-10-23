@@ -22,10 +22,6 @@ export function HackathonSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-spring/20 text-spring text-xs font-extrabold uppercase tracking-wider mb-4 border border-spring/30">
-              <Zap className="w-3.5 h-3.5" />
-              <span>2-Hour Live Design Sprint</span>
-            </div>
             <h2 className="type-section-title text-white font-black">
               Live Hackathon &amp; Audience Voting.
             </h2>

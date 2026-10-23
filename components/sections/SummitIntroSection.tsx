@@ -134,11 +134,6 @@ export function SummitIntroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-24 md:mb-32">
           {/* Left Text Column */}
           <div className="lg:col-span-7 space-y-6 text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pine text-white text-xs font-bold uppercase tracking-wider shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-spring" />
-              <span>Official Summit 2.0 Manifesto</span>
-            </div>
-
             <div className="space-y-3">
               <h2 className="type-heading text-pine text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
                 About The <span className="text-spring">Summit.</span>
@@ -230,10 +225,7 @@ export function SummitIntroSection() {
         {/* 2. Chowdeck-Style Interactive "What's on Deck?" Vertical Switcher */}
         <div className="mb-24 md:mb-32 p-8 sm:p-12 md:p-16 rounded-[2.5rem] bg-[#FAFAF8] border border-neutral-border shadow-sm">
           <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-            <span className="text-xs font-extrabold text-tangerine uppercase tracking-wider px-3.5 py-1 rounded-full bg-tangerine/10">
-              Interactive Explorer
-            </span>
-            <h3 className="type-heading text-pine mt-3 font-black">
+            <h3 className="type-heading text-pine font-black">
               What&apos;s on Deck for You?
             </h3>
             <p className="type-body text-navy/70 text-sm sm:text-base mt-2">
@@ -319,22 +311,13 @@ export function SummitIntroSection() {
 
         {/* 3. Vision & Mission Statement: Faithfully Adapted to PDF Page 04 & make the vision and mission section to be exartly like this.png */}
         <div id="vision-and-mission" className="mb-24 md:mb-32">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-            <div className="max-w-2xl space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pine/5 border border-pine/10 text-xs font-extrabold text-pine uppercase tracking-wider">
-                <span className="w-2 h-2 rounded-full bg-spring" />
-                <span>Strategic Horizon • Page 04</span>
-              </div>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-pine tracking-tight leading-tight">
-                Vision &amp; Mission.
-              </h3>
-              <p className="type-body text-navy/70 text-base sm:text-lg leading-relaxed font-normal">
-                Anchoring regional creative talent with high-impact global ambition and indigenous cultural excellence.
-              </p>
-            </div>
-            <span className="text-xs font-mono font-bold text-pine/80 bg-[#FAFAF8] px-4 py-2 rounded-full border border-neutral-border">
-              Summit 2.0 • Kano 2026
-            </span>
+          <div className="max-w-3xl mb-12 space-y-3">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-pine tracking-tight leading-tight">
+              Vision &amp; Mission.
+            </h3>
+            <p className="type-body text-navy/70 text-base sm:text-lg leading-relaxed font-normal">
+              Anchoring regional creative talent with high-impact global ambition and indigenous cultural excellence.
+            </p>
           </div>
 
           {/* Canvas Wrapper matching Page 04 */}
@@ -432,38 +415,18 @@ export function SummitIntroSection() {
               </div>
             </div>
 
-            {/* Bottom Indicator Pill Badge */}
-            <div className="py-4 bg-[#013811]/90 border-t border-white/10 flex items-center justify-between px-6 sm:px-10 text-xs text-white/70 relative z-10 font-mono">
-              <span className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-spring" />
-                <span>Foundational Charter</span>
-              </span>
-              <span className="px-3 py-0.5 rounded-full bg-spring text-[#071135] font-black text-xs">
-                Page 04
-              </span>
-            </div>
-
           </div>
         </div>
 
         {/* 4. Core Objectives: Faithfully Adapted to core objectives.png (PDF Page 05) */}
         <div id="core-objectives" className="mb-24 md:mb-32">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-            <div className="max-w-2xl space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pine/5 border border-pine/10 text-xs font-extrabold text-pine uppercase tracking-wider">
-                <span className="w-2 h-2 rounded-full bg-spring" />
-                <span>Foundational Pillars • Page 05</span>
-              </div>
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-pine tracking-tight leading-tight">
-                Core Objectives.
-              </h3>
-              <p className="type-body text-navy/70 text-base sm:text-lg leading-relaxed font-normal">
-                Four strategic pillars driving every masterclass, panel discussion, live sprint, and exhibition at Summit 2.0.
-              </p>
-            </div>
-            <span className="text-xs font-mono font-bold text-pine/80 bg-[#FAFAF8] px-4 py-2 rounded-full border border-neutral-border">
-              NCD Summit 2.0 • Kano 2026
-            </span>
+          <div className="max-w-3xl mb-12 space-y-3">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-pine tracking-tight leading-tight">
+              Core Objectives.
+            </h3>
+            <p className="type-body text-navy/70 text-base sm:text-lg leading-relaxed font-normal">
+              Four strategic pillars driving every masterclass, panel discussion, live sprint, and exhibition at Summit 2.0.
+            </p>
           </div>
 
           {/* Halftone / Dotted Background Container matching core objectives.png */}
@@ -537,13 +500,10 @@ export function SummitIntroSection() {
           </div>
         </div>
 
-        {/* 5. What to Expect (Adapted from PDF Page 06) */}
+        {/* 5. What to Expect */}
         <div className="mb-24 md:mb-32 p-8 sm:p-12 md:p-14 rounded-[2.5rem] bg-[#FAFAF8] border border-neutral-border">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-xs font-bold text-spring uppercase tracking-wider px-3.5 py-1 rounded-full bg-pine text-white">
-              Summit Experience
-            </span>
-            <h3 className="type-heading text-pine mt-3 font-black">
+            <h3 className="type-heading text-pine font-black">
               What to Expect
             </h3>
             <p className="type-body text-navy/70 text-sm mt-2">

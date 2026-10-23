@@ -21,7 +21,6 @@ export function ExhibitorSection() {
           {/* Left Text Column */}
           <div className="lg:col-span-7 space-y-6">
             <SectionHeading
-              tag="Commercial & Talent Marketplace"
               title="Client Connect Corner & Exhibition Marketplace"
               description="Bridge the gap between elite regional creative talent and paying business founders, tech enterprises, and agencies across Northern Nigeria."
             />
