@@ -1,171 +1,170 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
+  ArrowDownCircle,
+  ArrowRight,
   BookOpen,
   Zap,
   Briefcase,
   Trophy,
-  ArrowRight,
-  CheckCircle2,
-  Sparkles,
-  Layers,
   Award,
-  Users,
+  CheckCircle2,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
-interface FeatureCard {
+interface ProgramItem {
   id: string;
   category: string;
-  subtitle: string;
   headline: string;
   details: string;
   bgClass: string;
-  textClass: string;
-  subtextClass: string;
-  badgeClass: string;
-  accentBorder: string;
-  icon: React.ReactNode;
+  colPosition: "left" | "right";
+  dogEarCorner: "bottom-left" | "bottom-right";
+  tapeRotation: string;
+  tapeImage: string;
   highlights: string[];
   ctaLabel: string;
   ctaHref: string;
-  ctaVariant: "light" | "spring" | "tangerine" | "white";
-  column: "left" | "right";
 }
 
-const features: FeatureCard[] = [
-  // 1. Top Left Card: Spring Green (Core Learning)
+const programCards: ProgramItem[] = [
+  // 1. Core Learning (Spring Green) - Left Column
   {
     id: "core-learning",
-    category: "Core Learning",
-    subtitle: "Not Just Talks",
-    headline: "Keynote + Panel Session",
+    category: "Core Learning (Not Just Talks)",
+    headline: "Core Learning (Not Just Talks) Keynote + Panel Session",
     details:
       "Keynote address on Arewa visual evolution + Candid panel sessions on AI, client pricing, and international market entry.",
-    bgClass: "bg-[#01D26B] text-[#071135]",
-    textClass: "text-[#071135]",
-    subtextClass: "text-[#071135]/85",
-    badgeClass: "bg-[#071135] text-white border-transparent",
-    accentBorder: "border-[#01D26B]",
-    icon: <BookOpen className="w-7 h-7 text-[#01D26B]" />,
+    bgClass: "bg-[#00CC67]",
+    colPosition: "left",
+    dogEarCorner: "bottom-left",
+    tapeRotation: "-rotate-1",
+    tapeImage: "/images/pdf_extracted/tape_card_1.png",
     highlights: [
       "Keynote: The History & Future of Arewa Visual Identity",
-      "Panel: Pricing Creative Work & Navigating Global Markets",
-      "Panel: Integrating AI into Real Commercial Production Workflows",
+      "Panel: Pricing Models & Commercial Client Negotiations",
+      "Panel: Integrating AI into Real Agency Workflows",
     ],
-    ctaLabel: "View Keynote & Panels",
+    ctaLabel: "Session Schedule",
     ctaHref: "/programme",
-    ctaVariant: "white",
-    column: "left",
   },
 
-  // 2. Top Right Card: Deep Indigo / Purple (Creative Hackathon)
+  // 2. Creative Design Hackathon (Purple/Indigo) - Right Column
   {
     id: "creative-hackathon",
     category: "Creative",
-    subtitle: "Live Challenge",
-    headline: "Design Hackathon",
+    headline: "Creative\nDesign Hackathon",
     details:
       "High-intensity live design sprint with hardware prizes, cash awards, and transparent real-time audience voting.",
-    bgClass: "bg-[#453478] text-white",
-    textClass: "text-white",
-    subtextClass: "text-white/85",
-    badgeClass: "bg-[#01D26B] text-[#071135] border-transparent font-black",
-    accentBorder: "border-[#453478]",
-    icon: <Zap className="w-7 h-7 text-[#01D26B]" />,
+    bgClass: "bg-[#453478]",
+    colPosition: "right",
+    dogEarCorner: "bottom-right",
+    tapeRotation: "rotate-1",
+    tapeImage: "/images/pdf_extracted/tape_card_2.png",
     highlights: [
       "2-Hour Live Sprint: Rapid problem-solving under real constraints",
       "Real-Time Audience Voting & Live Jury Critiques",
       "Over ₦1,000,000 in Hardware Prizes & Cash Bounties",
     ],
-    ctaLabel: "Explore Hackathon Rules",
+    ctaLabel: "Hackathon Rules",
     ctaHref: "/hackathon",
-    ctaVariant: "spring",
-    column: "right",
   },
 
-  // 3. Bottom Left Card: Midnight Royal Navy (Business & Career)
+  // 3. Business & Career (Midnight Navy) - Left Column
   {
     id: "business-career",
     category: "Business & Career",
-    subtitle: "Dealmaking & Talent",
-    headline: "Client Connect Corner",
+    headline: "Business & Career\nClient Connect Corner",
     details:
       "Curated face-to-face dealmaking between business founders seeking top regional talent and practicing designers.",
-    bgClass: "bg-[#071135] text-white",
-    textClass: "text-white",
-    subtextClass: "text-white/85",
-    badgeClass: "bg-[#F39200] text-white border-transparent font-black",
-    accentBorder: "border-[#071135]",
-    icon: <Briefcase className="w-7 h-7 text-[#F39200]" />,
+    bgClass: "bg-[#071135]",
+    colPosition: "left",
+    dogEarCorner: "bottom-left",
+    tapeRotation: "rotate-2",
+    tapeImage: "/images/pdf_extracted/tape_card_3.png",
     highlights: [
       "Private 1-on-1 dealmaking booths with verified founders",
-      "Portfolio & proposal reviews with design directors",
-      "Exclusive Summit Marketplace tool discounts & vendor deals",
+      "Portfolio reviews with senior creative directors",
+      "Exclusive Marketplace commercial discounts",
     ],
-    ctaLabel: "Book Client Corner Booth",
+    ctaLabel: "Client Booths",
     ctaHref: "/exhibitors",
-    ctaVariant: "tangerine",
-    column: "left",
   },
 
-  // 4. Bottom Right Card: Deep Pine Green (Community & Vibe)
+  // 4. Community & Vibe (Deep Pine Green) - Right Column
   {
     id: "community-vibe",
     category: "Community & Vibe",
-    subtitle: "Exhibition & Honors",
-    headline: "Design Exhibition Wall & Awards",
+    headline: "Community & Vibe\nDesign Exhibition Wall",
     details:
-      "Physical exhibition gallery showcasing premier Arewa graphic identity, typography, and prestigious Summit 2.0 trophy honors.",
-    bgClass: "bg-[#013811] text-white",
-    textClass: "text-white",
-    subtextClass: "text-white/85",
-    badgeClass: "bg-[#F39200] text-white border-transparent font-black",
-    accentBorder: "border-[#013811]",
-    icon: <Trophy className="w-7 h-7 text-[#01D26B]" />,
+      "Physical exhibition gallery showcasing premier Arewa graphic identity, typography, and community showcases.",
+    bgClass: "bg-[#013811]",
+    colPosition: "right",
+    dogEarCorner: "bottom-right",
+    tapeRotation: "-rotate-2",
+    tapeImage: "/images/pdf_extracted/tape_card_4.png",
     highlights: [
       "Physical Gallery Wall: Curated visual works from across Arewa",
-      "Summit 2.0 Creative Excellence Awards ceremony",
-      "Authentic evening networking reception & community mixer",
+      "Public voting on community showcases",
+      "Authentic evening networking reception & mixer",
     ],
-    ctaLabel: "Submit Exhibition Work",
+    ctaLabel: "Gallery Details",
     ctaHref: "/programme",
-    ctaVariant: "spring",
-    column: "right",
+  },
+
+  // 5. Award Presentation Categories (Tangerine) - Left Column
+  {
+    id: "award-presentation",
+    category: "Recognition & Honors",
+    headline: "Award Presentation\nCategories",
+    details:
+      "Summit 2.0 trophy honors celebrating exceptional craftsmanship across brand identity, digital product, and cultural design.",
+    bgClass: "bg-[#F39200]",
+    colPosition: "left",
+    dogEarCorner: "bottom-left",
+    tapeRotation: "rotate-1",
+    tapeImage: "/images/pdf_extracted/tape_card_5.png",
+    highlights: [
+      "Annual Arewa Creative Excellence Awards ceremony",
+      "Prestigious Summit 2.0 trophy honors",
+      "Spotlight on emerging designers and trailblazers",
+    ],
+    ctaLabel: "Award Categories",
+    ctaHref: "/programme",
   },
 ];
 
 export function ProgrammeHighlightsSection() {
-  const leftCards = features.filter((f) => f.column === "left");
-  const rightCards = features.filter((f) => f.column === "right");
+  const [activeCard, setActiveCard] = useState<ProgramItem>(programCards[0]);
 
   return (
     <section
       id="programme-highlights"
       className="py-20 md:py-32 bg-[#FAFAF8] border-b border-neutral-border relative overflow-hidden"
     >
-      {/* Soft Ambient Background Elements */}
+      {/* Background Soft Glows */}
       <div className="absolute top-1/3 left-0 w-96 h-96 bg-spring/[0.04] rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-pine/[0.03] rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Section Header (Chowdeck Chunky Hierarchy) */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16 md:mb-20">
+        {/* Section Header */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
           <div className="max-w-3xl space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pine/5 border border-pine/10 text-xs font-extrabold text-pine uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-spring" />
-              <span>Program Architecture • Page 08</span>
+              <span>Program Architecture • Page 06</span>
             </div>
             
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-pine tracking-tight leading-tight">
-              Program Features.
+              Program Features &amp; Structure.
             </h2>
             
             <p className="text-navy/75 text-base sm:text-xl font-normal leading-relaxed max-w-2xl">
-              Moving beyond conventional talk shows to deliver deep learning, real-time collaboration, and actionable career pathways for creative practitioners.
+              Moving beyond conventional talk shows to deliver deep learning, real-time collaboration, and actionable career pathways.
             </p>
           </div>
 
@@ -176,7 +175,7 @@ export function ProgrammeHighlightsSection() {
               size="lg"
               className="hover:scale-105 active:scale-95 transition-all shadow-xs"
             >
-              Full Schedule Matrix
+              Full Schedule
             </Button>
             <Button
               href="/register"
@@ -189,225 +188,245 @@ export function ProgrammeHighlightsSection() {
           </div>
         </div>
 
-        {/* 4 Chunky Saturated Feature Cards: Staggered 2-Column Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 items-start">
+        {/* Outer Canvas Container matching program feature section.png */}
+        <div className="rounded-[2.5rem] bg-[#F8FFF8] bg-[radial-gradient(#00CC67_1.75px,transparent_1.75px)] [background-size:20px_20px] border border-neutral-border/70 shadow-2xl overflow-hidden relative">
           
-          {/* Left Column (Card 1 & Card 3) */}
-          <div className="space-y-8 lg:space-y-10">
-            {leftCards.map((card) => (
-              <div
-                key={card.id}
-                className={`
-                  group rounded-[2.5rem] p-8 sm:p-12 ${card.bgClass} shadow-xl
-                  hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01]
-                  transition-all duration-300 ease-out flex flex-col justify-between
-                  relative overflow-hidden
-                `}
-              >
-                {/* Micro-glow highlight inside card */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.08] rounded-full blur-2xl pointer-events-none" />
-
-                <div className="relative z-10">
-                  {/* Top Header Pill Bar */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
-                    <div className="flex items-center gap-3">
-                      <div className="w-14 h-14 rounded-2xl bg-[#071135] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
-                        {card.icon}
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider block opacity-75">
-                          Category
-                        </span>
-                        <span className="font-black text-lg sm:text-xl leading-tight block">
-                          {card.category}
-                        </span>
-                      </div>
-                    </div>
-
-                    <span
-                      className={`
-                        px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider shadow-xs
-                        group-hover:rotate-1 group-hover:scale-105 transition-transform duration-300
-                        ${card.badgeClass}
-                      `}
-                    >
-                      {card.subtitle}
-                    </span>
-                  </div>
-
-                  {/* Main Headline */}
-                  <h3 className={`text-2xl sm:text-3xl lg:text-4xl font-black mb-4 tracking-tight leading-tight ${card.textClass}`}>
-                    {card.headline}
-                  </h3>
-
-                  {/* Details Paragraph */}
-                  <p className={`text-base sm:text-lg mb-8 leading-relaxed font-normal ${card.subtextClass}`}>
-                    {card.details}
-                  </p>
-
-                  {/* Key Highlights Checklist */}
-                  <div className="space-y-3 mb-10 pt-6 border-t border-current/15">
-                    {card.highlights.map((point, i) => (
-                      <div key={i} className="flex items-start gap-3 text-sm sm:text-base">
-                        <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5 opacity-90" />
-                        <span className="font-semibold leading-snug">{point}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Bottom Interactive Action Footer */}
-                <div className="relative z-10 pt-6 border-t border-current/15 flex flex-wrap items-center justify-between gap-4">
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider opacity-80">
-                    Kano • 19 Dec 2026
-                  </span>
-
-                  <Link
-                    href={card.ctaHref}
-                    className={`
-                      inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-extrabold uppercase tracking-wider
-                      shadow-md hover:scale-105 active:scale-95 transition-all
-                      ${
-                        card.ctaVariant === "white"
-                          ? "bg-[#071135] text-white hover:bg-[#0c1b4d]"
-                          : card.ctaVariant === "spring"
-                          ? "bg-[#01D26B] text-[#071135] hover:bg-[#02e073]"
-                          : "bg-[#F39200] text-white hover:bg-[#ff9e0f]"
-                      }
-                    `}
-                  >
-                    <span>{card.ctaLabel}</span>
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </div>
+          {/* Top Title Bar with Arrow Down Circle and Floating 3D Torus */}
+          <div className="p-8 sm:p-12 md:p-16 relative overflow-hidden flex items-center justify-between">
+            <div className="flex items-center gap-3 sm:gap-4 relative z-10">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-[#00CC67] flex items-center justify-center text-[#00CC67]">
+                <ArrowDownCircle className="w-6 h-6 sm:w-7 sm:h-7 stroke-[2.5]" />
               </div>
-            ))}
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#013811] tracking-tight">
+                Program Features
+              </h3>
+            </div>
+
+            {/* 3D Iridescent Coil Element on the Top Right */}
+            <div className="hidden lg:block absolute -top-10 right-4 w-64 h-64 z-10 pointer-events-none transition-transform duration-700 hover:rotate-6 hover:scale-105">
+              <Image
+                src="/images/pdf_extracted/vector_3d_torus.png"
+                alt="Vector 3D Art Element"
+                width={280}
+                height={280}
+                className="w-full h-full object-contain drop-shadow-2xl"
+              />
+            </div>
           </div>
 
-          {/* Right Column (Card 2 & Card 4) - Offset by md:mt-10 for Chowdeck Staggered Masonry Feel */}
-          <div className="space-y-8 lg:space-y-10 md:mt-10">
-            {rightCards.map((card) => (
-              <div
-                key={card.id}
-                className={`
-                  group rounded-[2.5rem] p-8 sm:p-12 ${card.bgClass} shadow-xl
-                  hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.01]
-                  transition-all duration-300 ease-out flex flex-col justify-between
-                  relative overflow-hidden
-                `}
-              >
-                {/* Micro-glow highlight inside card */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.08] rounded-full blur-2xl pointer-events-none" />
+          {/* Staggered Taped Sticky Cards Grid (Faithfully matching Page 06 / program feature section.png) */}
+          <div className="px-6 sm:px-12 md:px-16 pb-16 relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
+              
+              {/* Left Column Cards (Card 1: Core Learning, Card 3: Client Connect, Card 5: Awards) */}
+              <div className="space-y-10 sm:space-y-14">
+                
+                {/* Card 1: Core Learning */}
+                <div
+                  onClick={() => setActiveCard(programCards[0])}
+                  className={`
+                    group relative p-8 sm:p-10 ${programCards[0].bgClass} text-white shadow-xl
+                    hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl
+                    transition-all duration-300 ease-out cursor-pointer
+                    rounded-tr-2xl rounded-tl-2xl rounded-br-2xl rounded-bl-[2.5rem]
+                  `}
+                >
+                  {/* Brown Craft Tape on Top */}
+                  <div className={`absolute -top-3.5 left-1/2 -translate-x-1/2 w-32 h-7 bg-[#CA8A04]/80 border-y border-[#A16207] shadow-sm transform ${programCards[0].tapeRotation} pointer-events-none rounded-xs`} />
+                  
+                  {/* Dog-ear fold corner indicator */}
+                  <div className="absolute bottom-0 left-0 w-8 h-8 bg-black/25 rounded-tr-xl pointer-events-none" />
 
-                <div className="relative z-10">
-                  {/* Top Header Pill Bar */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
-                    <div className="flex items-center gap-3">
-                      <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
-                        {card.icon}
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider block opacity-75">
-                          Category
-                        </span>
-                        <span className="font-black text-lg sm:text-xl leading-tight block">
-                          {card.category}
-                        </span>
-                      </div>
-                    </div>
-
-                    <span
-                      className={`
-                        px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider shadow-xs
-                        group-hover:-rotate-1 group-hover:scale-105 transition-transform duration-300
-                        ${card.badgeClass}
-                      `}
-                    >
-                      {card.subtitle}
-                    </span>
-                  </div>
-
-                  {/* Main Headline */}
-                  <h3 className={`text-2xl sm:text-3xl lg:text-4xl font-black mb-4 tracking-tight leading-tight ${card.textClass}`}>
-                    {card.headline}
-                  </h3>
-
-                  {/* Details Paragraph */}
-                  <p className={`text-base sm:text-lg mb-8 leading-relaxed font-normal ${card.subtextClass}`}>
-                    {card.details}
+                  <h4 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug whitespace-pre-line mb-3">
+                    {programCards[0].headline}
+                  </h4>
+                  <p className="text-white/90 text-sm sm:text-base leading-relaxed font-normal">
+                    {programCards[0].details}
                   </p>
+                </div>
 
-                  {/* Key Highlights Checklist */}
-                  <div className="space-y-3 mb-10 pt-6 border-t border-current/15">
-                    {card.highlights.map((point, i) => (
-                      <div key={i} className="flex items-start gap-3 text-sm sm:text-base">
-                        <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5 opacity-90" />
-                        <span className="font-semibold leading-snug">{point}</span>
-                      </div>
-                    ))}
+                {/* Card 3: Business & Career Client Connect Corner */}
+                <div
+                  onClick={() => setActiveCard(programCards[2])}
+                  className={`
+                    group relative p-8 sm:p-10 ${programCards[2].bgClass} text-white shadow-xl
+                    hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl
+                    transition-all duration-300 ease-out cursor-pointer
+                    rounded-tr-2xl rounded-tl-2xl rounded-br-2xl rounded-bl-[2.5rem]
+                  `}
+                >
+                  {/* Brown Craft Tape on Top */}
+                  <div className={`absolute -top-3.5 left-1/2 -translate-x-1/2 w-32 h-7 bg-[#CA8A04]/80 border-y border-[#A16207] shadow-sm transform ${programCards[2].tapeRotation} pointer-events-none rounded-xs`} />
+                  
+                  {/* Dog-ear fold corner indicator */}
+                  <div className="absolute bottom-0 left-0 w-8 h-8 bg-black/25 rounded-tr-xl pointer-events-none" />
+
+                  <h4 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug whitespace-pre-line mb-3">
+                    {programCards[2].headline}
+                  </h4>
+                  <p className="text-white/90 text-sm sm:text-base leading-relaxed font-normal">
+                    {programCards[2].details}
+                  </p>
+                </div>
+
+                {/* Card 5: Award Presentation Categories */}
+                <div
+                  onClick={() => setActiveCard(programCards[4])}
+                  className={`
+                    group relative p-8 sm:p-10 ${programCards[4].bgClass} text-white shadow-xl
+                    hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl
+                    transition-all duration-300 ease-out cursor-pointer
+                    rounded-tr-2xl rounded-tl-2xl rounded-br-2xl rounded-bl-[2.5rem]
+                  `}
+                >
+                  {/* Brown Craft Tape on Top */}
+                  <div className={`absolute -top-3.5 left-1/2 -translate-x-1/2 w-32 h-7 bg-[#CA8A04]/80 border-y border-[#A16207] shadow-sm transform ${programCards[4].tapeRotation} pointer-events-none rounded-xs`} />
+                  
+                  {/* Dog-ear fold corner indicator */}
+                  <div className="absolute bottom-0 left-0 w-8 h-8 bg-black/25 rounded-tr-xl pointer-events-none" />
+
+                  <h4 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug whitespace-pre-line mb-3">
+                    {programCards[4].headline}
+                  </h4>
+                  <p className="text-white/90 text-sm sm:text-base leading-relaxed font-normal">
+                    {programCards[4].details}
+                  </p>
+                </div>
+
+              </div>
+
+              {/* Right Column Cards (Card 2: Creative Hackathon, Card 4: Design Exhibition Wall) - Offset down for authentic zigzag */}
+              <div className="space-y-10 sm:space-y-14 md:mt-16">
+                
+                {/* Card 2: Creative Design Hackathon */}
+                <div
+                  onClick={() => setActiveCard(programCards[1])}
+                  className={`
+                    group relative p-8 sm:p-10 ${programCards[1].bgClass} text-white shadow-xl
+                    hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl
+                    transition-all duration-300 ease-out cursor-pointer
+                    rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-[2.5rem]
+                  `}
+                >
+                  {/* Brown Craft Tape on Top */}
+                  <div className={`absolute -top-3.5 left-1/2 -translate-x-1/2 w-32 h-7 bg-[#CA8A04]/80 border-y border-[#A16207] shadow-sm transform ${programCards[1].tapeRotation} pointer-events-none rounded-xs`} />
+                  
+                  {/* Dog-ear fold corner indicator */}
+                  <div className="absolute bottom-0 right-0 w-8 h-8 bg-black/25 rounded-tl-xl pointer-events-none" />
+
+                  <h4 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug whitespace-pre-line mb-3">
+                    {programCards[1].headline}
+                  </h4>
+                  <p className="text-white/90 text-sm sm:text-base leading-relaxed font-normal">
+                    {programCards[1].details}
+                  </p>
+                </div>
+
+                {/* Card 4: Community & Vibe Design Exhibition Wall */}
+                <div
+                  onClick={() => setActiveCard(programCards[3])}
+                  className={`
+                    group relative p-8 sm:p-10 ${programCards[3].bgClass} text-white shadow-xl
+                    hover:-translate-y-2 hover:scale-[1.02] hover:shadow-2xl
+                    transition-all duration-300 ease-out cursor-pointer
+                    rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-[2.5rem]
+                  `}
+                >
+                  {/* Brown Craft Tape on Top */}
+                  <div className={`absolute -top-3.5 left-1/2 -translate-x-1/2 w-32 h-7 bg-[#CA8A04]/80 border-y border-[#A16207] shadow-sm transform ${programCards[3].tapeRotation} pointer-events-none rounded-xs`} />
+                  
+                  {/* Dog-ear fold corner indicator */}
+                  <div className="absolute bottom-0 right-0 w-8 h-8 bg-black/25 rounded-tl-xl pointer-events-none" />
+
+                  <h4 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-snug whitespace-pre-line mb-3">
+                    {programCards[3].headline}
+                  </h4>
+                  <p className="text-white/90 text-sm sm:text-base leading-relaxed font-normal">
+                    {programCards[3].details}
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* Selected Card Interactive Detail Callout */}
+            <div className="mt-14 p-6 sm:p-8 rounded-[2rem] bg-white border border-neutral-border shadow-lg">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-neutral-border/60">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-xl ${activeCard.bgClass} flex items-center justify-center text-white font-bold text-xs`}>
+                    ✦
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-pine/70 bg-pine/5 px-2.5 py-0.5 rounded-full border border-pine/10">
+                      {activeCard.category}
+                    </span>
+                    <h4 className="text-xl sm:text-2xl font-black text-pine mt-0.5 tracking-tight">
+                      {activeCard.headline.replace("\n", " — ")}
+                    </h4>
                   </div>
                 </div>
 
-                {/* Bottom Interactive Action Footer */}
-                <div className="relative z-10 pt-6 border-t border-current/15 flex flex-wrap items-center justify-between gap-4">
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider opacity-80">
-                    Kano • 19 Dec 2026
-                  </span>
-
-                  <Link
-                    href={card.ctaHref}
-                    className={`
-                      inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-extrabold uppercase tracking-wider
-                      shadow-md hover:scale-105 active:scale-95 transition-all
-                      ${
-                        card.ctaVariant === "white"
-                          ? "bg-white text-[#071135] hover:bg-white/90"
-                          : card.ctaVariant === "spring"
-                          ? "bg-[#01D26B] text-[#071135] hover:bg-[#02e073]"
-                          : "bg-[#F39200] text-white hover:bg-[#ff9e0f]"
-                      }
-                    `}
-                  >
-                    <span>{card.ctaLabel}</span>
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </div>
+                <Link
+                  href={activeCard.ctaHref}
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-pine hover:bg-[#024a18] text-white text-xs font-extrabold tracking-wider uppercase hover:scale-105 active:scale-95 transition-all shadow-sm flex-shrink-0"
+                >
+                  <span>{activeCard.ctaLabel}</span>
+                  <ArrowRight className="w-4 h-4 text-spring" />
+                </Link>
               </div>
-            ))}
+
+              <div className="pt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+                {activeCard.highlights.map((item, i) => (
+                  <div key={i} className="flex items-start gap-2 text-xs sm:text-sm text-navy/80">
+                    <CheckCircle2 className="w-4 h-4 text-spring flex-shrink-0 mt-0.5" />
+                    <span className="leading-snug">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
 
-        </div>
+          {/* Bottom Section: Real Kano Flyover Landmark & "I ❤️ KANO" Monument */}
+          <div className="relative pt-8 overflow-hidden flex flex-col justify-end items-center">
+            
+            {/* 3D Vector Metallic Graphic on the Bottom Right */}
+            <div className="hidden lg:block absolute bottom-2 right-4 w-52 h-52 z-10 pointer-events-none transition-transform duration-700 hover:-rotate-6 hover:scale-105">
+              <Image
+                src="/images/pdf_extracted/vector_3d_hook.png"
+                alt="Vector 3D Graphic"
+                width={220}
+                height={220}
+                className="w-full h-full object-contain drop-shadow-2xl"
+              />
+            </div>
 
-        {/* Bottom Banner Strip for Hackathon & Client Connect */}
-        <div className="mt-16 p-8 sm:p-12 rounded-[2.5rem] bg-[#013811] text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-spring/[0.05] rounded-full blur-2xl pointer-events-none" />
+            {/* Kano Flyover Landmark Image */}
+            <div className="relative z-10 w-full max-w-3xl px-4 flex justify-center">
+              <div className="relative w-full aspect-[1625/1401] max-h-[360px] sm:max-h-[460px]">
+                <Image
+                  src="/images/pdf_extracted/kano_bridge_landmark.png"
+                  alt="Iconic Kano City Flyover Landmark and I Love Kano Monument"
+                  fill
+                  className="object-contain object-bottom grayscale contrast-110"
+                />
+              </div>
+            </div>
 
-          <div className="space-y-2 text-center md:text-left relative z-10">
-            <span className="text-spring text-xs font-mono font-bold uppercase tracking-wider">
-              Talent &amp; Dealmaking Architecture
-            </span>
-            <h4 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              Ready to Compete or Hire Top Arewa Talent?
-            </h4>
-            <p className="text-white/80 text-sm sm:text-base max-w-xl font-normal leading-relaxed">
-              Register for the live 2-Hour Design Hackathon or reserve an enterprise booth in the Client Connect Corner.
-            </p>
+            {/* Bottom Footer Strip */}
+            <div className="relative inset-x-0 w-full py-3 bg-[#013811]/90 border-t border-white/10 flex items-center justify-between px-6 sm:px-10 text-xs text-white/70 z-20 font-mono">
+              <span className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-spring" />
+                <span>Kano State • 19th December, 2026</span>
+              </span>
+              <span className="px-3 py-0.5 rounded-md bg-[#00CC67] text-[#071135] font-black text-xs">
+                06
+              </span>
+            </div>
+
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 relative z-10">
-            <Link
-              href="/hackathon"
-              className="px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-extrabold tracking-wider uppercase hover:scale-105 active:scale-95 transition-all border border-white/15"
-            >
-              Hackathon Guidelines
-            </Link>
-            <Link
-              href="/exhibitors"
-              className="px-7 py-3.5 rounded-full bg-[#01D26B] text-[#071135] text-xs font-black tracking-wider uppercase hover:bg-[#02e073] hover:scale-105 active:scale-95 transition-all shadow-md"
-            >
-              Client Booths
-            </Link>
-          </div>
         </div>
 
       </div>
