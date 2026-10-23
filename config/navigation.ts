@@ -5,7 +5,7 @@ export interface NavItem {
 }
 
 export const mainNavItems: NavItem[] = [
-  { title: "About", href: "/about" },
+  { title: "About", href: "/#about-summit" },
   { title: "Programme", href: "/programme" },
   { title: "Hackathon", href: "/hackathon" },
   { title: "Partners", href: "/partners" },
@@ -13,7 +13,7 @@ export const mainNavItems: NavItem[] = [
 
 export const footerNavItems = {
   summit: [
-    { title: "About Summit 2.0", href: "/about" },
+    { title: "About Summit 2.0", href: "/#about-summit" },
     { title: "Programme Schedule", href: "/programme" },
     { title: "Speakers Announcement", href: "/speakers" },
     { title: "Hackathon & Voting", href: "/hackathon" },

@@ -161,7 +161,16 @@ export function SiteFooter() {
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/70">
           <p>
             © {currentYear} Northern Creative Designers. All rights reserved.
-            Organised by the Executive Committee.
+            Organised by the Executive Committee.{" "}
+            <a
+              href="https://ameetechnology.com.ng"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-spring font-medium hover:underline"
+            >
+              ameetechnology.com.ng
+            </a>{" "}
+            as software partner.
           </p>
 
           <div className="flex flex-wrap items-center gap-4 text-xs">

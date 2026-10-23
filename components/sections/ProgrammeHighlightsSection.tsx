@@ -191,6 +191,76 @@ export function ProgrammeHighlightsSection() {
 
           {/* Main Grid: 3 Sticky Cards in Foreground */}
           <div className="px-6 sm:px-12 md:px-16 pb-16 relative z-10">
+            {/* Previous vs Upcoming Programme Evolution Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto mb-12">
+              
+              {/* Previous Edition: Summit 1.0 */}
+              <div className="rounded-3xl overflow-hidden border border-neutral-border bg-white shadow-md flex flex-col group">
+                <div className="aspect-[16/10] relative w-full overflow-hidden bg-black/40">
+                  <Image
+                    src="/images/community/ncd_tutor_presenting.jpg"
+                    alt="Summit 1.0 Technical Masterclasses"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                  <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/20 backdrop-blur-xs text-white text-[10px] font-mono font-bold uppercase tracking-wider">
+                    Previous: Summit 1.0
+                  </span>
+                  <div className="absolute bottom-3 left-3 right-3 text-white">
+                    <p className="font-black text-base sm:text-lg leading-snug">
+                      Hands-On Masterlabs &amp; Bootcamps
+                    </p>
+                    <p className="text-white/75 text-xs font-mono">
+                      225+ Certified Practitioners Trained
+                    </p>
+                  </div>
+                </div>
+                <div className="p-5 text-xs sm:text-sm text-navy/75 leading-relaxed bg-white">
+                  Intensive physical masterclasses covering Brand Identity systems, The Design Code, and UI/UX product frameworks in Kano.
+                </div>
+              </div>
+
+              {/* Upcoming Edition: Summit 2.0 */}
+              <div className="rounded-3xl overflow-hidden border-2 border-spring bg-pine text-white shadow-xl flex flex-col group relative">
+                <div className="aspect-[16/10] relative w-full overflow-hidden bg-black/40">
+                  <Image
+                    src="/images/community/ncd_hall_audience.jpg"
+                    alt="Summit 2.0 Roots & Vectors"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-pine/90 via-pine/30 to-transparent" />
+                  <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-spring text-navy text-[10px] font-mono font-bold uppercase tracking-wider shadow-sm">
+                    Upcoming: Summit 2.0 (19 Dec 2026)
+                  </span>
+                  <div className="absolute bottom-3 left-3 right-3 text-white">
+                    <p className="font-black text-base sm:text-lg leading-snug text-white">
+                      Roots &amp; Vectors: 1,000+ Creators
+                    </p>
+                    <p className="text-spring text-xs font-mono font-bold">
+                      Kano, Northern Nigeria
+                    </p>
+                  </div>
+                </div>
+                <div className="p-5 bg-pine text-xs sm:text-sm text-white/80 leading-relaxed flex flex-col justify-between flex-1 gap-4">
+                  <p>
+                    Expanded annual gathering featuring Client Connect Corner, curated physical Design Exhibition Wall, 3 keynote stages, and live Hackathon.
+                  </p>
+                  <div className="pt-2 border-t border-white/15 flex items-center justify-between">
+                    <Link
+                      href="/programme"
+                      className="text-xs font-mono font-bold uppercase tracking-wider text-spring hover:underline inline-flex items-center gap-1.5"
+                    >
+                      <span>Explore Full 2026 Schedule</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
             {/* 3 Staggered Taped Sticky Cards in 3 columns */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-start max-w-6xl mx-auto">
               {programCards.map((card) => (

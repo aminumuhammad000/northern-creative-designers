@@ -244,7 +244,7 @@ export const customizedPartnerships = [
   {
     title: "Refreshment & Hospitality Partner",
     deliverable:
-      "Provide refreshments, artisanal local drinks (e.g., Zobo), and catering for the VIP executive dinner and post-event networking session.",
+      "Provide artisan refreshments, authentic local drinks, and catering for executive VIP and networking sessions.",
   },
 ];
 

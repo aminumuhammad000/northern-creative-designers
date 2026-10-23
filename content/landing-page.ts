@@ -295,7 +295,7 @@ export const landingPageContent = {
       },
       {
         title: "Refreshment & Hospitality Partner",
-        description: "Provide catering, drinks (e.g. authentic Zobo), and after-party hospitality.",
+        description: "Provide artisan refreshments, authentic local drinks, and catering for executive VIP and networking sessions.",
       },
     ],
     bankDetails: {

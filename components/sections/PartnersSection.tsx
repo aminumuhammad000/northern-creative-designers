@@ -115,20 +115,104 @@ export function PartnersSection() {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
           <div className="max-w-3xl space-y-3">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-pine tracking-tight leading-tight">
-              Sponsorship Tiers &amp; Benefits.
+              Partners &amp; Sponsors.
             </h2>
             <p className="type-body text-navy/75 text-base sm:text-xl font-normal leading-relaxed max-w-2xl">
               Position your organization before Northern Nigeria&apos;s creative and technological ecosystem. We invite corporate partners and stakeholders to power regional design excellence.
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              href="/contact?subject=Sponsorship+Enquiry"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-spring text-navy text-xs sm:text-sm font-black uppercase tracking-wider hover:bg-[#02b25b] hover:scale-105 active:scale-95 transition-all shadow-md"
+            >
+              <span>Register as a Sponsor</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
             <Link
               href="/NCD Summit 26.pdf"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-pine/30 text-pine text-xs sm:text-sm font-bold uppercase tracking-wider hover:border-pine hover:bg-pine/5 transition-all shadow-xs"
             >
               <span>Partnership Deck (PDF)</span>
             </Link>
+          </div>
+        </div>
+
+        {/* Featured Official Software Partner Card: AMEE TECHNOLOGY LTD */}
+        <div className="mb-14 p-6 sm:p-10 md:p-12 rounded-[2.5rem] bg-pine text-white border-2 border-spring shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-spring/10 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+            <div className="lg:col-span-8 space-y-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-spring text-navy text-xs font-mono font-bold uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Lead Technology &amp; Software Partner</span>
+              </div>
+              <h3 className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
+                Amee Technology Ltd
+              </h3>
+              <p className="text-white/85 text-sm sm:text-base leading-relaxed max-w-2xl">
+                Official software engineering partner powering the Northern Creative Designers Summit 2.0 digital architecture. Delivering enterprise registration pipelines, real-time attendee verification, digital ticketing, and interactive live voting.
+              </p>
+              <div className="pt-2 flex flex-wrap items-center gap-4">
+                <a
+                  href="https://ameetechnology.com.ng"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-pine hover:bg-neutral-100 font-bold text-xs uppercase tracking-wider transition-all shadow-md"
+                >
+                  <span>Visit ameetechnology.com.ng</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-pine" />
+                </a>
+                <span className="text-xs text-spring font-mono">
+                  ✦ Trusted Software &amp; Cloud Infrastructure
+                </span>
+              </div>
+            </div>
+
+            {/* Partner Flyer Preview / Callout Box */}
+            <div className="lg:col-span-4 flex justify-center">
+              <div className="relative w-full max-w-[280px] sm:max-w-[320px] rounded-2xl overflow-hidden border border-white/20 shadow-xl bg-black/40 group">
+                <div className="aspect-[4/5] relative w-full overflow-hidden">
+                  <Image
+                    src="/images/brand/software_partner_amee.jpg"
+                    alt="Amee Technology Ltd Software Partner with Northern Creative Designers"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3 text-white text-xs">
+                    <p className="font-bold">Official Software Partner</p>
+                    <p className="text-white/70 text-[11px]">Amee Technology Ltd × NCD</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Ecosystem & Previous Supporting Partners */}
+        <div className="mb-20 p-6 sm:p-8 rounded-2xl bg-[#FAFAF8] border border-neutral-border shadow-xs">
+          <p className="text-xs font-mono font-bold uppercase tracking-wider text-pine/70 mb-4 text-center">
+            Recognised Financial, Technology &amp; Ecosystem Partners
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8">
+            <div className="px-5 py-3 rounded-xl bg-white border border-neutral-border shadow-xs flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-spring" />
+              <span className="font-bold text-sm text-pine">Amee Technology Ltd</span>
+              <span className="text-[10px] font-mono text-pine/60 bg-pine/5 px-2 py-0.5 rounded-full">Software</span>
+            </div>
+            <div className="px-5 py-3 rounded-xl bg-white border border-neutral-border shadow-xs flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-tangerine" />
+              <span className="font-bold text-sm text-pine">KUDA Microfinance Bank</span>
+              <span className="text-[10px] font-mono text-pine/60 bg-pine/5 px-2 py-0.5 rounded-full">Banking</span>
+            </div>
+            <div className="px-5 py-3 rounded-xl bg-white border border-neutral-border shadow-xs flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-pine" />
+              <span className="font-bold text-sm text-pine">Innovate Arewa Alliance</span>
+              <span className="text-[10px] font-mono text-pine/60 bg-pine/5 px-2 py-0.5 rounded-full">Ecosystem</span>
+            </div>
           </div>
         </div>
 

@@ -55,46 +55,85 @@ export function HackathonSection() {
           </div>
         </div>
 
-        {/* Minimalist Halftone Canvas with Real Workshop Photo & Curated Tracks */}
+        {/* Halftone Canvas with Previous & Upcoming Hackathon Showcases + Curated Tracks */}
         <div className="p-6 sm:p-10 md:p-12 rounded-[2.5rem] bg-[#F6FFF8] bg-[radial-gradient(#00CC67_1.75px,transparent_1.75px)] [background-size:20px_20px] border border-neutral-border/70 shadow-xl overflow-hidden">
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             
-            {/* Left Side: Real Collaborative Tech Hackathon Photography */}
-            <div className="lg:col-span-5 relative">
-              <div className="relative w-full aspect-[4/3] rounded-[2rem] overflow-hidden border border-pine/20 shadow-xl group">
-                <Image
-                  src="/images/community/live_hackathon_sprint.jpg"
-                  alt="Northern Creative Designers live design sprint collaboration"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-pine/80 via-pine/20 to-transparent" />
-
-                {/* Floating Minimalist Prize Pool Pill */}
-                <div className="absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-white/40 shadow-lg text-navy flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-spring flex items-center justify-center text-navy">
-                      <Trophy className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-bold text-pine/70 uppercase tracking-wide">
-                        Prize Pool
-                      </p>
-                      <p className="text-sm font-black text-pine">
-                        ₦1,000,000+ Hardware &amp; Cash
-                      </p>
-                    </div>
-                  </div>
-                  <span className="text-xs font-mono font-bold text-tangerine bg-tangerine/10 px-2.5 py-1 rounded-full">
-                    Live Sprint
+            {/* Left Side: Previous & Upcoming Hackathon Visual Cards */}
+            <div className="lg:col-span-5 space-y-6">
+              
+              {/* Card 1: Previous Edition (2025 Sprint) */}
+              <div className="rounded-[2rem] overflow-hidden border border-pine/20 shadow-lg bg-white group flex flex-col">
+                <div className="relative w-full aspect-[16/10] overflow-hidden bg-black/40">
+                  <Image
+                    src="/images/community/ncd_class_training.jpg"
+                    alt="Northern Design Hackathon 2025 Sprint"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/20 backdrop-blur-xs text-white text-[10px] font-mono font-black uppercase tracking-wider">
+                    Previous: 2025 Edition
                   </span>
+                  <div className="absolute bottom-3 left-3 right-3 text-white">
+                    <p className="font-black text-sm sm:text-base leading-snug">
+                      Northern Design Hackathon 1.0
+                    </p>
+                    <p className="text-white/75 text-xs font-mono">
+                      ₦100,000 Cash Prizes Awarded
+                    </p>
+                  </div>
+                </div>
+                <div className="p-4 bg-white text-xs text-navy/75 leading-relaxed">
+                  Finalist teams tackled cultural identity design and civic user flows live in Kano, pioneering rapid prototyping across the region.
                 </div>
               </div>
+
+              {/* Card 2: Upcoming Edition (Summit 2.0 Live Hackathon) */}
+              <div className="rounded-[2rem] overflow-hidden border-2 border-spring shadow-xl bg-pine text-white group flex flex-col relative">
+                <div className="relative w-full aspect-[16/10] overflow-hidden bg-black/40">
+                  <Image
+                    src="/images/community/ncd_peer_interaction.jpg"
+                    alt="Summit 2.0 Live Hackathon"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-pine/90 via-pine/30 to-transparent" />
+                  <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-spring text-[#071135] text-[10px] font-mono font-black uppercase tracking-wider shadow-sm">
+                    Upcoming: 19 Dec 2026
+                  </span>
+                  <div className="absolute bottom-3 left-3 right-3 text-white">
+                    <p className="font-black text-base sm:text-lg leading-tight text-white">
+                      Summit 2.0 Stage Sprint
+                    </p>
+                    <p className="text-spring text-xs font-mono font-bold">
+                      ₦1,000,000+ Hardware &amp; Cash Bounties
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-5 bg-pine space-y-3">
+                  <p className="text-xs text-white/80 leading-relaxed">
+                    120-minute live stage execution. Teams of 2–4 build under constraints with real-time jury evaluation and audience voting.
+                  </p>
+
+                  <div className="pt-2 border-t border-white/15 flex flex-col sm:flex-row items-center gap-3">
+                    <Link
+                      href="/hackathon/register"
+                      className="w-full inline-flex items-center justify-center py-3 px-5 rounded-full bg-spring text-navy text-xs font-black uppercase tracking-wider hover:bg-[#02b25b] hover:scale-105 active:scale-95 transition-all shadow-md"
+                    >
+                      <span>Register for Hackathon</span>
+                      <ArrowRight className="w-3.5 h-3.5 ml-2" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
             </div>
 
-            {/* Right Side: 2 Minimalist Chunky Track Cards */}
+            {/* Right Side: 2 Minimalist Chunky Track Cards + Registration Callout */}
             <div className="lg:col-span-7 space-y-6">
               
               {/* Track 01: Tangerine Card */}
@@ -140,6 +179,39 @@ export function HackathonSection() {
                   <span className="px-3 py-1 rounded-full bg-white/15">✦ Figma Prototypes</span>
                   <span className="px-3 py-1 rounded-full bg-white/15">✦ Civic UX Flows</span>
                   <span className="px-3 py-1 rounded-full bg-white/15">✦ 3D Motion Reel</span>
+                </div>
+              </div>
+
+              {/* Detailed Registration Callout */}
+              <div className="p-6 sm:p-8 rounded-[2rem] bg-white border border-neutral-border shadow-md space-y-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-pine/70 bg-pine/5 px-2.5 py-0.5 rounded-full border border-pine/10">
+                      Team &amp; Solo Entries Open
+                    </span>
+                    <h4 className="text-lg sm:text-xl font-bold text-pine mt-1">
+                      Ready to Compete on the Main Stage?
+                    </h4>
+                  </div>
+                  <Trophy className="w-8 h-8 text-[#F39200] flex-shrink-0" />
+                </div>
+                <p className="text-xs sm:text-sm text-navy/75 leading-relaxed">
+                  Join 10+ selected finalist teams. Receive mentorship from senior product leads, access computational design credits, and compete for ₦1,000,000+ in hardware tools and cash prizes.
+                </p>
+                <div className="pt-2 flex flex-wrap items-center gap-3">
+                  <Link
+                    href="/hackathon/register"
+                    className="inline-flex items-center justify-center py-2.5 px-6 rounded-full bg-pine hover:bg-[#024a18] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
+                  >
+                    <span>Apply to Hackathon Track</span>
+                    <ArrowRight className="w-3.5 h-3.5 ml-2 text-spring" />
+                  </Link>
+                  <Link
+                    href="/voting-rules"
+                    className="inline-flex items-center justify-center py-2.5 px-5 rounded-full border border-pine/30 text-pine text-xs font-medium uppercase tracking-wider hover:bg-pine/5 transition-all"
+                  >
+                    <span>Jury &amp; Voting Criteria</span>
+                  </Link>
                 </div>
               </div>
 

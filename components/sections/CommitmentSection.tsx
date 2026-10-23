@@ -69,10 +69,10 @@ export function CommitmentSection() {
             </div>
           </div>
 
-          {/* Two Authentic Taped Photos from our comitement in action.png */}
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 mb-16 items-center">
+          {/* Authentic Real Event Photos from Northern Creative Designers Community */}
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 mb-14 items-center">
             
-            {/* Photo 1: Northern Design Hackathon 2025 */}
+            {/* Photo 1: Summit 1.0 Full Audience Hall */}
             <div className="group relative -rotate-1 hover:rotate-0 transition-transform duration-500 ease-out">
               {/* Real Brown Craft Tape on Top */}
               <div className="absolute -top-7 left-1/2 -translate-x-1/2 z-20 w-36 sm:w-44 h-12 pointer-events-none">
@@ -85,10 +85,10 @@ export function CommitmentSection() {
               </div>
 
               <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-white/20 shadow-2xl bg-black/40">
-                <div className="aspect-[828/615] relative w-full overflow-hidden">
+                <div className="aspect-[16/11] relative w-full overflow-hidden">
                   <Image
-                    src="/images/pdf_extracted/commitment_photo_1.png"
-                    alt="Northern Design Hackathon 2025 Live Presentation"
+                    src="/images/community/ncd_hall_audience.jpg"
+                    alt="Northern Creative Designers Summit 1.0 Live Gathering"
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                     priority
@@ -97,18 +97,18 @@ export function CommitmentSection() {
                   
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-white">
                     <div>
-                      <p className="font-extrabold text-sm sm:text-base text-white">Northern Design Hackathon</p>
-                      <p className="text-white/75 text-[11px] font-mono">2025 Regional Live Sprint</p>
+                      <p className="font-extrabold text-sm sm:text-base text-white">Summit 1.0 Live Assembly</p>
+                      <p className="text-white/75 text-[11px] font-mono">Kano, Northern Nigeria</p>
                     </div>
                     <span className="px-3 py-1.5 rounded-full bg-spring text-[#071135] font-black text-xs uppercase tracking-wider shadow-sm">
-                      ₦100,000 Bounties
+                      Flagship Gathering
                     </span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Photo 2: Summit 1.0 & Workshop Collaboration */}
+            {/* Photo 2: Official Banner Community Group */}
             <div className="group relative rotate-1 hover:rotate-0 transition-transform duration-500 ease-out">
               {/* Real Brown Craft Tape on Top */}
               <div className="absolute -top-7 left-1/2 -translate-x-1/2 z-20 w-36 sm:w-44 h-12 pointer-events-none">
@@ -121,10 +121,10 @@ export function CommitmentSection() {
               </div>
 
               <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-white/20 shadow-2xl bg-black/40">
-                <div className="aspect-[828/597] relative w-full overflow-hidden">
+                <div className="aspect-[16/11] relative w-full overflow-hidden">
                   <Image
-                    src="/images/pdf_extracted/commitment_photo_2.png"
-                    alt="Northern Creative Designers Summit 1.0 & Workshop"
+                    src="/images/community/ncd_banner_group.jpg"
+                    alt="Northern Creative Designers Community Delegation"
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                     priority
@@ -133,11 +133,11 @@ export function CommitmentSection() {
                   
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-white">
                     <div>
-                      <p className="font-extrabold text-sm sm:text-base text-white">Summit 1.0 &amp; Masterclasses</p>
-                      <p className="text-white/75 text-[11px] font-mono">Kano, Northern Nigeria</p>
+                      <p className="font-extrabold text-sm sm:text-base text-white">Community Delegation &amp; Leaders</p>
+                      <p className="text-white/75 text-[11px] font-mono">19 Northern States Unified</p>
                     </div>
                     <span className="px-3 py-1.5 rounded-full bg-[#F39200] text-white font-black text-xs uppercase tracking-wider shadow-sm">
-                      Flagship Gathering
+                      Active Network
                     </span>
                   </div>
                 </div>
@@ -146,40 +146,102 @@ export function CommitmentSection() {
 
           </div>
 
-          {/* Additional Track Record Cards from Manifesto Page 14 */}
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12">
+          {/* Real Bootcamp & Masterclass Visual Photographic Gallery with Clean Structured Content Cards */}
+          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 mb-12">
             
-            {/* Conferences & Flagship Events */}
-            <div className="p-6 sm:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-spring/40 transition-colors space-y-3">
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-xs font-mono font-bold text-spring uppercase tracking-wider">
-                  01 / Flagship Events
+            {/* Gallery Image 1: Class Training */}
+            <div className="group rounded-2xl overflow-hidden border border-white/15 bg-white/5 hover:border-spring/50 transition-all duration-300 shadow-lg flex flex-col">
+              <div className="aspect-[16/10] relative w-full overflow-hidden bg-black/40">
+                <Image
+                  src="/images/community/ncd_class_training.jpg"
+                  alt="Hands-On Technical Bootcamps"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-spring text-[#071135] text-[10px] font-black uppercase tracking-wider shadow-xs">
+                  225+ Alumni
                 </span>
-                <span className="text-xs font-mono text-white/60">Kano, Nigeria</span>
               </div>
-              <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                Northern Creative Summit 1.0
-              </h3>
-              <p className="text-white/80 text-sm leading-relaxed font-normal">
-                Hosted our flagship gathering bringing together creative leaders, agency principals, and practicing designers from across the 19 Northern states.
-              </p>
+              <div className="p-4 bg-white/[0.04] flex-1 flex flex-col justify-between text-white space-y-1">
+                <p className="font-bold text-sm text-white tracking-tight leading-snug">
+                  Technical Masterclasses
+                </p>
+                <p className="text-white/70 text-xs leading-relaxed">
+                  Brand Identity &amp; UI/UX Bootcamps
+                </p>
+              </div>
             </div>
 
-            {/* Bootcamps & Intensive Training */}
-            <div className="p-6 sm:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-spring/40 transition-colors space-y-3">
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-xs font-mono font-bold text-[#F39200] uppercase tracking-wider">
-                  02 / Hands-On Bootcamps
+            {/* Gallery Image 2: Tutor Presenting */}
+            <div className="group rounded-2xl overflow-hidden border border-white/15 bg-white/5 hover:border-spring/50 transition-all duration-300 shadow-lg flex flex-col">
+              <div className="aspect-[16/10] relative w-full overflow-hidden bg-black/40">
+                <Image
+                  src="/images/community/ncd_tutor_presenting.jpg"
+                  alt="Tutor Presenting & Keynote Guidance"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-[#F39200] text-white text-[10px] font-black uppercase tracking-wider shadow-xs">
+                  Mentorship
                 </span>
-                <span className="text-xs font-mono text-white/60">225+ Alumni</span>
               </div>
-              <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                Intensive Technical Masterclasses
-              </h3>
-              <div className="space-y-1.5 text-xs sm:text-sm text-white/80 leading-relaxed font-normal">
-                <p>• <strong className="text-white font-semibold">Brand Identity Masterlab:</strong> Physical bootcamp empowering 50 selected practitioners.</p>
-                <p>• <strong className="text-white font-semibold">The Design Code Bootcamp:</strong> 3-day intensive program for 75 participants.</p>
-                <p>• <strong className="text-white font-semibold">UI/UX Bootcamp:</strong> Trained 100 participants in digital product systems.</p>
+              <div className="p-4 bg-white/[0.04] flex-1 flex flex-col justify-between text-white space-y-1">
+                <p className="font-bold text-sm text-white tracking-tight leading-snug">
+                  Practical Instruction
+                </p>
+                <p className="text-white/70 text-xs leading-relaxed">
+                  Design Critiques &amp; Industry Code
+                </p>
+              </div>
+            </div>
+
+            {/* Gallery Image 3: Peer Interaction */}
+            <div className="group rounded-2xl overflow-hidden border border-white/15 bg-white/5 hover:border-spring/50 transition-all duration-300 shadow-lg flex flex-col">
+              <div className="aspect-[16/10] relative w-full overflow-hidden bg-black/40">
+                <Image
+                  src="/images/community/ncd_peer_interaction.jpg"
+                  alt="Collaborative Peer Interaction"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-white/20 text-white text-[10px] font-black uppercase tracking-wider backdrop-blur-xs">
+                  Collaboration
+                </span>
+              </div>
+              <div className="p-4 bg-white/[0.04] flex-1 flex flex-col justify-between text-white space-y-1">
+                <p className="font-bold text-sm text-white tracking-tight leading-snug">
+                  Peer-to-Peer Sprints
+                </p>
+                <p className="text-white/70 text-xs leading-relaxed">
+                  Knowledge Exchange &amp; Dealmaking
+                </p>
+              </div>
+            </div>
+
+            {/* Gallery Image 4: Participants with Banner */}
+            <div className="group rounded-2xl overflow-hidden border border-white/15 bg-white/5 hover:border-spring/50 transition-all duration-300 shadow-lg flex flex-col">
+              <div className="aspect-[16/10] relative w-full overflow-hidden bg-black/40">
+                <Image
+                  src="/images/community/ncd_participants_banner.jpg"
+                  alt="Delegates & Community Members"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-spring text-[#071135] text-[10px] font-black uppercase tracking-wider shadow-xs">
+                  Arewa Design
+                </span>
+              </div>
+              <div className="p-4 bg-white/[0.04] flex-1 flex flex-col justify-between text-white space-y-1">
+                <p className="font-bold text-sm text-white tracking-tight leading-snug">
+                  Community Impact
+                </p>
+                <p className="text-white/70 text-xs leading-relaxed">
+                  Growing Regional Innovation Hub
+                </p>
               </div>
             </div>
 

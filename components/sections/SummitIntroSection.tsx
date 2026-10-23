@@ -148,12 +148,12 @@ export function SummitIntroSection() {
             </p>
           </div>
 
-          {/* Right Minimalist Visual Card */}
+          {/* Right Minimalist Visual Card with Real Northern Creative Designers Photo */}
           <div className="lg:col-span-5">
             <div className="relative rounded-[2rem] overflow-hidden border border-neutral-border shadow-lg bg-neutral-card group">
               <div className="aspect-[4/3] sm:aspect-[16/11] relative w-full overflow-hidden">
                 <Image
-                  src="/images/pdf_extracted/vision_workshop_top.png"
+                  src="/images/community/ncd_hall_audience.jpg"
                   alt="Northern Creative Designers Summit Community"
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"
@@ -176,29 +176,29 @@ export function SummitIntroSection() {
           </div>
         </div>
 
-        {/* 2. Chowdeck-Style Interactive "What's on Deck?" Vertical Switcher */}
-        <div className="mb-24 md:mb-32 p-8 sm:p-12 md:p-16 rounded-[2.5rem] bg-[#FAFAF8] border border-neutral-border shadow-sm">
-          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-            <h3 className="type-heading text-pine font-black">
+        {/* 2. Interactive "What's on Deck?" Vertical Switcher (Reduced Mobile Padding & Generous Bottom Spacing) */}
+        <div className="max-w-5xl mx-auto mb-24 sm:mb-28 md:mb-32 p-3.5 sm:p-7 md:p-10 rounded-2xl sm:rounded-3xl bg-[#FAFAF8] border border-neutral-border shadow-sm">
+          <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-10">
+            <h3 className="text-xl sm:text-3xl font-black text-pine tracking-tight">
               What&apos;s on Deck for You?
             </h3>
-            <p className="type-body text-navy/70 text-sm sm:text-base mt-2">
+            <p className="text-xs sm:text-sm text-navy/70 mt-1 sm:mt-1.5 leading-relaxed">
               Select your creative discipline to preview the masterclasses, networking, and opportunities designed specifically for you.
             </p>
           </div>
 
-          {/* Interactive Tabs (Chowdeck Pill Switcher) */}
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10">
+          {/* Interactive Tabs (Compact Pill Switcher) */}
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mb-6 sm:mb-8">
             {verticalCohorts.map((cohort, idx) => {
               const isActive = activeTab === idx;
               return (
                 <button
                   key={cohort.id}
                   onClick={() => setActiveTab(idx)}
-                  className={`inline-flex items-center gap-2 px-5 py-3 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                  className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                     isActive
-                      ? "bg-pine text-white shadow-md scale-105"
-                      : "bg-white text-navy/80 border border-neutral-border hover:border-pine/40 hover:bg-white"
+                      ? "bg-pine text-white shadow-sm ring-1 ring-pine"
+                      : "bg-white text-navy/70 border border-neutral-border hover:border-pine/30 hover:text-pine"
                   }`}
                 >
                   <span className={isActive ? "text-spring" : "text-navy/60"}>
@@ -210,23 +210,30 @@ export function SummitIntroSection() {
             })}
           </div>
 
-          {/* Dynamic Animated Content Card */}
-          <div className="bg-white rounded-3xl p-8 sm:p-12 border border-neutral-border shadow-md grid grid-cols-1 lg:grid-cols-12 gap-8 items-center transition-all duration-300">
-            <div className="lg:col-span-7 space-y-4 text-left">
-              <h4 className="type-subheading text-pine text-2xl sm:text-3xl font-extrabold tracking-tight">
-                {currentCohort.heading}
-              </h4>
-              <p className="type-body text-navy/80 text-sm sm:text-base leading-relaxed">
-                {currentCohort.description}
-              </p>
-              <div className="pt-4 space-y-2.5">
-                <p className="text-xs font-bold text-pine uppercase tracking-wider">
+          {/* Dynamic Content Card with Perfectly Aligned Columns & Tight Mobile Padding */}
+          <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-neutral-border shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-8 items-stretch transition-all duration-300">
+            {/* Left Content Column */}
+            <div className="lg:col-span-7 flex flex-col justify-between space-y-4 text-left">
+              <div className="space-y-2 sm:space-y-2.5">
+                <span className="inline-block px-2.5 py-0.5 rounded-full bg-pine/5 text-pine text-[10px] sm:text-[11px] font-bold uppercase tracking-wider">
+                  {currentCohort.tag}
+                </span>
+                <h4 className="text-base sm:text-xl font-bold text-pine tracking-tight leading-snug">
+                  {currentCohort.heading}
+                </h4>
+                <p className="text-xs sm:text-sm text-navy/75 leading-relaxed">
+                  {currentCohort.description}
+                </p>
+              </div>
+
+              <div className="pt-2 space-y-1.5 sm:space-y-2">
+                <p className="text-[10px] sm:text-[11px] font-bold text-pine uppercase tracking-wider">
                   Key Summit Deliverables:
                 </p>
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   {currentCohort.highlights.map((h, i) => (
-                    <div key={i} className="flex items-center gap-2.5 text-xs sm:text-sm text-navy/80">
-                      <CheckCircle2 className="w-4 h-4 text-spring flex-shrink-0" />
+                    <div key={i} className="flex items-start gap-2 text-xs text-navy/80">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-spring flex-shrink-0 mt-0.5" />
                       <span>{h}</span>
                     </div>
                   ))}
@@ -234,23 +241,27 @@ export function SummitIntroSection() {
               </div>
             </div>
 
-            <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-pine text-white space-y-5">
+            {/* Right Action Card (Stretches to flush vertical alignment with left column) */}
+            <div className="lg:col-span-5 flex flex-col justify-between p-4 sm:p-5 md:p-6 rounded-xl bg-pine text-white space-y-4 h-full">
               <div>
-                <p className="text-2xl font-black text-white mt-1">
+                <span className="inline-block text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/10 text-spring font-bold">
+                  All-Access
+                </span>
+                <p className="text-base sm:text-xl font-black text-white mt-1.5 sm:mt-2 leading-tight">
                   Delegate Pass 2.0
                 </p>
-                <p className="text-xs text-white/75 mt-2 leading-relaxed">
+                <p className="text-xs text-white/70 mt-1 sm:mt-1.5 leading-relaxed">
                   Grants full admission to all masterclasses, keynote stages, exhibition wall, and real-time voting.
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-white/15">
+              <div className="pt-3 border-t border-white/15">
                 <Link
                   href="/register"
-                  className="w-full inline-flex items-center justify-center py-3.5 px-6 rounded-full bg-spring text-navy text-xs sm:text-sm font-extrabold tracking-wider uppercase hover:bg-[#02b25b] hover:scale-105 active:scale-95 transition-all shadow-md"
+                  className="w-full inline-flex items-center justify-center py-2.5 sm:py-3 px-5 rounded-full bg-spring text-navy text-xs font-extrabold tracking-wider uppercase hover:bg-[#02b25b] hover:scale-[1.02] active:scale-98 transition-all shadow-sm"
                 >
                   <span>Claim Your Pass</span>
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                  <ArrowRight className="w-3.5 h-3.5 ml-2" />
                 </Link>
               </div>
             </div>
@@ -276,8 +287,8 @@ export function SummitIntroSection() {
               {/* Real Background Photo with Pine/Emerald Overlay */}
               <div className="absolute inset-0 z-0">
                 <Image
-                  src="/images/pdf_extracted/vision_workshop_top.png"
-                  alt="Northern Creative Designers Workshop"
+                  src="/images/community/ncd_class_training.jpg"
+                  alt="Northern Creative Designers Classroom Bootcamp"
                   fill
                   className="object-cover object-center opacity-35 mix-blend-multiply"
                 />
@@ -322,7 +333,7 @@ export function SummitIntroSection() {
               {/* Real Background Photo with Pine/Emerald Overlay */}
               <div className="absolute inset-0 z-0">
                 <Image
-                  src="/images/pdf_extracted/mission_workshop_bottom.png"
+                  src="/images/community/ncd_peer_interaction.jpg"
                   alt="Northern Creative Designers Masterclass Space"
                   fill
                   className="object-cover object-center opacity-40 mix-blend-multiply"
