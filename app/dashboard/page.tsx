@@ -156,7 +156,7 @@ export default function ParticipantDashboard() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6 overflow-x-auto scrollbar-none">
             {[
-              { id: "pass", label: "Digital Pass", micro: "QR Badge", icon: QrCode },
+              { id: "pass", label: "QR Pass", micro: "Check-in", icon: QrCode },
               { id: "schedule", label: "My Schedule", micro: "6 Sessions", icon: Calendar },
               { id: "hackathon", label: "Hackathon & Voting", micro: "Vote Live", icon: Flame },
               { id: "toolkit", label: "Delegate Toolkit", micro: "Free Perks", icon: FileText },
