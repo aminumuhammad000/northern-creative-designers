@@ -22,12 +22,12 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseStyles =
-    "inline-flex items-center justify-center font-semibold rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none select-none uppercase tracking-wider";
+    "inline-flex items-center justify-center font-semibold rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none select-none uppercase tracking-wider whitespace-nowrap flex-shrink-0";
 
   const sizeStyles = {
-    sm: "text-[11px] px-4 py-2 gap-1.5",
-    md: "text-xs px-6 py-2.5 gap-2",
-    lg: "text-xs sm:text-sm px-8 py-3.5 gap-2",
+    sm: "text-[11px] h-9 px-4 gap-1.5",
+    md: "text-xs h-11 sm:h-12 px-6 gap-2",
+    lg: "text-xs sm:text-sm h-12 sm:h-14 px-7 sm:px-8 gap-2.5",
   };
 
   const variantStyles = {

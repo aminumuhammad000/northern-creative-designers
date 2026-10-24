@@ -73,16 +73,16 @@ export default function ExhibitorApplyPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                  Organisation / Business Name *
+                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                  Organisation / Business Name <span className="text-spring font-bold">*</span>
                 </label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Arewa Creative Studios"
-                  className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                   value={formData.businessName}
                   onChange={(e) =>
                     setFormData({ ...formData, businessName: e.target.value })
@@ -91,14 +91,14 @@ export default function ExhibitorApplyPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                  Contact Person Full Name *
+                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                  Contact Person Full Name <span className="text-spring font-bold">*</span>
                 </label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Fatima Aliyu"
-                  className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                   value={formData.contactPerson}
                   onChange={(e) =>
                     setFormData({ ...formData, contactPerson: e.target.value })
@@ -107,14 +107,14 @@ export default function ExhibitorApplyPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                  Official Email Address *
+                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                  Official Email Address <span className="text-spring font-bold">*</span>
                 </label>
                 <input
                   type="email"
                   required
                   placeholder="contact@yourbrand.com"
-                  className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
@@ -123,14 +123,14 @@ export default function ExhibitorApplyPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                  Phone Number (WhatsApp Preferred) *
+                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                  Phone Number (WhatsApp Preferred) <span className="text-spring font-bold">*</span>
                 </label>
                 <input
                   type="tel"
                   required
                   placeholder="e.g. 0803 000 0000"
-                  className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                   value={formData.phone}
                   onChange={(e) =>
                     setFormData({ ...formData, phone: e.target.value })
@@ -139,13 +139,13 @@ export default function ExhibitorApplyPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider">
+                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
                   Website or Portfolio URL
                 </label>
                 <input
                   type="url"
                   placeholder="https://yourbrand.com"
-                  className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                   value={formData.website}
                   onChange={(e) =>
                     setFormData({ ...formData, website: e.target.value })
@@ -154,11 +154,11 @@ export default function ExhibitorApplyPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                  Exhibitor Category *
+                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                  Exhibitor Category <span className="text-spring font-bold">*</span>
                 </label>
                 <select
-                  className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs cursor-pointer"
                   value={formData.category}
                   onChange={(e) =>
                     setFormData({ ...formData, category: e.target.value })
@@ -175,14 +175,14 @@ export default function ExhibitorApplyPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                Brief Description of Products or Services to Showcase *
+              <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                Brief Description of Products or Services to Showcase <span className="text-spring font-bold">*</span>
               </label>
               <textarea
                 required
                 rows={4}
                 placeholder="Describe what you plan to exhibit at your booth and your primary audience focus..."
-                className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                className="w-full p-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs resize-none"
                 value={formData.description}
                 onChange={(e) =>
                   setFormData({ ...formData, description: e.target.value })
@@ -191,13 +191,13 @@ export default function ExhibitorApplyPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-pine uppercase tracking-wider">
+              <label className="text-xs font-bold text-pine uppercase tracking-wider block">
                 Special Technical or Electrical Requirements (Optional)
               </label>
               <input
                 type="text"
                 placeholder="e.g. Additional 220V power outlets, extra monitor stand..."
-                className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                 value={formData.specialRequirements}
                 onChange={(e) =>
                   setFormData({ ...formData, specialRequirements: e.target.value })
@@ -209,7 +209,7 @@ export default function ExhibitorApplyPage() {
               <p className="text-xs text-navy/60">
                 By submitting, you agree to comply with the Summit 2.0 Exhibitor Code of Conduct.
               </p>
-              <Button type="submit" variant="primary" size="lg" icon={<Send className="w-4 h-4" />}>
+              <Button type="submit" variant="primary" size="lg" icon={<Send className="w-4 h-4 ml-2" />}>
                 Submit Application
               </Button>
             </div>

@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   Mail,
   Phone,
@@ -14,7 +17,13 @@ import { eventConfig } from "@/config/event";
 import { footerNavItems } from "@/config/navigation";
 
 export function SiteFooter() {
+  const pathname = usePathname();
   const currentYear = 2026;
+
+  // Do not render public site footer on dashboard portal pages
+  if (pathname?.startsWith("/dashboard")) {
+    return null;
+  }
 
   return (
     <footer className="bg-pine text-white pt-16 pb-12 border-t-4 border-spring">

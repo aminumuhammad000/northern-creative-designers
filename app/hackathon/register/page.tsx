@@ -73,16 +73,16 @@ export default function HackathonRegisterPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                  Team Name *
+                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                  Team Name <span className="text-spring font-bold">*</span>
                 </label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Vector Arewa"
-                  className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                   value={formData.teamName}
                   onChange={(e) =>
                     setFormData({ ...formData, teamName: e.target.value })
@@ -91,14 +91,14 @@ export default function HackathonRegisterPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                  Team Lead Full Name *
+                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                  Team Lead Full Name <span className="text-spring font-bold">*</span>
                 </label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Ibrahim Umar"
-                  className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                   value={formData.leadName}
                   onChange={(e) =>
                     setFormData({ ...formData, leadName: e.target.value })
@@ -107,14 +107,14 @@ export default function HackathonRegisterPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                  Team Lead Email *
+                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                  Team Lead Email <span className="text-spring font-bold">*</span>
                 </label>
                 <input
                   type="email"
                   required
                   placeholder="lead@example.com"
-                  className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                   value={formData.leadEmail}
                   onChange={(e) =>
                     setFormData({ ...formData, leadEmail: e.target.value })
@@ -123,14 +123,14 @@ export default function HackathonRegisterPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                  Team Lead WhatsApp Phone *
+                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                  Team Lead WhatsApp Phone <span className="text-spring font-bold">*</span>
                 </label>
                 <input
                   type="tel"
                   required
                   placeholder="e.g. 0803 123 4567"
-                  className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                   value={formData.leadPhone}
                   onChange={(e) =>
                     setFormData({ ...formData, leadPhone: e.target.value })
@@ -139,11 +139,11 @@ export default function HackathonRegisterPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                  Number of Team Members *
+                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                  Number of Team Members <span className="text-spring font-bold">*</span>
                 </label>
                 <select
-                  className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs cursor-pointer"
                   value={formData.teamSize}
                   onChange={(e) =>
                     setFormData({ ...formData, teamSize: e.target.value })
@@ -156,11 +156,11 @@ export default function HackathonRegisterPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                  Preferred Challenge Track *
+                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                  Preferred Challenge Track <span className="text-spring font-bold">*</span>
                 </label>
                 <select
-                  className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs cursor-pointer"
                   value={formData.track}
                   onChange={(e) =>
                     setFormData({ ...formData, track: e.target.value })
@@ -174,14 +174,14 @@ export default function HackathonRegisterPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                Portfolio or Past Project Links *
+              <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                Portfolio or Past Project Links <span className="text-spring font-bold">*</span>
               </label>
               <input
                 type="url"
                 required
                 placeholder="https://behance.net/yourteam or GitHub link"
-                className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                 value={formData.portfolioUrl}
                 onChange={(e) =>
                   setFormData({ ...formData, portfolioUrl: e.target.value })
@@ -190,14 +190,14 @@ export default function HackathonRegisterPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                Team Skillsets & Motivation *
+              <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                Team Skillsets & Motivation <span className="text-spring font-bold">*</span>
               </label>
               <textarea
                 required
                 rows={4}
                 placeholder="Briefly state your team's background (e.g. 1 UI designer, 1 illustrator, 1 developer) and why you want to compete..."
-                className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                className="w-full p-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs resize-none"
                 value={formData.teamSummary}
                 onChange={(e) =>
                   setFormData({ ...formData, teamSummary: e.target.value })
@@ -209,7 +209,7 @@ export default function HackathonRegisterPage() {
               <p className="text-xs text-navy/60">
                 Participation requires on-site attendance at Kano venue on 19th December, 2026.
               </p>
-              <Button type="submit" variant="primary" size="lg" icon={<Send className="w-4 h-4" />}>
+              <Button type="submit" variant="primary" size="lg" icon={<Send className="w-4 h-4 ml-2" />}>
                 Submit Team Registration
               </Button>
             </div>

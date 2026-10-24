@@ -47,15 +47,15 @@ export default function TicketLookupPage() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 space-y-8">
         <form
           onSubmit={handleSearch}
-          className="p-6 rounded-2xl bg-white border border-neutral-border shadow-sm flex flex-col sm:flex-row gap-3"
+          className="p-4 sm:p-6 rounded-2xl bg-white border border-neutral-border shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center gap-3"
         >
           <div className="relative flex-1">
-            <Search className="w-5 h-5 text-navy/40 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-5 h-5 text-neutral-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               required
-              placeholder="Enter Registration ID (e.g. NCD-2026-...) or Email"
-              className="w-full pl-11 pr-4 py-3 rounded-lg border border-neutral-border text-sm focus:border-spring transition-colors"
+              placeholder="Enter Registration ID (e.g. NCD26-KN-9482) or Email"
+              className="w-full h-12 pl-11 pr-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all"
               value={lookupQuery}
               onChange={(e) => setLookupQuery(e.target.value)}
             />

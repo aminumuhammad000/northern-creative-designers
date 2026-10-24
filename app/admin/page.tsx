@@ -94,36 +94,38 @@ export default function AdminPortalPage() {
 
               <form onSubmit={handleSimulatedLogin} className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-pine uppercase tracking-wider">
+                  <label className="text-xs font-bold text-pine uppercase tracking-wider block">
                     Authorised Email
                   </label>
                   <input
                     type="email"
                     required
                     placeholder="admin@northcdesigners.org"
-                    className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:border-spring transition-colors"
+                    className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-pine uppercase tracking-wider">
+                  <label className="text-xs font-bold text-pine uppercase tracking-wider block">
                     Password / Passkey
                   </label>
                   <input
                     type="password"
                     required
                     placeholder="••••••••••••"
-                    className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:border-spring transition-colors"
+                    className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
 
-                <Button type="submit" variant="primary" size="md" className="w-full">
-                  Sign In to Control Center
-                </Button>
+                <div className="pt-2">
+                  <Button type="submit" variant="primary" size="md" className="w-full">
+                    Sign In to Control Center
+                  </Button>
+                </div>
               </form>
 
               <div className="pt-2 text-xs text-navy/60 text-center">

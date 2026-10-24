@@ -116,25 +116,25 @@ export default function ContactPage() {
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="p-8 rounded-2xl bg-white border border-neutral-border space-y-6 shadow-sm"
+                className="p-6 sm:p-8 rounded-3xl bg-white border border-neutral-border space-y-6 shadow-xs"
               >
-                <div>
+                <div className="border-b border-neutral-border pb-4">
                   <h3 className="text-xl font-bold text-pine">Send a Message</h3>
                   <p className="text-xs text-navy/70 mt-1">
                     Fill out the form below and an executive coordinator will respond within 24 hours.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                      Your Name *
+                    <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                      Your Name <span className="text-spring font-bold">*</span>
                     </label>
                     <input
                       type="text"
                       required
                       placeholder="e.g. Sani Bello"
-                      className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                       value={formData.name}
                       onChange={(e) =>
                         setFormData({ ...formData, name: e.target.value })
@@ -143,14 +143,14 @@ export default function ContactPage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                      Your Email *
+                    <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                      Your Email <span className="text-spring font-bold">*</span>
                     </label>
                     <input
                       type="email"
                       required
                       placeholder="sani@example.com"
-                      className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                       value={formData.email}
                       onChange={(e) =>
                         setFormData({ ...formData, email: e.target.value })
@@ -159,15 +159,15 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-pine uppercase tracking-wider">
+                    <label className="text-xs font-bold text-pine uppercase tracking-wider block">
                       Phone Number (Optional)
                     </label>
                     <input
                       type="tel"
                       placeholder="0803 000 0000"
-                      className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                       value={formData.phone}
                       onChange={(e) =>
                         setFormData({ ...formData, phone: e.target.value })
@@ -176,11 +176,11 @@ export default function ContactPage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                      Subject / Purpose *
+                    <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                      Subject / Purpose <span className="text-spring font-bold">*</span>
                     </label>
                     <select
-                      className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                      className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs cursor-pointer"
                       value={formData.subject}
                       onChange={(e) =>
                         setFormData({ ...formData, subject: e.target.value })
@@ -197,14 +197,14 @@ export default function ContactPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-pine uppercase tracking-wider">
-                    Message Details *
+                  <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                    Message Details <span className="text-spring font-bold">*</span>
                   </label>
                   <textarea
                     required
                     rows={4}
                     placeholder="Provide details regarding your inquiry..."
-                    className="w-full px-4 py-2.5 rounded-lg border border-neutral-border bg-neutral-sand/50 text-sm focus:bg-white focus:border-spring transition-colors"
+                    className="w-full p-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs resize-none"
                     value={formData.message}
                     onChange={(e) =>
                       setFormData({ ...formData, message: e.target.value })
@@ -213,7 +213,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className="pt-2">
-                  <Button type="submit" variant="primary" size="md" icon={<Send className="w-4 h-4" />}>
+                  <Button type="submit" variant="primary" size="md" icon={<Send className="w-4 h-4 ml-1.5" />}>
                     Send Message
                   </Button>
                 </div>

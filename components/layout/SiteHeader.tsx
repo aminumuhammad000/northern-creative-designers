@@ -20,9 +20,16 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
+  const [prevPath, setPrevPath] = useState(pathname);
+  if (prevPath !== pathname) {
+    setPrevPath(pathname);
     setMobileMenuOpen(false);
-  }, [pathname]);
+  }
+
+  // Do not render public site header on dashboard portal pages
+  if (pathname?.startsWith("/dashboard")) {
+    return null;
+  }
 
   return (
     <header
@@ -78,8 +85,14 @@ export function SiteHeader() {
           })}
         </nav>
 
-        {/* Single Sleek Action CTA */}
-        <div className="hidden md:flex items-center">
+        {/* Sleek Action CTAs */}
+        <div className="hidden md:flex items-center space-x-3">
+          <Link
+            href="/login"
+            className="text-xs font-bold uppercase tracking-wider text-white/80 hover:text-white px-3 py-2 transition-colors"
+          >
+            Sign In
+          </Link>
           <Link
             href="/register"
             className="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-spring text-navy text-xs font-bold uppercase tracking-wider shadow-xs hover:bg-[#02b25b] hover:shadow-sm hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-spring focus-visible:ring-offset-2 focus-visible:ring-offset-pine"
@@ -135,8 +148,14 @@ export function SiteHeader() {
               Register to Attend
             </Link>
             <Link
-              href="/NCD Summit 26.pdf"
+              href="/login"
               className="w-full inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-white/30 text-white text-xs font-semibold uppercase tracking-wider hover:bg-white/10 transition-colors"
+            >
+              Sign In to Delegate Dashboard
+            </Link>
+            <Link
+              href="/NCD Summit 26.pdf"
+              className="w-full inline-flex items-center justify-center px-4 py-2.5 rounded-full text-white/70 text-xs font-semibold uppercase tracking-wider hover:text-white transition-colors"
             >
               Download PDF Brochure
             </Link>
