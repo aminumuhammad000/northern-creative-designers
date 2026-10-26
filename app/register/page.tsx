@@ -27,6 +27,7 @@ import {
   Globe,
   Compass,
   Check,
+  Copy,
   ChevronRight,
   Download,
   ExternalLink,
@@ -113,10 +114,19 @@ export default function RegisterPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [copiedRef, setCopiedRef] = useState(false);
   const [confirmedResult, setConfirmedResult] = useState<{
     referenceCode: string;
     ticketToken: string;
   } | null>(null);
+
+  const copyReferenceCode = (code: string) => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(code);
+      setCopiedRef(true);
+      setTimeout(() => setCopiedRef(false), 2000);
+    }
+  };
 
   const [formData, setFormData] = useState<RegistrationData & { confirmPassword?: string }>({
     fullName: "",
@@ -264,9 +274,11 @@ export default function RegisterPage() {
                       </div>
                     </div>
 
-                    <span className="text-[10px] font-bold uppercase tracking-wider bg-spring text-navy px-3 py-1 rounded-full shadow-2xs">
-                      Official Pass
-                    </span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="font-mono text-[10px] sm:text-xs font-bold tracking-wider bg-spring text-navy px-2.5 py-1 rounded-full shadow-2xs whitespace-nowrap">
+                        {confirmedResult.referenceCode}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -302,12 +314,26 @@ export default function RegisterPage() {
                     <div className="p-3 bg-white rounded-xl border border-neutral-200 shadow-2xs">
                       <QrCode className="w-32 h-32 sm:w-36 sm:h-36 text-pine" strokeWidth={1.5} />
                     </div>
-                    <div className="text-center space-y-1">
-                      <span className="font-mono text-xs font-bold text-pine bg-white px-3 py-1 rounded-md border border-neutral-200 inline-block shadow-2xs">
-                        {confirmedResult.referenceCode}
-                      </span>
+                    <div className="text-center space-y-1.5 w-full flex flex-col items-center">
+                      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white border border-neutral-200 shadow-2xs">
+                        <span className="font-mono text-xs sm:text-sm font-bold tracking-widest text-pine">
+                          {confirmedResult.referenceCode}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => copyReferenceCode(confirmedResult.referenceCode)}
+                          title="Copy Pass Reference Code"
+                          className="p-1 rounded hover:bg-neutral-100 text-neutral-400 hover:text-pine transition-colors"
+                        >
+                          {copiedRef ? (
+                            <Check className="w-3.5 h-3.5 text-pine" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </button>
+                      </div>
                       <p className="text-[10px] text-neutral-500 font-medium">
-                        Present this QR at Kano venue check-in desk
+                        Present this QR code or Pass ID at the check-in desk
                       </p>
                     </div>
                   </div>

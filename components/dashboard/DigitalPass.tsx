@@ -92,14 +92,28 @@ export function DigitalPass({ attendee }: DigitalPassProps) {
         {/* QR Code Section */}
         <div className="bg-neutral-50 rounded-2xl p-5 border border-neutral-200/80 flex flex-col items-center justify-center space-y-3">
           <div className="p-3 bg-white rounded-xl border border-neutral-200 shadow-2xs">
-            <QrCode className="w-36 h-36 text-pine" strokeWidth={1.5} />
+            <QrCode className="w-32 h-32 sm:w-36 sm:h-36 text-pine" strokeWidth={1.5} />
           </div>
-          <div className="text-center space-y-1">
-            <span className="font-mono text-xs font-bold text-pine bg-white px-3 py-1 rounded-md border border-neutral-200 inline-block shadow-2xs">
-              {attendee.referenceCode}
-            </span>
+          <div className="text-center space-y-1.5 w-full flex flex-col items-center">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white border border-neutral-200 shadow-2xs">
+              <span className="font-mono text-xs sm:text-sm font-bold tracking-widest text-pine">
+                {attendee.referenceCode}
+              </span>
+              <button
+                type="button"
+                onClick={copyReference}
+                title="Copy Pass Reference Code"
+                className="p-1 rounded hover:bg-neutral-100 text-neutral-400 hover:text-pine transition-colors"
+              >
+                {copied ? (
+                  <Check className="w-3.5 h-3.5 text-pine" />
+                ) : (
+                  <Copy className="w-3.5 h-3.5" />
+                )}
+              </button>
+            </div>
             <p className="text-[10px] text-neutral-500 font-medium">
-              Present this QR code at the entrance for fast check-in
+              Present this QR code or Pass ID at the entrance for fast check-in
             </p>
           </div>
         </div>
