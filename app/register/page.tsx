@@ -226,97 +226,148 @@ export default function RegisterPage() {
         {confirmedResult ? (
           /* ================= SUCCESS / CONFIRMED PASS STATE ================= */
           <div className="space-y-8 animate-in fade-in duration-300">
-            <div className="p-8 sm:p-12 rounded-3xl bg-neutral-sand border border-spring/40 text-center space-y-6 shadow-sm">
-              <div className="w-16 h-16 rounded-2xl bg-spring/20 text-pine flex items-center justify-center mx-auto">
-                <CheckCircle className="w-10 h-10 text-spring" />
+            {/* Header Success Greeting */}
+            <div className="text-center space-y-3 max-w-xl mx-auto">
+              <div className="w-14 h-14 rounded-2xl bg-spring/20 text-pine flex items-center justify-center mx-auto shadow-xs">
+                <CheckCircle className="w-8 h-8 text-spring" />
               </div>
-
-              <div className="space-y-2">
-                <span className="inline-block px-3.5 py-1 rounded-full text-xs font-bold bg-spring text-navy uppercase tracking-wider">
-                  Registration Confirmed & Verified
+              <div className="space-y-1.5">
+                <span className="inline-block px-3.5 py-1 rounded-full text-[11px] font-bold bg-spring text-navy uppercase tracking-wider">
+                  Registration Confirmed &amp; Verified
                 </span>
-                <h2 className="text-3xl sm:text-4xl font-bold text-pine tracking-tight">
+                <h2 className="text-2xl sm:text-3xl font-bold text-pine tracking-tight">
                   Welcome to Summit 2.0, {formData.fullName}!
                 </h2>
-                <p className="text-sm sm:text-base text-navy/70 max-w-xl mx-auto">
+                <p className="text-xs sm:text-sm text-navy/70 leading-relaxed">
                   Your official digital access pass is ready. We look forward to hosting you in Kano on 19th December, 2026.
                 </p>
               </div>
+            </div>
 
-              {/* High-Fidelity Summit Badge / Pass */}
-              <div className="max-w-lg mx-auto bg-pine text-white rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden border border-white/10 text-left">
-                {/* Background decorative vector */}
-                <div className="absolute top-0 right-0 w-48 h-48 bg-spring/10 rounded-full blur-3xl -z-0 pointer-events-none" />
+            {/* High-Fidelity Perfectly-Fitted Conference Pass Card */}
+            <div className="max-w-md mx-auto">
+              <div className="bg-white rounded-3xl border border-neutral-200/90 shadow-xl overflow-hidden relative">
+                {/* Lanyard Top Punch Hole Header */}
+                <div className="bg-pine text-white px-6 pt-5 pb-4 relative overflow-hidden">
+                  <div className="w-12 h-2 rounded-full bg-white/20 mx-auto mb-3.5 border border-white/10" />
 
-                <div className="relative z-10 space-y-6">
-                  {/* Badge Header */}
-                  <div className="flex items-start justify-between border-b border-white/10 pb-4">
-                    <div>
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-spring block">
-                        Official Delegate Pass
-                      </span>
-                      <h3 className="text-xl font-bold tracking-tight text-white">
-                        {eventConfig.name} {eventConfig.edition}
-                      </h3>
-                      <p className="text-xs text-white/60">Roots & Vectors • Kano, Nigeria</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center font-bold text-spring text-xs shadow-2xs">
+                        N
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-xs text-white leading-tight">
+                          {eventConfig.name} {eventConfig.edition}
+                        </h3>
+                        <p className="text-[10px] text-spring/90 font-medium">Roots &amp; Vectors</p>
+                      </div>
                     </div>
-                    <span className="bg-spring/20 text-spring border border-spring/30 px-3 py-1 rounded-full text-[11px] font-mono font-bold">
-                      {confirmedResult.referenceCode}
+
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-spring text-navy px-3 py-1 rounded-full shadow-2xs">
+                      Official Pass
                     </span>
                   </div>
+                </div>
 
-                  {/* Attendee Details Grid */}
-                  <div className="grid grid-cols-2 gap-4 text-xs">
-                    <div>
-                      <span className="text-white/50 block mb-0.5 text-[10px] uppercase">Delegate Name</span>
-                      <p className="font-semibold text-white text-sm">{formData.fullName}</p>
+                {/* Card Body */}
+                <div className="p-6 sm:p-7 space-y-5">
+                  {/* Delegate Profile Overview */}
+                  <div className="flex items-center gap-4 pb-4 border-b border-neutral-100">
+                    <div className="w-14 h-14 rounded-2xl bg-pine/10 text-pine flex items-center justify-center font-bold text-lg border-2 border-spring/40 flex-shrink-0 shadow-2xs">
+                      {formData.fullName
+                        .split(" ")
+                        .filter(Boolean)
+                        .map((n) => n[0])
+                        .join("")
+                        .slice(0, 2)
+                        .toUpperCase()}
                     </div>
-                    <div>
-                      <span className="text-white/50 block mb-0.5 text-[10px] uppercase">Creative Discipline</span>
-                      <p className="font-semibold text-spring">{formData.creativeRole}</p>
-                    </div>
-                    <div>
-                      <span className="text-white/50 block mb-0.5 text-[10px] uppercase">State / Origin</span>
-                      <p className="font-semibold text-white">{formData.cityState}</p>
-                    </div>
-                    <div>
-                      <span className="text-white/50 block mb-0.5 text-[10px] uppercase">Summit Date</span>
-                      <p className="font-semibold text-white">{eventConfig.date}</p>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-base font-bold text-pine leading-tight truncate">
+                        {formData.fullName}
+                      </h3>
+                      <p className="text-xs font-semibold text-pine/80 truncate mt-0.5">
+                        {formData.creativeRole}
+                      </p>
+                      <p className="text-[11px] text-neutral-500 truncate mt-0.5">
+                        {formData.organization ? `${formData.organization} • ` : ""}
+                        {formData.cityState}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Cryptographic QR Check-in Code Box */}
-                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between gap-4">
-                    <div className="space-y-1">
-                      <span className="text-[10px] text-spring font-mono block">SECURITY TOKEN</span>
-                      <p className="text-xs font-mono text-white/80 break-all">
-                        {confirmedResult.ticketToken.substring(0, 22)}...
-                      </p>
-                      <span className="text-[10px] text-white/40 block">Present this QR at check-in counter</span>
+                  {/* QR Code Validation Area */}
+                  <div className="bg-neutral-50 rounded-2xl p-5 border border-neutral-200/80 flex flex-col items-center justify-center space-y-3">
+                    <div className="p-3 bg-white rounded-xl border border-neutral-200 shadow-2xs">
+                      <QrCode className="w-32 h-32 sm:w-36 sm:h-36 text-pine" strokeWidth={1.5} />
                     </div>
-                    <div className="p-2.5 bg-white rounded-xl flex-shrink-0 shadow-md">
-                      <QrCode className="w-12 h-12 text-pine" />
+                    <div className="text-center space-y-1">
+                      <span className="font-mono text-xs font-bold text-pine bg-white px-3 py-1 rounded-md border border-neutral-200 inline-block shadow-2xs">
+                        {confirmedResult.referenceCode}
+                      </span>
+                      <p className="text-[10px] text-neutral-500 font-medium">
+                        Present this QR at Kano venue check-in desk
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Summit Date & Venue Grid */}
+                  <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-100 space-y-0.5">
+                      <span className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider block">
+                        Date &amp; Time
+                      </span>
+                      <span className="font-semibold text-neutral-800 block text-xs">
+                        {eventConfig.date}
+                      </span>
+                      <span className="text-[11px] text-neutral-500 block">
+                        08:30 AM Doors
+                      </span>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-100 space-y-0.5">
+                      <span className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider block">
+                        Venue
+                      </span>
+                      <span className="font-semibold text-neutral-800 block text-xs truncate">
+                        {eventConfig.venue}
+                      </span>
+                      <span className="text-[11px] text-neutral-500 block">
+                        Kano, Nigeria
+                      </span>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Action Buttons */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <Link
-                  href="/dashboard"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-spring text-navy text-xs font-bold uppercase tracking-wider hover:bg-[#02b25b] hover:shadow-lg transition-all"
-                >
-                  Enter Attendee Dashboard
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-                <Link
-                  href="/programme"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-white border border-neutral-border text-pine text-xs font-semibold uppercase tracking-wider hover:bg-neutral-50 transition-colors"
-                >
-                  Explore Schedule
-                </Link>
+                {/* Bottom Pass Footer */}
+                <div className="bg-neutral-50/80 px-6 py-3 border-t border-neutral-100 flex items-center justify-between text-[11px] text-neutral-500">
+                  <span className="font-mono text-[10px] truncate max-w-[200px]">
+                    {confirmedResult.ticketToken.substring(0, 18)}...
+                  </span>
+                  <span className="font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                    Verified Delegate
+                  </span>
+                </div>
               </div>
+            </div>
+
+            {/* Action Buttons Below Pass */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto pt-2">
+              <Link
+                href="/dashboard"
+                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center h-12 px-6 rounded-full bg-pine text-white text-xs font-bold uppercase tracking-wider hover:bg-pine-light transition-all shadow-xs"
+              >
+                <span>Enter Dashboard</span>
+                <ArrowRight className="w-4 h-4 ml-2 text-spring" />
+              </Link>
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="w-full sm:w-auto inline-flex items-center justify-center h-12 px-6 rounded-full bg-white border border-neutral-300 text-pine text-xs font-bold uppercase tracking-wider hover:bg-neutral-50 transition-colors shadow-2xs"
+              >
+                Print / Save Pass
+              </button>
             </div>
           </div>
         ) : (
