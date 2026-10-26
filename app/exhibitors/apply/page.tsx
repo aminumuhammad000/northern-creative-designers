@@ -5,9 +5,12 @@ import Link from "next/link";
 import { Store, CheckCircle, ArrowLeft, Send } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/Button";
+import { submitExhibitorApplicationAction } from "@/app/actions/onboarding";
 
 export default function ExhibitorApplyPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     businessName: "",
     contactPerson: "",
@@ -19,9 +22,22 @@ export default function ExhibitorApplyPage() {
     specialRequirements: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setErrorMessage("");
+    try {
+      const res = await submitExhibitorApplicationAction(formData);
+      if (res.success) {
+        setSubmitted(true);
+      } else {
+        setErrorMessage(res.error || "Failed to submit application.");
+      }
+    } catch {
+      setErrorMessage("An unexpected error occurred.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -72,6 +88,12 @@ export default function ExhibitorApplyPage() {
                 Please complete all fields. Private financial or contact data will not be shared publicly.
               </p>
             </div>
+
+            {errorMessage && (
+              <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm font-medium">
+                {errorMessage}
+              </div>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-1.5">

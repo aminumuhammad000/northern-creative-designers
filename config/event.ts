@@ -45,7 +45,7 @@ export const eventConfig: EventInfo = {
   secretariat: {
     organization: "Northern Creative Designers",
     rcNumber: "RC: 9930022",
-    email: "northcdesigners@gmail.com",
+    email: "support@northcdesigner.com.ng",
     phones: ["07030058919", "08033573842"],
     handle: "@northcdesigners",
   },

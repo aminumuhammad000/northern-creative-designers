@@ -104,7 +104,7 @@ export default function LoginPage() {
                   <span className="text-spring ml-1 font-bold text-sm leading-none">*</span>
                 </label>
                 <a
-                  href="mailto:northcdesigners@gmail.com?subject=Password%20Reset%20Request"
+                  href="mailto:support@northcdesigner.com.ng?subject=Password%20Reset%20Request"
                   className="text-[11px] text-spring hover:underline font-semibold"
                 >
                   Forgot password?

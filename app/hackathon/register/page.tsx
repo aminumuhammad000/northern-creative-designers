@@ -5,9 +5,12 @@ import Link from "next/link";
 import { Zap, CheckCircle, ArrowLeft, Send } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/Button";
+import { registerHackathonTeamAction } from "@/app/actions/onboarding";
 
 export default function HackathonRegisterPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     teamName: "",
     leadName: "",
@@ -19,9 +22,22 @@ export default function HackathonRegisterPage() {
     teamSummary: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setErrorMessage("");
+    try {
+      const res = await registerHackathonTeamAction(formData);
+      if (res.success) {
+        setSubmitted(true);
+      } else {
+        setErrorMessage(res.error || "Failed to submit team registration.");
+      }
+    } catch {
+      setErrorMessage("An unexpected error occurred.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -72,6 +88,12 @@ export default function HackathonRegisterPage() {
                 Teams may consist of 2 to 4 members with complementary skills (UI, graphics, strategy, frontend).
               </p>
             </div>
+
+            {errorMessage && (
+              <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm font-medium">
+                {errorMessage}
+              </div>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-1.5">

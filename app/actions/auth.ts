@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 
@@ -41,6 +42,7 @@ export async function registerAttendeeAction(data: RegistrationData) {
     }
 
     const supabase = await createClient()
+    const adminSupabase = createAdminClient()
 
     // 1. Create Auth Account if password provided
     let userId: string | null = null
@@ -65,7 +67,7 @@ export async function registerAttendeeAction(data: RegistrationData) {
     }
 
     // 2. Fetch default active event
-    const { data: event } = await supabase
+    const { data: event } = await adminSupabase
       .from('events')
       .select('id')
       .eq('slug', 'summit-2-0')
@@ -73,8 +75,8 @@ export async function registerAttendeeAction(data: RegistrationData) {
 
     const eventId = event?.id || '00000000-0000-0000-0000-000000000000'
 
-    // 3. Insert Registration Record
-    const { data: reg, error: regError } = await supabase
+    // 3. Insert Registration Record using admin client (bypasses RLS during onboarding)
+    const { data: reg, error: regError } = await adminSupabase
       .from('registrations')
       .insert({
         user_id: userId,
@@ -103,7 +105,7 @@ export async function registerAttendeeAction(data: RegistrationData) {
 
     // 4. Generate Ticket Record
     if (reg?.id) {
-      await supabase.from('tickets').insert({
+      await adminSupabase.from('tickets').insert({
         event_id: eventId,
         registration_id: reg.id,
         ticket_token: ticketToken,

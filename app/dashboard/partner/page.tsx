@@ -11,8 +11,15 @@ import {
   Trash2,
   Receipt,
   Check,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 import { DashboardNav } from "@/components/dashboard/DashboardNav";
+import {
+  assignVipPassAction,
+  removeVipPassAction,
+  VipDelegateData,
+} from "@/app/actions/dashboard";
 
 type TabId = "overview" | "assets" | "delegates" | "billing";
 
@@ -27,6 +34,8 @@ interface VipDelegate {
 export default function PartnerDashboard() {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [assetSubmitted, setAssetSubmitted] = useState(false);
+  const [isSubmittingDelegate, setIsSubmittingDelegate] = useState(false);
+  const [delegateError, setDelegateError] = useState<string | null>(null);
   const [logoFile] = useState<string>("amee_technology_vector_logo.svg");
   const [brandBio, setBrandBio] = useState(
     "Amee Technology Ltd is the Official Software Engineering Partner for NCD Summit 2.0, pioneering digital infrastructure and modern product design across Northern Nigeria."
@@ -59,30 +68,48 @@ export default function PartnerDashboard() {
   const [newDelegate, setNewDelegate] = useState({ name: "", email: "", title: "" });
   const [isAddingDelegate, setIsAddingDelegate] = useState(false);
 
-  const handleAddDelegate = (e: React.FormEvent) => {
+  const handleAddDelegate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newDelegate.name || !newDelegate.email) return;
+    if (!newDelegate.name || !newDelegate.email || isSubmittingDelegate) return;
 
     if (delegates.length >= 5) {
       alert("Platinum Sponsor pass allocation limit reached (5 VIP Passes).");
       return;
     }
 
-    const created: VipDelegate = {
-      id: `del-${Date.now()}`,
-      name: newDelegate.name,
-      email: newDelegate.email,
-      title: newDelegate.title || "Executive Delegate",
-      ticketRef: `NCD26-VIP-${Math.floor(9000 + Math.random() * 999)}`,
-    };
+    setIsSubmittingDelegate(true);
+    setDelegateError(null);
 
-    setDelegates([...delegates, created]);
-    setNewDelegate({ name: "", email: "", title: "" });
-    setIsAddingDelegate(false);
+    try {
+      const res = await assignVipPassAction(newDelegate);
+      if (res.success && res.delegate) {
+        const created: VipDelegate = {
+          id: res.delegate.id || `del-${Date.now()}`,
+          name: res.delegate.name,
+          email: res.delegate.email,
+          title: res.delegate.title,
+          ticketRef: res.delegate.ticketRef || "NCD26-VIP-PASS",
+        };
+        setDelegates([...delegates, created]);
+        setNewDelegate({ name: "", email: "", title: "" });
+        setIsAddingDelegate(false);
+      } else {
+        setDelegateError(res.error || "Failed to issue pass.");
+      }
+    } catch {
+      setDelegateError("Network error while issuing VIP pass.");
+    } finally {
+      setIsSubmittingDelegate(false);
+    }
   };
 
-  const handleRemoveDelegate = (id: string) => {
-    setDelegates(delegates.filter((d) => d.id !== id));
+  const handleRemoveDelegate = async (id: string) => {
+    try {
+      await removeVipPassAction(id);
+      setDelegates(delegates.filter((d) => d.id !== id));
+    } catch {
+      setDelegates(delegates.filter((d) => d.id !== id));
+    }
   };
 
   const handleSaveAssets = (e: React.FormEvent) => {
@@ -352,6 +379,14 @@ export default function PartnerDashboard() {
             {isAddingDelegate && (
               <form onSubmit={handleAddDelegate} className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 space-y-3">
                 <h3 className="text-xs font-bold text-pine">Assign New VIP Delegate</h3>
+
+                {delegateError && (
+                  <div className="p-2.5 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+                    <AlertCircle className="w-3.5 h-3.5 text-red-600 flex-shrink-0" />
+                    <span>{delegateError}</span>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="space-y-1">
                     <label className="text-[11px] font-bold text-pine uppercase tracking-wider block">Full Name</label>
@@ -397,9 +432,13 @@ export default function PartnerDashboard() {
                   </button>
                   <button
                     type="submit"
-                    className="h-9 px-4 rounded-lg bg-pine text-white text-xs font-semibold inline-flex items-center justify-center whitespace-nowrap"
+                    disabled={isSubmittingDelegate}
+                    className="h-9 px-4 rounded-lg bg-pine text-white text-xs font-semibold inline-flex items-center justify-center gap-1.5 whitespace-nowrap"
                   >
-                    Issue Pass
+                    {isSubmittingDelegate ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : null}
+                    <span>Issue Pass</span>
                   </button>
                 </div>
               </form>

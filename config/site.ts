@@ -8,7 +8,7 @@ export const siteConfig = {
   organization: {
     name: "Northern Creative Designers",
     rcNumber: "9930022",
-    email: "northcdesigners@gmail.com",
+    email: "support@northcdesigner.com.ng",
     phones: ["0703 0058 919", "0803 3573 842"],
     socialHandle: "@northcdesigners",
     socialLinks: {

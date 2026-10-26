@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Store,
   CheckCircle,
@@ -12,8 +12,14 @@ import {
   FileSpreadsheet,
   PackageCheck,
   Check,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 import { DashboardNav } from "@/components/dashboard/DashboardNav";
+import {
+  getExhibitorDashboardDataAction,
+  searchDelegateBadgeAction,
+} from "@/app/actions/dashboard";
 
 type TabId = "booth" | "products" | "staff" | "leads";
 
@@ -37,7 +43,18 @@ interface CapturedLead {
 export default function ExhibitorDashboard() {
   const [activeTab, setActiveTab] = useState<TabId>("booth");
   const [scanInput, setScanInput] = useState("");
+  const [isScanning, setIsScanning] = useState(false);
   const [scanSuccess, setScanSuccess] = useState<string | null>(null);
+  const [scanError, setScanError] = useState<string | null>(null);
+
+  // Live Exhibitor Info from Server
+  const [exhibitorInfo, setExhibitorInfo] = useState({
+    businessName: "Arewa Creative Studio & Apparel",
+    contactPerson: "Hadiza Sani",
+    assignedBooth: "Booth #M-12",
+    category: "Design Agency / Studio",
+    status: "approved",
+  });
 
   const [staffList, setStaffList] = useState<StaffPass[]>([
     {
@@ -83,42 +100,56 @@ export default function ExhibitorDashboard() {
     },
   ]);
 
-  const [capturedLeads, setCapturedLeads] = useState<CapturedLead[]>([
-    {
-      id: "lead-1",
-      name: "Amina Bello",
-      email: "amina.bello@example.com",
-      role: "UI/UX Designer",
-      notes: "Interested in custom vector illustration kit for agency client.",
-      scannedAt: "10:15 AM",
-    },
-    {
-      id: "lead-2",
-      name: "Ibrahim Mustapha",
-      email: "ibrahim.m@creativelab.ng",
-      role: "Brand Strategist",
-      notes: "Looking to partner on physical exhibition print runs.",
-      scannedAt: "11:42 AM",
-    },
-  ]);
+  const [capturedLeads, setCapturedLeads] = useState<CapturedLead[]>([]);
 
-  const handleSimulateScan = (e: React.FormEvent) => {
+  useEffect(() => {
+    async function loadExhibitor() {
+      const res = await getExhibitorDashboardDataAction();
+      if (res.success && res.exhibitor) {
+        setExhibitorInfo({
+          businessName: res.exhibitor.businessName,
+          contactPerson: res.exhibitor.contactPerson,
+          assignedBooth: res.exhibitor.assignedBooth,
+          category: res.exhibitor.category,
+          status: res.exhibitor.status,
+        });
+      }
+    }
+    loadExhibitor();
+  }, []);
+
+  const handleScanAttendee = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!scanInput.trim()) return;
+    if (!scanInput.trim() || isScanning) return;
 
-    const newLead: CapturedLead = {
-      id: `lead-${Date.now()}`,
-      name: scanInput.includes("@") ? scanInput.split("@")[0] : scanInput,
-      email: scanInput.includes("@") ? scanInput : `${scanInput.toLowerCase().replace(/\s+/g, ".")}@gmail.com`,
-      role: "Summit Attendee",
-      notes: "Scanned at Booth #M-12 during summit networking hours.",
-      scannedAt: "Just now",
-    };
+    setIsScanning(true);
+    setScanSuccess(null);
+    setScanError(null);
 
-    setCapturedLeads([newLead, ...capturedLeads]);
-    setScanSuccess(`Lead captured: ${newLead.name}`);
-    setScanInput("");
-    setTimeout(() => setScanSuccess(null), 3000);
+    try {
+      const res = await searchDelegateBadgeAction(scanInput);
+      if (res.success && res.delegate) {
+        const d = res.delegate;
+        const newLead: CapturedLead = {
+          id: `lead-${Date.now()}`,
+          name: d.name,
+          email: d.email,
+          role: `${d.role} (${d.cityState})`,
+          notes: `Verified Summit Delegate Pass #${d.referenceCode}`,
+          scannedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        };
+
+        setCapturedLeads((prev) => [newLead, ...prev]);
+        setScanSuccess(`Verified delegate captured: ${d.name} (${d.referenceCode})`);
+        setScanInput("");
+      } else {
+        setScanError(res.error || "No verified attendee record found for this badge code.");
+      }
+    } catch {
+      setScanError("Failed to query delegate database.");
+    } finally {
+      setIsScanning(false);
+    }
   };
 
   const handleAddStaff = (e: React.FormEvent) => {
@@ -144,6 +175,11 @@ export default function ExhibitorDashboard() {
   };
 
   const handleExportCSV = () => {
+    if (capturedLeads.length === 0) {
+      alert("No leads captured yet to export.");
+      return;
+    }
+
     const csvContent =
       "data:text/csv;charset=utf-8," +
       ["Name,Email,Role,Notes,ScannedAt"]
@@ -157,7 +193,7 @@ export default function ExhibitorDashboard() {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "NCD_Summit_Booth_M12_Leads.csv");
+    link.setAttribute("download", `NCD_Summit_${exhibitorInfo.assignedBooth.replace(/\s+/g, "_")}_Leads.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -168,19 +204,19 @@ export default function ExhibitorDashboard() {
       {/* Universal Clean Dashboard Navigation */}
       <DashboardNav
         userRole="exhibitor"
-        userName="Arewa Creative Studio"
-        badgeLabel="Booth #M-12"
+        userName={exhibitorInfo.businessName}
+        badgeLabel={exhibitorInfo.assignedBooth}
       />
 
-      {/* Sub-Nav Tabs Bar with Recognizable Micro-Badges */}
+      {/* Sub-Nav Tabs Bar */}
       <nav className="bg-white border-b border-neutral-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6 overflow-x-auto scrollbar-none">
             {[
-              { id: "booth", label: "Booth Specs & Setup", micro: "Booth #M-12", icon: Store },
+              { id: "booth", label: "Booth Specs & Setup", micro: exhibitorInfo.assignedBooth, icon: Store },
               { id: "products", label: `Showcase Items`, micro: `${products.length} Products`, icon: PackageCheck },
               { id: "staff", label: `Staff Passes`, micro: `${staffList.length}/3 Active`, icon: Users },
-              { id: "leads", label: `Lead Scanner`, micro: "Live QR", icon: ScanLine },
+              { id: "leads", label: `Lead Scanner`, micro: `${capturedLeads.length} Captured`, icon: ScanLine },
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -220,16 +256,16 @@ export default function ExhibitorDashboard() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2">
               <div>
                 <h1 className="text-xl font-bold text-pine tracking-tight">
-                  Arewa Creative Studio &amp; Apparel
+                  {exhibitorInfo.businessName}
                 </h1>
                 <p className="text-xs text-neutral-500 mt-0.5">
-                  Category: Graphic Merch &amp; Art • Assigned Space: Booth #M-12
+                  Category: {exhibitorInfo.category} • Assigned Space: {exhibitorInfo.assignedBooth}
                 </p>
               </div>
 
               <span className="self-start sm:self-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5">
                 <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
-                Booth Approved &amp; Reserved
+                Booth {exhibitorInfo.status.toUpperCase()} &amp; Allocated
               </span>
             </div>
 
@@ -237,11 +273,11 @@ export default function ExhibitorDashboard() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="p-4 rounded-xl bg-white border border-neutral-200/90 shadow-2xs">
                 <span className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider block">Location</span>
-                <p className="font-bold text-pine text-base mt-0.5">Booth #M-12</p>
-                <span className="text-[11px] text-neutral-500">Ground Floor</span>
+                <p className="font-bold text-pine text-base mt-0.5">{exhibitorInfo.assignedBooth}</p>
+                <span className="text-[11px] text-neutral-500">Summit Marketplace</span>
               </div>
               <div className="p-4 rounded-xl bg-white border border-neutral-200/90 shadow-2xs">
-                <span className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider block">Setup Time</span>
+                <span className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider block">Setup Load-In</span>
                 <p className="font-bold text-pine text-base mt-0.5">Fri, 4:00 PM</p>
                 <span className="text-[11px] text-neutral-500">18th Dec 2026</span>
               </div>
@@ -268,7 +304,7 @@ export default function ExhibitorDashboard() {
                   </div>
                   <div className="flex items-center gap-2 p-2.5 rounded-lg bg-neutral-50 border border-neutral-100">
                     <Check className="w-3.5 h-3.5 text-pine flex-shrink-0" />
-                    <span>2 Exhibitor Chairs</span>
+                    <span>2 Official Exhibitor Chairs</span>
                   </div>
                   <div className="flex items-center gap-2 p-2.5 rounded-lg bg-neutral-50 border border-neutral-100">
                     <Check className="w-3.5 h-3.5 text-pine flex-shrink-0" />
@@ -473,14 +509,14 @@ export default function ExhibitorDashboard() {
           </div>
         )}
 
-        {/* ================= TAB 4: LEADS SCANNER ================= */}
+        {/* ================= TAB 4: REAL DATABASE LEADS SCANNER ================= */}
         {activeTab === "leads" && (
           <div className="bg-white rounded-2xl border border-neutral-200/90 p-6 sm:p-7 shadow-xs space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-neutral-100 pb-5">
               <div>
-                <h2 className="text-lg font-bold text-pine">Attendee Lead Scanner</h2>
+                <h2 className="text-lg font-bold text-pine">Real-Time Attendee Badge Scanner</h2>
                 <p className="text-xs text-neutral-500 mt-0.5">
-                  Scan badge QR codes or enter reference codes to collect contacts on the floor.
+                  Verify digital delegate credentials against the live Summit database.
                 </p>
               </div>
 
@@ -493,12 +529,12 @@ export default function ExhibitorDashboard() {
               </button>
             </div>
 
-            <form onSubmit={handleSimulateScan} className="flex gap-2">
+            <form onSubmit={handleScanAttendee} className="flex gap-2">
               <div className="relative flex-1">
                 <ScanLine className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
-                  placeholder="Enter name, email, or badge reference (e.g. NCD26-KN-9482)"
+                  placeholder="Scan QR token, reference code (e.g. NCD26-...), or delegate email"
                   value={scanInput}
                   onChange={(e) => setScanInput(e.target.value)}
                   className="w-full h-11 pl-9 pr-3 rounded-xl border border-neutral-200 bg-white text-xs font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine shadow-2xs"
@@ -506,42 +542,61 @@ export default function ExhibitorDashboard() {
               </div>
               <button
                 type="submit"
-                className="h-11 px-5 rounded-xl bg-pine text-white text-xs font-bold uppercase tracking-wider hover:bg-pine-light transition-colors shadow-2xs whitespace-nowrap inline-flex items-center justify-center"
+                disabled={isScanning}
+                className="h-11 px-5 rounded-xl bg-pine text-white text-xs font-bold uppercase tracking-wider hover:bg-pine-light transition-colors shadow-2xs whitespace-nowrap inline-flex items-center justify-center gap-1.5"
               >
-                Capture Lead
+                {isScanning ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <ScanLine className="w-3.5 h-3.5" />
+                )}
+                <span>Verify &amp; Capture</span>
               </button>
             </form>
 
             {scanSuccess && (
-              <div className="p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-emerald-600" />
-                {scanSuccess}
+              <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                <span>{scanSuccess}</span>
+              </div>
+            )}
+
+            {scanError && (
+              <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs font-semibold flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+                <span>{scanError}</span>
               </div>
             )}
 
             <div className="divide-y divide-neutral-100">
-              {capturedLeads.map((l) => (
-                <div key={l.id} className="py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-semibold text-pine">{l.name}</h4>
-                      <span className="text-[10px] text-neutral-500 bg-neutral-100 px-2 py-0.5 rounded">
-                        {l.role}
-                      </span>
-                    </div>
-                    <p className="text-xs text-neutral-600 mt-0.5">{l.notes}</p>
-                    <p className="text-[11px] text-neutral-400 mt-0.5">{l.email} • {l.scannedAt}</p>
-                  </div>
-
-                  <a
-                    href={`mailto:${l.email}`}
-                    className="self-start sm:self-center h-8 px-3 rounded-lg border border-neutral-200 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 inline-flex items-center justify-center whitespace-nowrap gap-1"
-                  >
-                    <Mail className="w-3 h-3 text-neutral-400" />
-                    Email
-                  </a>
+              {capturedLeads.length === 0 ? (
+                <div className="py-8 text-center text-xs text-neutral-500">
+                  No attendees scanned yet. Enter a reference code or email above to verify delegate passes.
                 </div>
-              ))}
+              ) : (
+                capturedLeads.map((l) => (
+                  <div key={l.id} className="py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-sm font-semibold text-pine">{l.name}</h4>
+                        <span className="text-[10px] text-neutral-600 bg-neutral-100 px-2 py-0.5 rounded font-medium">
+                          {l.role}
+                        </span>
+                      </div>
+                      <p className="text-xs text-neutral-600 mt-0.5">{l.notes}</p>
+                      <p className="text-[11px] text-neutral-400 mt-0.5">{l.email} • Scanned {l.scannedAt}</p>
+                    </div>
+
+                    <a
+                      href={`mailto:${l.email}`}
+                      className="self-start sm:self-center h-8 px-3 rounded-lg border border-neutral-200 text-xs font-semibold text-neutral-700 hover:bg-neutral-50 inline-flex items-center justify-center whitespace-nowrap gap-1"
+                    >
+                      <Mail className="w-3 h-3 text-neutral-400" />
+                      Email
+                    </a>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}
