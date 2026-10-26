@@ -658,7 +658,7 @@ export default function ParticipantDashboard() {
             <div className="border-b border-neutral-100 pb-4">
               <h2 className="text-lg font-bold text-pine">Delegate Profile Settings</h2>
               <p className="text-xs text-neutral-500 mt-0.5">
-                Update your registered delegate information directly in the Supabase database.
+                Update your registered delegate information and preferences.
               </p>
             </div>
 

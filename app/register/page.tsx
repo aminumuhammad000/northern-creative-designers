@@ -9,6 +9,7 @@ import {
   Calendar,
   MapPin,
   ShieldCheck,
+  ShieldAlert,
   Send,
   QrCode,
   ArrowRight,
@@ -35,7 +36,7 @@ import {
 import { PageHeader } from "@/components/ui/PageHeader";
 import { siteConfig } from "@/config/site";
 import { eventConfig } from "@/config/event";
-import { registerAttendeeAction, RegistrationData } from "@/app/actions/auth";
+import { registerAttendeeAction, checkEmailRegisteredAction, RegistrationData } from "@/app/actions/auth";
 
 const DISCIPLINES = [
   {
@@ -114,6 +115,7 @@ export default function RegisterPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isAlreadyRegistered, setIsAlreadyRegistered] = useState(false);
   const [copiedRef, setCopiedRef] = useState(false);
   const [confirmedResult, setConfirmedResult] = useState<{
     referenceCode: string;
@@ -161,9 +163,10 @@ export default function RegisterPage() {
     }
   };
 
-  const handleNextStep = (e: React.FormEvent) => {
+  const handleNextStep = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
+    setIsAlreadyRegistered(false);
 
     if (currentStep === 1) {
       if (!formData.fullName.trim()) {
@@ -186,6 +189,23 @@ export default function RegisterPage() {
         setErrorMessage("Please provide a WhatsApp contact phone number.");
         return;
       }
+
+      // Check if email is already registered before moving to step 2
+      setIsSubmitting(true);
+      try {
+        const check = await checkEmailRegisteredAction(formData.email);
+        if (check.isRegistered) {
+          setIsAlreadyRegistered(true);
+          setErrorMessage(check.message || `An attendee with email ${formData.email} is already registered. Please log in.`);
+          setIsSubmitting(false);
+          return;
+        }
+      } catch {
+        // proceed if network check fails
+      } finally {
+        setIsSubmitting(false);
+      }
+
       setCurrentStep(2);
       window.scrollTo({ top: 300, behavior: "smooth" });
     } else if (currentStep === 2) {
@@ -204,6 +224,7 @@ export default function RegisterPage() {
   const handleFinalSubmit = async () => {
     setIsSubmitting(true);
     setErrorMessage("");
+    setIsAlreadyRegistered(false);
 
     try {
       const response = await registerAttendeeAction(formData);
@@ -215,6 +236,9 @@ export default function RegisterPage() {
         });
         window.scrollTo({ top: 100, behavior: "smooth" });
       } else {
+        if (response.alreadyRegistered) {
+          setIsAlreadyRegistered(true);
+        }
         setErrorMessage(response.error || "Failed to complete registration.");
       }
     } catch (err: unknown) {
@@ -445,10 +469,39 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            {/* Error Banner */}
+            {/* Error / Already Registered Banner */}
             {errorMessage && (
-              <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm font-medium">
-                {errorMessage}
+              <div
+                className={`p-4 sm:p-5 rounded-2xl border text-xs sm:text-sm font-medium ${
+                  isAlreadyRegistered
+                    ? "bg-amber-50 border-amber-300 text-amber-900 shadow-2xs"
+                    : "bg-red-50 border-red-200 text-red-800"
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <ShieldAlert
+                    className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
+                      isAlreadyRegistered ? "text-amber-600" : "text-red-600"
+                    }`}
+                  />
+                  <div className="flex-1 space-y-2.5">
+                    <p className="font-semibold leading-relaxed">{errorMessage}</p>
+                    {isAlreadyRegistered && (
+                      <div className="pt-1 flex flex-wrap items-center gap-3">
+                        <Link
+                          href={`/login?email=${encodeURIComponent(formData.email)}`}
+                          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-pine hover:bg-pine/90 text-white text-xs font-bold transition-all shadow-xs"
+                        >
+                          <span>Log In to Your Account</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                        <span className="text-xs text-amber-800/80">
+                          Already have a pass? Sign in to view and download your ticket.
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 
@@ -501,6 +554,12 @@ export default function RegisterPage() {
                           onChange={(e) => updateField("email", e.target.value)}
                           className="w-full h-12 pl-10 pr-4 rounded-xl border border-neutral-border bg-neutral-sand/40 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-spring focus:border-transparent text-sm font-medium text-pine placeholder:text-neutral-400 transition-all shadow-2xs"
                         />
+                      </div>
+                      <div className="flex items-center justify-between text-[11px] pt-0.5">
+                        <span className="text-navy/60">Pass &amp; QR code delivered here</span>
+                        <Link href="/login" className="text-pine font-bold hover:underline">
+                          Already registered? Sign In
+                        </Link>
                       </div>
                     </div>
 

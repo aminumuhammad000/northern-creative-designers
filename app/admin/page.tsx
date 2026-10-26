@@ -435,7 +435,7 @@ export default function AdminPortalPage() {
               </div>
               <div>
                 <h3 className="font-bold text-pine text-lg">Staff Authentication</h3>
-                <p className="text-xs text-navy/60">Live Supabase Database Admin</p>
+                <p className="text-xs text-navy/60">Summit Operations Desk</p>
               </div>
             </div>
 
@@ -546,7 +546,7 @@ export default function AdminPortalPage() {
                 </h1>
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Live Supabase &amp; Resend
+                  Live Operations
                 </span>
               </div>
               <p className="text-[11px] text-white/70">

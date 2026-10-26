@@ -41,14 +41,31 @@ export async function registerAttendeeAction(data: RegistrationData) {
       }
     }
 
+    const trimmedEmail = data.email.trim().toLowerCase()
     const supabase = await createClient()
     const adminSupabase = createAdminClient()
+
+    // 0. Check if this email is already registered in registrations table
+    const { data: existingReg } = await adminSupabase
+      .from('registrations')
+      .select('id, reference_code, full_name')
+      .ilike('email', trimmedEmail)
+      .maybeSingle()
+
+    if (existingReg) {
+      return {
+        success: false,
+        alreadyRegistered: true,
+        error: `This email (${trimmedEmail}) is already registered for Summit 2.0. Please log in to your dashboard to view your official access pass.`,
+        referenceCode: existingReg.reference_code,
+      }
+    }
 
     // 1. Create Auth Account if password provided
     let userId: string | null = null
     if (data.password) {
       const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: data.email,
+        email: trimmedEmail,
         password: data.password,
         options: {
           data: {
@@ -59,7 +76,18 @@ export async function registerAttendeeAction(data: RegistrationData) {
         },
       })
 
-      if (authError && !authError.message.includes('already registered')) {
+      if (authError) {
+        if (
+          authError.message.toLowerCase().includes('already registered') ||
+          authError.status === 422 ||
+          authError.message.toLowerCase().includes('user already exists')
+        ) {
+          return {
+            success: false,
+            alreadyRegistered: true,
+            error: `An account with this email (${trimmedEmail}) already exists. Please log in to your account to continue.`,
+          }
+        }
         return { success: false, error: authError.message }
       }
 
@@ -161,6 +189,34 @@ export async function loginAction(formData: FormData) {
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Login failed.'
     return { success: false, error: message }
+  }
+}
+
+export async function checkEmailRegisteredAction(email: string): Promise<{
+  isRegistered: boolean
+  message?: string
+}> {
+  try {
+    const trimmedEmail = email.trim().toLowerCase()
+    if (!trimmedEmail || !trimmedEmail.includes('@')) return { isRegistered: false }
+
+    const adminSupabase = createAdminClient()
+    const { data: existingReg } = await adminSupabase
+      .from('registrations')
+      .select('id, reference_code')
+      .ilike('email', trimmedEmail)
+      .maybeSingle()
+
+    if (existingReg) {
+      return {
+        isRegistered: true,
+        message: `This email (${trimmedEmail}) is already registered for Summit 2.0. Please log in to view your pass.`,
+      }
+    }
+
+    return { isRegistered: false }
+  } catch {
+    return { isRegistered: false }
   }
 }
 
