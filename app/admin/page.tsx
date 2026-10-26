@@ -32,6 +32,9 @@ import {
   Sparkles,
   ArrowRight,
   Loader2,
+  Send,
+  FileText,
+  UserCheck,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { siteConfig } from "@/config/site";
@@ -44,6 +47,9 @@ import {
   updateHackathonTeamAction,
   adminSignInAction,
   adminSignOutAction,
+  sendAdminEmailAction,
+  SendEmailPayload,
+  SendEmailResult,
   AdminMetrics,
   AdminRegistration,
   AdminExhibitor,
@@ -57,7 +63,7 @@ export default function AdminPortalPage() {
   const [isLoadingAuth, setIsLoadingAuth] = useState(false);
   const [authError, setAuthError] = useState("");
 
-  const [activeTab, setActiveTab] = useState<"overview" | "attendees" | "checkin" | "exhibitors" | "hackathon">("attendees");
+  const [activeTab, setActiveTab] = useState<"attendees" | "checkin" | "email" | "exhibitors" | "hackathon">("attendees");
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -87,6 +93,38 @@ export default function AdminPortalPage() {
     attendee?: AdminRegistration;
   }>({ type: null, message: "" });
   const [isCheckingIn, setIsCheckingIn] = useState(false);
+
+  // Email Communications State
+  const [emailRecipientType, setEmailRecipientType] = useState<
+    "individual" | "all_attendees" | "checked_in_only" | "all_exhibitors" | "all_hackathon"
+  >("all_attendees");
+  const [emailIndividualAddress, setEmailIndividualAddress] = useState("");
+  const [emailIndividualName, setEmailIndividualName] = useState("");
+  const [emailSubject, setEmailSubject] = useState("");
+  const [emailMessage, setEmailMessage] = useState("");
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [emailSendStatus, setEmailSendStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
+
+  const emailPresets = [
+    {
+      name: "Venue Arrival & Pass Reminder",
+      subject: "NCD Summit 2.0 — Important Venue Admission & Gate Details",
+      body: `We are thrilled to welcome you to the Northern Creative Designers Summit 2.0 this Saturday, 19th December, 2026 at Meena Event Centre, Kano.\n\nDoors open promptly at 08:30 AM.\n\nPlease have your Digital Pass QR Code or Pass Reference ID ready on your smartphone for rapid door check-in.\n\nWe look forward to seeing you at the keynote and creative sessions!`,
+    },
+    {
+      name: "Summit Schedule & Masterclasses",
+      subject: "NCD Summit 2.0 — Live Masterclasses & Stage Sprint Lineup",
+      body: `Here are key event highlights for Summit 2.0:\n\n- 08:30 AM: Registration Desk & Fast-Track Badge Verification\n- 09:30 AM: Opening Keynote: Roots & Vectors in Northern Design\n- 11:00 AM: Specialized Tracks in UI/UX, Motion, & Brand Systems\n- 02:00 PM: 2-Hour Live Stage Sprint Finalists & Audience Voting\n- 04:30 PM: Awards Showcase & Networking\n\nVenue: Meena Event Centre, Kano.`,
+    },
+    {
+      name: "Exhibitor & Marketplace Brief",
+      subject: "NCD Summit 2.0 — Exhibitor Booth Setup & Marketplace Guidelines",
+      body: `Dear Partner & Exhibitor,\n\nWe look forward to featuring your brand at the Summit 2.0 Design & Tech Marketplace.\n\nBooth setup begins at 07:00 AM on Saturday, 19th December, 2026 at Meena Event Centre, Kano.\n\nPlease report to the Exhibitor Welcome Desk upon arrival for your booth tags and Wi-Fi access credentials.`,
+    },
+  ];
 
   // Check saved session on mount
   useEffect(() => {
@@ -213,7 +251,6 @@ export default function AdminPortalPage() {
             message: res.message || "Successfully checked in!",
             attendee: res.attendee,
           });
-          // Refresh list and counts
           fetchFullData();
         }
       } else {
@@ -229,6 +266,55 @@ export default function AdminPortalPage() {
       });
     } finally {
       setIsCheckingIn(false);
+    }
+  };
+
+  // Open Email Composer pre-filled for an Individual Attendee
+  const handleOpenEmailForAttendee = (attendee: AdminRegistration) => {
+    setEmailRecipientType("individual");
+    setEmailIndividualAddress(attendee.email);
+    setEmailIndividualName(attendee.full_name);
+    setEmailSubject(`NCD Summit 2.0 — Official Update for ${attendee.full_name}`);
+    setEmailMessage(
+      `Dear ${attendee.full_name},\n\nWe are writing regarding your registration for the Northern Creative Designers Summit 2.0 (Pass Reference: ${attendee.reference_code}).\n\n`
+    );
+    setEmailSendStatus({ type: null, message: "" });
+    setActiveTab("email");
+  };
+
+  // Send Email Handler
+  const handleSendEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSendingEmail(true);
+    setEmailSendStatus({ type: null, message: "" });
+
+    try {
+      const res = await sendAdminEmailAction({
+        recipientType: emailRecipientType,
+        individualEmail: emailIndividualAddress,
+        individualName: emailIndividualName,
+        subject: emailSubject,
+        message: emailMessage,
+      });
+
+      if (res.success) {
+        setEmailSendStatus({
+          type: "success",
+          message: res.message || `Dispatched to ${res.sentCount} recipient(s) successfully!`,
+        });
+      } else {
+        setEmailSendStatus({
+          type: "error",
+          message: res.error || "Failed to dispatch email.",
+        });
+      }
+    } catch {
+      setEmailSendStatus({
+        type: "error",
+        message: "An unexpected communication error occurred while dispatching email.",
+      });
+    } finally {
+      setIsSendingEmail(false);
     }
   };
 
@@ -426,6 +512,24 @@ export default function AdminPortalPage() {
       ? Math.round((metrics.checkedInCount / metrics.totalRegistrations) * 100)
       : 0;
 
+  // Calculate recipient count for the selected audience
+  const estimatedRecipientsCount = (() => {
+    switch (emailRecipientType) {
+      case "individual":
+        return emailIndividualAddress.trim() ? 1 : 0;
+      case "all_attendees":
+        return registrations.length;
+      case "checked_in_only":
+        return registrations.filter((r) => r.ticket?.checked_in).length;
+      case "all_exhibitors":
+        return exhibitors.length;
+      case "all_hackathon":
+        return hackathonTeams.length;
+      default:
+        return 0;
+    }
+  })();
+
   return (
     <main className="flex-1 pb-24 bg-[#FAFAF9]">
       {/* Top Admin Sticky Bar */}
@@ -442,7 +546,7 @@ export default function AdminPortalPage() {
                 </h1>
                 <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Live Supabase
+                  Live Supabase &amp; Resend
                 </span>
               </div>
               <p className="text-[11px] text-white/70">
@@ -536,7 +640,7 @@ export default function AdminPortalPage() {
           <div className="p-5 rounded-2xl bg-white border border-neutral-200/90 shadow-2xs space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider">
-                Exhibitor Desks
+                Exhibitors &amp; Partners
               </span>
               <div className="p-2 rounded-xl bg-amber-50 text-amber-600">
                 <Store className="w-4 h-4" />
@@ -546,10 +650,10 @@ export default function AdminPortalPage() {
               <span className="text-2xl sm:text-3xl font-black text-pine font-mono">
                 {metrics.totalExhibitors}
               </span>
-              <span className="text-xs text-neutral-500 font-medium">Applications</span>
+              <span className="text-xs text-neutral-500 font-medium">Partners</span>
             </div>
             <p className="text-[11px] text-neutral-500">
-              Design market and tech showcases
+              Design market and brand showcases
             </p>
           </div>
 
@@ -579,7 +683,7 @@ export default function AdminPortalPage() {
         <div className="flex items-center gap-2 border-b border-neutral-200 pb-2 overflow-x-auto">
           <button
             onClick={() => setActiveTab("attendees")}
-            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap ${
               activeTab === "attendees"
                 ? "bg-pine text-white shadow-sm"
                 : "text-neutral-600 hover:text-pine hover:bg-white"
@@ -591,19 +695,31 @@ export default function AdminPortalPage() {
 
           <button
             onClick={() => setActiveTab("checkin")}
-            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap ${
               activeTab === "checkin"
                 ? "bg-pine text-white shadow-sm"
                 : "text-neutral-600 hover:text-pine hover:bg-white"
             }`}
           >
             <QrCode className="w-4 h-4" />
-            <span>Fast Check-In Desk</span>
+            <span>Fast Check-In</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("email")}
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap ${
+              activeTab === "email"
+                ? "bg-pine text-white shadow-sm"
+                : "text-neutral-600 hover:text-pine hover:bg-white"
+            }`}
+          >
+            <Send className="w-4 h-4 text-spring" />
+            <span>Send Email Broadcast</span>
           </button>
 
           <button
             onClick={() => setActiveTab("exhibitors")}
-            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap ${
               activeTab === "exhibitors"
                 ? "bg-pine text-white shadow-sm"
                 : "text-neutral-600 hover:text-pine hover:bg-white"
@@ -615,14 +731,14 @@ export default function AdminPortalPage() {
 
           <button
             onClick={() => setActiveTab("hackathon")}
-            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap ${
               activeTab === "hackathon"
                 ? "bg-pine text-white shadow-sm"
                 : "text-neutral-600 hover:text-pine hover:bg-white"
             }`}
           >
             <Zap className="w-4 h-4" />
-            <span>Hackathon Teams ({hackathonTeams.length})</span>
+            <span>Hackathon ({hackathonTeams.length})</span>
           </button>
         </div>
 
@@ -790,7 +906,17 @@ export default function AdminPortalPage() {
                               </td>
 
                               {/* Actions */}
-                              <td className="py-3.5 px-4 text-right whitespace-nowrap space-x-2">
+                              <td className="py-3.5 px-4 text-right whitespace-nowrap space-x-1.5 sm:space-x-2">
+                                <button
+                                  type="button"
+                                  onClick={() => handleOpenEmailForAttendee(attendee)}
+                                  className="px-2.5 py-1.5 rounded-lg text-neutral-600 hover:text-pine hover:bg-neutral-100 border border-neutral-200 transition-colors inline-flex items-center gap-1 text-xs font-semibold"
+                                  title="Send direct email to this delegate"
+                                >
+                                  <Mail className="w-3.5 h-3.5 text-pine" />
+                                  <span className="hidden xl:inline">Email</span>
+                                </button>
+
                                 <button
                                   onClick={() => handleToggleCheckIn(attendee)}
                                   className={`px-3 py-1.5 rounded-lg font-bold text-xs transition-all shadow-2xs ${
@@ -799,7 +925,7 @@ export default function AdminPortalPage() {
                                       : "bg-emerald-600 hover:bg-emerald-700 text-white"
                                   }`}
                                 >
-                                  {isCheckedIn ? "Undo Check-In" : "Check In"}
+                                  {isCheckedIn ? "Undo" : "Check In"}
                                 </button>
 
                                 <button
@@ -1007,12 +1133,262 @@ export default function AdminPortalPage() {
           </div>
         )}
 
-        {/* TAB 3: EXHIBITORS */}
+        {/* TAB 3: EMAIL COMMUNICATIONS & BROADCAST */}
+        {activeTab === "email" && (
+          <div className="max-w-4xl mx-auto space-y-6">
+            <div className="p-6 sm:p-8 rounded-3xl bg-white border border-neutral-200/90 shadow-sm space-y-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-neutral-100 pb-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-pine text-white flex items-center justify-center">
+                    <Send className="w-6 h-6 text-spring" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-pine">Official Email Communications</h3>
+                    <p className="text-xs text-neutral-500">
+                      Send branded summit updates to individual delegates, all attendees, or partners via Resend.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 bg-neutral-sand/50 px-3.5 py-1.5 rounded-xl border border-neutral-200/80 text-xs">
+                  <span className="text-neutral-500 font-medium">Target Audience:</span>
+                  <span className="font-bold text-pine">
+                    {estimatedRecipientsCount} Recipient{estimatedRecipientsCount !== 1 ? "s" : ""}
+                  </span>
+                </div>
+              </div>
+
+              {/* Status Banner */}
+              {emailSendStatus.type && (
+                <div
+                  className={`p-4 rounded-xl border flex items-start gap-3 text-xs leading-relaxed ${
+                    emailSendStatus.type === "success"
+                      ? "bg-emerald-50 border-emerald-300 text-emerald-800"
+                      : "bg-red-50 border-red-300 text-red-800"
+                  }`}
+                >
+                  {emailSendStatus.type === "success" ? (
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  ) : (
+                    <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  )}
+                  <div>
+                    <h4 className="font-bold text-sm">
+                      {emailSendStatus.type === "success" ? "Emails Dispatched" : "Dispatch Notice"}
+                    </h4>
+                    <p className="mt-0.5">{emailSendStatus.message}</p>
+                  </div>
+                </div>
+              )}
+
+              <form onSubmit={handleSendEmail} className="space-y-5">
+                {/* 1. Recipient Audience Selector */}
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                    1. Select Target Recipient Audience
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+                    <button
+                      type="button"
+                      onClick={() => setEmailRecipientType("all_attendees")}
+                      className={`p-3 rounded-xl border text-left transition-all ${
+                        emailRecipientType === "all_attendees"
+                          ? "bg-pine text-white border-pine shadow-sm"
+                          : "bg-white hover:bg-neutral-50 border-neutral-200 text-neutral-800"
+                      }`}
+                    >
+                      <Users className="w-4 h-4 mb-1.5 opacity-80" />
+                      <div className="font-bold text-xs leading-tight">All Attendees</div>
+                      <div className="text-[10px] opacity-75 mt-0.5">{registrations.length} registered</div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setEmailRecipientType("checked_in_only")}
+                      className={`p-3 rounded-xl border text-left transition-all ${
+                        emailRecipientType === "checked_in_only"
+                          ? "bg-pine text-white border-pine shadow-sm"
+                          : "bg-white hover:bg-neutral-50 border-neutral-200 text-neutral-800"
+                      }`}
+                    >
+                      <UserCheck className="w-4 h-4 mb-1.5 opacity-80" />
+                      <div className="font-bold text-xs leading-tight">Checked In</div>
+                      <div className="text-[10px] opacity-75 mt-0.5">
+                        {registrations.filter((r) => r.ticket?.checked_in).length} at venue
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setEmailRecipientType("all_exhibitors")}
+                      className={`p-3 rounded-xl border text-left transition-all ${
+                        emailRecipientType === "all_exhibitors"
+                          ? "bg-pine text-white border-pine shadow-sm"
+                          : "bg-white hover:bg-neutral-50 border-neutral-200 text-neutral-800"
+                      }`}
+                    >
+                      <Store className="w-4 h-4 mb-1.5 opacity-80" />
+                      <div className="font-bold text-xs leading-tight">Exhibitors</div>
+                      <div className="text-[10px] opacity-75 mt-0.5">{exhibitors.length} partners</div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setEmailRecipientType("all_hackathon")}
+                      className={`p-3 rounded-xl border text-left transition-all ${
+                        emailRecipientType === "all_hackathon"
+                          ? "bg-pine text-white border-pine shadow-sm"
+                          : "bg-white hover:bg-neutral-50 border-neutral-200 text-neutral-800"
+                      }`}
+                    >
+                      <Zap className="w-4 h-4 mb-1.5 opacity-80" />
+                      <div className="font-bold text-xs leading-tight">Hackathon</div>
+                      <div className="text-[10px] opacity-75 mt-0.5">{hackathonTeams.length} teams</div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setEmailRecipientType("individual")}
+                      className={`p-3 rounded-xl border text-left transition-all col-span-2 sm:col-span-1 ${
+                        emailRecipientType === "individual"
+                          ? "bg-pine text-white border-pine shadow-sm"
+                          : "bg-white hover:bg-neutral-50 border-neutral-200 text-neutral-800"
+                      }`}
+                    >
+                      <Mail className="w-4 h-4 mb-1.5 opacity-80" />
+                      <div className="font-bold text-xs leading-tight">Individual</div>
+                      <div className="text-[10px] opacity-75 mt-0.5">Single recipient</div>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Individual Recipient Inputs */}
+                {emailRecipientType === "individual" && (
+                  <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200/90 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold text-neutral-700 uppercase tracking-wider block">
+                        Recipient Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        placeholder="e.g. delegate@example.com"
+                        value={emailIndividualAddress}
+                        onChange={(e) => setEmailIndividualAddress(e.target.value)}
+                        className="w-full h-10 px-3.5 rounded-xl border border-neutral-200 bg-white text-xs font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine"
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold text-neutral-700 uppercase tracking-wider block">
+                        Recipient Name (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Aminu Muhammad"
+                        value={emailIndividualName}
+                        onChange={(e) => setEmailIndividualName(e.target.value)}
+                        className="w-full h-10 px-3.5 rounded-xl border border-neutral-200 bg-white text-xs font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* 2. One-Click Quick Templates */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                      Quick Message Templates (1-Click)
+                    </label>
+                    <span className="text-[11px] text-neutral-400">Click to autofill subject &amp; body</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {emailPresets.map((preset, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          setEmailSubject(preset.subject);
+                          setEmailMessage(preset.body);
+                        }}
+                        className="px-3 py-1.5 rounded-lg bg-neutral-sand/40 hover:bg-neutral-sand border border-neutral-200 text-xs font-semibold text-pine transition-all flex items-center gap-1.5"
+                      >
+                        <FileText className="w-3.5 h-3.5 text-pine/70" />
+                        <span>{preset.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 3. Email Subject */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                    Email Subject *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Important Summit 2.0 Venue Guide & Gate Schedule"
+                    value={emailSubject}
+                    onChange={(e) => setEmailSubject(e.target.value)}
+                    className="w-full h-11 px-4 rounded-xl border border-neutral-200 bg-neutral-sand/20 hover:bg-white focus:bg-white text-sm font-semibold text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
+                  />
+                </div>
+
+                {/* 4. Message Body */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                    Message Body *
+                  </label>
+                  <textarea
+                    required
+                    rows={7}
+                    placeholder="Type your official announcement or message here..."
+                    value={emailMessage}
+                    onChange={(e) => setEmailMessage(e.target.value)}
+                    className="w-full p-4 rounded-2xl border border-neutral-200 bg-neutral-sand/20 hover:bg-white focus:bg-white text-xs sm:text-sm font-normal text-neutral-800 focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all leading-relaxed shadow-2xs resize-y"
+                  />
+                  <p className="text-[11px] text-neutral-400">
+                    The message will automatically be styled with the official NCD Summit 2.0 brand header, event details, and executive footer.
+                  </p>
+                </div>
+
+                {/* Submit Button */}
+                <div className="pt-2">
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="md"
+                    className="w-full h-12 flex items-center justify-center gap-2 shadow-md"
+                    disabled={isSendingEmail || estimatedRecipientsCount === 0}
+                  >
+                    {isSendingEmail ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Dispatching through Resend...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        <span>
+                          Send Email to {estimatedRecipientsCount} Recipient
+                          {estimatedRecipientsCount !== 1 ? "s" : ""}
+                        </span>
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 4: EXHIBITORS */}
         {activeTab === "exhibitors" && (
           <div className="space-y-4">
             <div className="p-6 rounded-2xl bg-white border border-neutral-200/90 shadow-2xs flex items-center justify-between">
               <div>
-                <h3 className="font-bold text-pine text-base">Marketplace Exhibitors</h3>
+                <h3 className="font-bold text-pine text-base">Marketplace Exhibitors &amp; Partners</h3>
                 <p className="text-xs text-neutral-500">
                   Review creative brand applications, approve booths, and allocate exhibition slots.
                 </p>
@@ -1115,7 +1491,7 @@ export default function AdminPortalPage() {
           </div>
         )}
 
-        {/* TAB 4: HACKATHON TEAMS */}
+        {/* TAB 5: HACKATHON TEAMS */}
         {activeTab === "hackathon" && (
           <div className="space-y-4">
             <div className="p-6 rounded-2xl bg-white border border-neutral-200/90 shadow-2xs flex items-center justify-between">
