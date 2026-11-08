@@ -54,10 +54,6 @@ export function ProgrammeHighlightsSection() {
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                <span className="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-black/50 backdrop-blur-xs text-white text-[10px] font-mono font-bold uppercase tracking-wider">
-                  PREVIOUS: SUMMIT 1.0
-                </span>
               </div>
               <div className="p-5 sm:p-6 space-y-2 bg-white flex-1 flex flex-col justify-between">
                 <div>
@@ -83,10 +79,6 @@ export function ProgrammeHighlightsSection() {
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                <span className="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-black/50 backdrop-blur-xs text-white text-[10px] font-mono font-bold uppercase tracking-wider">
-                  UPCOMING: SUMMIT 2.0
-                </span>
               </div>
               <div className="p-5 sm:p-6 space-y-2 bg-white flex-1 flex flex-col justify-between">
                 <div>
