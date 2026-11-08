@@ -18,14 +18,12 @@ import {
   Mail,
   Lock,
   Phone,
-  Briefcase,
   Layers,
   Palette,
   Code2,
   Tv,
   GraduationCap,
   Award,
-  Globe,
   Compass,
   Check,
   Copy,
@@ -735,41 +733,6 @@ export default function RegisterPage() {
                     </div>
                   </div>
 
-                  {/* Studio / Org & Portfolio */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
-                    <div className="space-y-2 group">
-                      <label className="text-xs font-bold text-pine uppercase tracking-wider flex items-center">
-                        Company / Studio / University
-                      </label>
-                      <div className="relative">
-                        <Briefcase className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2 group-focus-within:text-spring transition-colors pointer-events-none" />
-                        <input
-                          type="text"
-                          placeholder="e.g. Freelance, Bayero University, Tech Hub"
-                          value={formData.organization}
-                          onChange={(e) => updateField("organization", e.target.value)}
-                          className="w-full h-12 pl-10 pr-4 rounded-xl border border-neutral-border bg-neutral-sand/40 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-spring focus:border-transparent text-sm font-medium text-pine placeholder:text-neutral-400 transition-all shadow-2xs"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2 group">
-                      <label className="text-xs font-bold text-pine uppercase tracking-wider flex items-center">
-                        Portfolio / Social Link
-                      </label>
-                      <div className="relative">
-                        <Globe className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2 group-focus-within:text-spring transition-colors pointer-events-none" />
-                        <input
-                          type="url"
-                          placeholder="Behance, Dribbble, GitHub, or LinkedIn URL"
-                          value={formData.portfolioUrl}
-                          onChange={(e) => updateField("portfolioUrl", e.target.value)}
-                          className="w-full h-12 pl-10 pr-4 rounded-xl border border-neutral-border bg-neutral-sand/40 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-spring focus:border-transparent text-sm font-medium text-pine placeholder:text-neutral-400 transition-all shadow-2xs"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
                   <div className="pt-4 flex items-center justify-between border-t border-neutral-border gap-4">
                     <button
                       type="button"
@@ -797,7 +760,7 @@ export default function RegisterPage() {
                     <span className="text-xs font-bold text-spring uppercase tracking-wider">Step 3 of 4</span>
                     <h2 className="text-2xl font-bold text-pine mt-1">Summit Experience & Preferences</h2>
                     <p className="text-xs sm:text-sm text-navy/70 mt-1">
-                      Choose the specific summits tracks you wish to participate in and your delegate merch sizing.
+                      Choose the specific summit tracks you wish to participate in.
                     </p>
                   </div>
 
@@ -830,53 +793,6 @@ export default function RegisterPage() {
                           </div>
                         );
                       })}
-                    </div>
-                  </div>
-
-                  {/* Merch T-Shirt & Dietary */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
-                    <div className="space-y-2 group">
-                      <label className="text-xs font-bold text-pine uppercase tracking-wider flex items-center">
-                        Delegate T-Shirt Size
-                      </label>
-                      <div className="relative">
-                        <select
-                          value={formData.tshirtSize}
-                          onChange={(e) => updateField("tshirtSize", e.target.value)}
-                          className="w-full h-12 pl-4 pr-10 rounded-xl border border-neutral-border bg-neutral-sand/40 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-spring focus:border-transparent text-sm font-medium text-pine transition-all appearance-none shadow-2xs cursor-pointer"
-                        >
-                          {["S (Small)", "M (Medium)", "L (Large)", "XL (Extra Large)", "2XL (Double Large)"].map(
-                            (size) => (
-                              <option key={size} value={size}>
-                                {size}
-                              </option>
-                            )
-                          )}
-                        </select>
-                        <ChevronRight className="w-4 h-4 text-neutral-400 rotate-90 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2 group">
-                      <label className="text-xs font-bold text-pine uppercase tracking-wider flex items-center">
-                        Dietary / Accessibility Needs
-                      </label>
-                      <div className="relative">
-                        <select
-                          value={formData.dietaryRequirements}
-                          onChange={(e) => updateField("dietaryRequirements", e.target.value)}
-                          className="w-full h-12 pl-4 pr-10 rounded-xl border border-neutral-border bg-neutral-sand/40 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-spring focus:border-transparent text-sm font-medium text-pine transition-all appearance-none shadow-2xs cursor-pointer"
-                        >
-                          {["Standard / Halal", "Vegetarian", "No Dietary Restriction", "Wheelchair / Special Access"].map(
-                            (opt) => (
-                              <option key={opt} value={opt}>
-                                {opt}
-                              </option>
-                            )
-                          )}
-                        </select>
-                        <ChevronRight className="w-4 h-4 text-neutral-400 rotate-90 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                      </div>
                     </div>
                   </div>
 
@@ -961,10 +877,6 @@ export default function RegisterPage() {
                       <div>
                         <span className="text-navy/50 block text-[10px] uppercase">Summit Date & Venue</span>
                         <span className="font-semibold text-pine">{eventConfig.date} • {eventConfig.venue}</span>
-                      </div>
-                      <div>
-                        <span className="text-navy/50 block text-[10px] uppercase">T-Shirt Merch Size</span>
-                        <span className="font-semibold text-pine">{formData.tshirtSize}</span>
                       </div>
                     </div>
                   </div>
