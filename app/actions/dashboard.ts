@@ -89,7 +89,7 @@ export async function getAttendeeDashboardDataAction(): Promise<{
     // Default attendee object if table is completely empty
     const attendee = {
       id: registration?.id || '00000000-0000-0000-0000-000000000000',
-      name: registration?.full_name || 'Summit Delegate',
+      name: registration?.full_name || user?.user_metadata?.full_name || 'Attendee',
       email: registration?.email || user?.email || 'delegate@northcdesigner.com.ng',
       role: registration?.creative_discipline || 'UI/UX & Product Design',
       experience: registration?.experience_level || 'Mid-Level (3-5 years)',

@@ -17,17 +17,17 @@ export default function HomePage() {
       {/* 2. Full-Width Infinite Marquee Ticker (Pine Theme, Scrolling Left) */}
       <MarqueeTicker theme="pine" />
 
-      {/* 3. Summit Introduction & Objectives */}
+      {/* 3. Summit Introduction & Objectives (Includes What to Expect) */}
       <SummitIntroSection />
 
-      {/* 4. Programme Highlights & Staggered Architecture (Faithfully adapted to program feature.png & PDF Page 08) */}
-      <ProgrammeHighlightsSection />
-
-      {/* 5. Curated Speakers Announcement State */}
+      {/* 4. Curated Voices Shaping Arewa Design */}
       <SpeakersSection />
 
-      {/* 6. Live Hackathon & 2-Hour Sprint Feature */}
+      {/* 5. Live Hackathon & Audience Voting */}
       <HackathonSection />
+
+      {/* 6. Programme Highlights & Staggered Architecture (Faithfully adapted to program feature.png & PDF Page 08) */}
+      <ProgrammeHighlightsSection />
 
       {/* 7. Commitment in Action & Verified Past Impact */}
       <CommitmentSection />

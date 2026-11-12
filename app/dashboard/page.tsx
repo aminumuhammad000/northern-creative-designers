@@ -10,10 +10,6 @@ import {
   Clock,
   Bookmark,
   BookmarkCheck,
-  FileText,
-  Flame,
-  Copy,
-  ThumbsUp,
   Loader2,
   AlertCircle,
   Save,
@@ -23,12 +19,11 @@ import { DashboardNav } from "@/components/dashboard/DashboardNav";
 import { DigitalPass } from "@/components/dashboard/DigitalPass";
 import {
   getAttendeeDashboardDataAction,
-  castHackathonVoteAction,
   updateAttendeeProfileAction,
   AttendeeDashboardData,
 } from "@/app/actions/dashboard";
 
-type TabId = "pass" | "schedule" | "hackathon" | "toolkit" | "profile";
+type TabId = "pass" | "schedule" | "profile";
 
 export default function ParticipantDashboard() {
   const [activeTab, setActiveTab] = useState<TabId>("pass");
@@ -39,11 +34,9 @@ export default function ParticipantDashboard() {
     "session-pricing",
   ]);
   const [directoryOptIn, setDirectoryOptIn] = useState(true);
-  const [copiedCoupon, setCopiedCoupon] = useState<string | null>(null);
 
   // Live Server State
   const [isLoading, setIsLoading] = useState(true);
-  const [isVoting, setIsVoting] = useState(false);
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [feedbackMessage, setFeedbackMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
@@ -109,36 +102,6 @@ export default function ParticipantDashboard() {
       setBookmarkedSessions(bookmarkedSessions.filter((id) => id !== sessionId));
     } else {
       setBookmarkedSessions([...bookmarkedSessions, sessionId]);
-    }
-  };
-
-  const copyCouponCode = (code: string) => {
-    if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(code);
-      setCopiedCoupon(code);
-      setTimeout(() => setCopiedCoupon(null), 2500);
-    }
-  };
-
-  const handleCastVote = async (teamId: string) => {
-    if (hasVotedTeamId || isVoting) return;
-    setIsVoting(true);
-    setFeedbackMessage(null);
-
-    try {
-      const res = await castHackathonVoteAction(teamId);
-      if (res.success && res.teams) {
-        setHasVotedTeamId(res.hasVotedTeamId || teamId);
-        setTeams(res.teams);
-        if (res.totalVotes !== undefined) setTotalVotes(res.totalVotes);
-        setFeedbackMessage({ type: "success", text: "Your vote has been cast and saved to the live tally!" });
-      } else {
-        setFeedbackMessage({ type: "error", text: res.error || "Failed to record vote." });
-      }
-    } catch {
-      setFeedbackMessage({ type: "error", text: "Network error occurred while voting." });
-    } finally {
-      setIsVoting(false);
     }
   };
 
@@ -249,7 +212,6 @@ export default function ParticipantDashboard() {
       <DashboardNav
         userRole="attendee"
         userName={attendee.name}
-        badgeLabel="Delegate"
       />
 
       {/* Sub-Nav Tabs Bar */}
@@ -257,11 +219,9 @@ export default function ParticipantDashboard() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6 overflow-x-auto scrollbar-none">
             {[
-              { id: "pass", label: "QR Pass", micro: attendee.referenceCode, icon: QrCode },
-              { id: "schedule", label: "My Schedule", micro: `${ALL_SESSIONS.length} Sessions`, icon: Calendar },
-              { id: "hackathon", label: "Hackathon & Voting", micro: `${teams.length} Teams`, icon: Flame },
-              { id: "toolkit", label: "Delegate Toolkit", micro: "Perks", icon: FileText },
-              { id: "profile", label: "Profile & Settings", micro: "Verified", icon: User },
+              { id: "pass", label: "QR Pass", icon: QrCode },
+              { id: "schedule", label: "My Schedule", icon: Calendar },
+              { id: "profile", label: "Profile & Settings", icon: User },
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -277,15 +237,6 @@ export default function ParticipantDashboard() {
                 >
                   <Icon className="w-4 h-4 flex-shrink-0" />
                   <span>{tab.label}</span>
-                  <span
-                    className={`text-[10px] px-1.5 py-0.2 rounded font-medium ${
-                      isActive
-                        ? "bg-pine/10 text-pine font-semibold"
-                        : "bg-neutral-100 text-neutral-500"
-                    }`}
-                  >
-                    {tab.micro}
-                  </span>
                 </button>
               );
             })}
@@ -497,168 +448,13 @@ export default function ParticipantDashboard() {
           </div>
         )}
 
-        {/* ================= TAB 3: HACKATHON & LIVE DATABASE VOTING ================= */}
-        {activeTab === "hackathon" && (
-          <div className="space-y-6">
-            <div className="bg-white rounded-2xl border border-neutral-200/90 p-6 sm:p-7 shadow-xs space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-neutral-100 pb-5">
-                <div>
-                  <h2 className="text-lg font-bold text-pine">
-                    {hackathon?.title || "2-Hour Live Stage Sprint & Audience Vote"}
-                  </h2>
-                  <p className="text-xs text-neutral-500 mt-0.5">
-                    Live competing finalists from database. Total verified audience votes cast:{" "}
-                    <span className="font-semibold text-pine">{totalVotes}</span>
-                  </p>
-                </div>
-                {hasVotedTeamId && (
-                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1.5">
-                    <CheckCircle className="w-3.5 h-3.5" />
-                    Vote Recorded in Database
-                  </span>
-                )}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                {teams.map((team) => {
-                  const isVoted = hasVotedTeamId === team.id;
-
-                  return (
-                    <div
-                      key={team.id}
-                      className={`p-5 rounded-xl border flex flex-col justify-between space-y-4 transition-all ${
-                        isVoted
-                          ? "border-pine bg-neutral-50 shadow-2xs ring-2 ring-pine/20"
-                          : "border-neutral-200 bg-white hover:border-neutral-300"
-                      }`}
-                    >
-                      <div className="space-y-2.5">
-                        <span className="text-[10px] font-mono font-semibold text-neutral-600 bg-neutral-100 px-2 py-0.5 rounded">
-                          {team.track}
-                        </span>
-                        <h3 className="font-bold text-pine text-sm">{team.name}</h3>
-                        <p className="text-xs text-neutral-500">
-                          Lead: <span className="text-pine font-medium">{team.leadName}</span> • {team.teamSize} Members
-                        </p>
-                      </div>
-
-                      <div className="space-y-2.5 pt-3 border-t border-neutral-100">
-                        <div className="flex justify-between text-[11px] font-medium text-neutral-600">
-                          <span>Verified Votes</span>
-                          <span className="font-semibold text-pine">
-                            {team.votes} ({team.percentage}%)
-                          </span>
-                        </div>
-                        <div className="w-full h-1.5 rounded-full bg-neutral-100 overflow-hidden">
-                          <div
-                            className="h-full bg-pine transition-all duration-300 rounded-full"
-                            style={{ width: `${team.percentage}%` }}
-                          />
-                        </div>
-
-                        <button
-                          type="button"
-                          disabled={hasVotedTeamId !== null || isVoting}
-                          onClick={() => handleCastVote(team.id)}
-                          className={`w-full h-10 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 whitespace-nowrap ${
-                            isVoted
-                              ? "bg-pine text-white shadow-2xs"
-                              : hasVotedTeamId
-                              ? "bg-neutral-100 text-neutral-400 cursor-not-allowed"
-                              : "bg-white border border-neutral-300 text-neutral-700 hover:bg-neutral-50"
-                          }`}
-                        >
-                          {isVoting && !isVoted ? (
-                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                          ) : (
-                            <ThumbsUp className="w-3.5 h-3.5" />
-                          )}
-                          {isVoted ? "Your Recorded Vote" : "Vote for Team"}
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ================= TAB 4: TOOLKIT & PERKS ================= */}
-        {activeTab === "toolkit" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {[
-              {
-                id: "perk-vectors",
-                title: "Arewa Vector & Geometric Motifs Pack",
-                desc: "High-resolution SVG and vector asset library of authentic Northern motifs and textures ready for Figma and Illustrator.",
-                badge: "Asset Bundle",
-                code: "NCD-AREWA-VECTOR-2026",
-              },
-              {
-                id: "perk-fonts",
-                title: "Northern Calligraphy & Display Fonts",
-                desc: "Modern display typography crafted for regional poster design, apparel, and cultural branding.",
-                badge: "Font License",
-                code: "SUMMIT2-AJAMI-TYPO",
-              },
-              {
-                id: "perk-templates",
-                title: "Client Proposal & Pricing Contract Kits",
-                desc: "Standardized service agreement templates, design sprint estimation formulas, and client onboarding question briefs.",
-                badge: "Templates",
-                code: "NCD-PROPOSAL-KIT",
-              },
-              {
-                id: "perk-discounts",
-                title: "Design Software & Cloud Credits",
-                desc: "Summit-exclusive 50% discount vouchers on prototyping, UI design plugins, and web hosting partners.",
-                badge: "Discount Code",
-                code: "NORTH-CREATIVE-50OFF",
-              },
-            ].map((perk) => {
-              const isCopied = copiedCoupon === perk.code;
-
-              return (
-                <div
-                  key={perk.id}
-                  className="bg-white rounded-2xl border border-neutral-200/90 p-5 shadow-xs flex flex-col justify-between space-y-4"
-                >
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-semibold text-neutral-500 bg-neutral-100 px-2 py-0.5 rounded">
-                        {perk.badge}
-                      </span>
-                    </div>
-                    <h3 className="text-sm font-bold text-pine">{perk.title}</h3>
-                    <p className="text-xs text-neutral-600 leading-relaxed">{perk.desc}</p>
-                  </div>
-
-                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between gap-3">
-                    <span className="font-mono text-xs text-neutral-700 bg-neutral-50 px-2.5 py-1 rounded-md border border-neutral-200">
-                      {perk.code}
-                    </span>
-                    <button
-                      onClick={() => copyCouponCode(perk.code)}
-                      className="h-8 px-3 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-xs font-semibold text-pine transition-colors inline-flex items-center justify-center gap-1.5 whitespace-nowrap flex-shrink-0"
-                    >
-                      <Copy className="w-3.5 h-3.5 text-neutral-400" />
-                      {isCopied ? "Copied!" : "Copy Code"}
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        {/* ================= TAB 5: PROFILE & DATABASE SETTINGS ================= */}
+        {/* ================= TAB 3: PROFILE & DATABASE SETTINGS ================= */}
         {activeTab === "profile" && (
           <div className="max-w-2xl bg-white rounded-2xl border border-neutral-200/90 p-6 sm:p-7 shadow-xs space-y-6">
             <div className="border-b border-neutral-100 pb-4">
-              <h2 className="text-lg font-bold text-pine">Delegate Profile Settings</h2>
+              <h2 className="text-lg font-bold text-pine">Profile Settings</h2>
               <p className="text-xs text-neutral-500 mt-0.5">
-                Update your registered delegate information and preferences.
+                Update your registered information and preferences.
               </p>
             </div>
 

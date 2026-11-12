@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import QRCode from "qrcode";
 import {
-  QrCode,
   Printer,
   Copy,
   Check,
@@ -28,6 +28,34 @@ interface DigitalPassProps {
 
 export function DigitalPass({ attendee }: DigitalPassProps) {
   const [copied, setCopied] = useState(false);
+  const [qrCodeSvg, setQrCodeSvg] = useState<string>("");
+
+  useEffect(() => {
+    let isMounted = true;
+    const valueToEncode = attendee.referenceCode || attendee.ticketToken || "NCD-SUMMIT-2026";
+
+    QRCode.toString(valueToEncode, {
+      type: "svg",
+      margin: 1,
+      color: {
+        dark: "#013811",
+        light: "#FFFFFF",
+      },
+      errorCorrectionLevel: "M",
+    })
+      .then((svg) => {
+        if (isMounted) {
+          setQrCodeSvg(svg);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to generate QR code:", err);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [attendee.referenceCode, attendee.ticketToken]);
 
   const copyReference = () => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
@@ -91,8 +119,17 @@ export function DigitalPass({ attendee }: DigitalPassProps) {
 
         {/* QR Code Section */}
         <div className="bg-neutral-50 rounded-2xl p-5 border border-neutral-200/80 flex flex-col items-center justify-center space-y-3">
-          <div className="p-3 bg-white rounded-xl border border-neutral-200 shadow-2xs">
-            <QrCode className="w-32 h-32 sm:w-36 sm:h-36 text-pine" strokeWidth={1.5} />
+          <div className="p-3 bg-white rounded-xl border border-neutral-200 shadow-2xs w-36 h-36 sm:w-40 sm:h-40 flex items-center justify-center">
+            {qrCodeSvg ? (
+              <div
+                className="w-full h-full [&>svg]:w-full [&>svg]:h-full"
+                dangerouslySetInnerHTML={{ __html: qrCodeSvg }}
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <div className="w-6 h-6 border-2 border-pine border-t-transparent rounded-full animate-spin" />
+              </div>
+            )}
           </div>
           <div className="text-center space-y-1.5 w-full flex flex-col items-center">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white border border-neutral-200 shadow-2xs">

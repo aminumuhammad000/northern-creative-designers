@@ -235,7 +235,7 @@ export function SummitIntroSection() {
         </div>
 
         {/* 4. What to Expect: Faithfully Adapted to Reference Brand Design (PDF Page 06) */}
-        <div id="what-to-expect" className="mb-24 md:mb-32">
+        <div id="what-to-expect">
           <div className="max-w-3xl mb-8 sm:mb-12 space-y-3">
             <h3 className="text-3xl sm:text-4xl md:text-5xl font-black text-pine tracking-tight leading-tight">
               What to Expect.

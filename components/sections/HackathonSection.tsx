@@ -32,8 +32,8 @@ export function HackathonSection() {
           {/* Main Focus Photo */}
           <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-xl sm:rounded-2xl overflow-hidden mb-5 sm:mb-6 bg-black/10">
             <Image
-              src="/images/community/hackathon_audience_focus.jpg"
-              alt="Northern Design Hackathon Live Audience and Participants"
+              src="/images/community/hackathon_2025_sprint.png"
+              alt="Northern Design Hackathon 2025 Sprint"
               fill
               className="object-cover object-center"
               priority

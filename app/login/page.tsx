@@ -3,15 +3,10 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import {
   Lock,
   Mail,
   ArrowRight,
-  Sparkles,
-  CheckCircle,
-  ShieldCheck,
-  UserCheck,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { loginAction } from "@/app/actions/auth";
@@ -45,12 +40,6 @@ export default function LoginPage() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleDemoLogin = () => {
-    setEmail("attendee@northcdesigners.org");
-    setPassword("summit2026demo");
-    router.push("/dashboard");
   };
 
   return (
@@ -141,25 +130,6 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-
-          {/* Quick Demo Access Divider */}
-          <div className="relative flex py-1 items-center">
-            <div className="flex-grow border-t border-neutral-border"></div>
-            <span className="flex-shrink mx-3 text-[11px] uppercase tracking-wider text-navy/40 font-semibold">
-              Instant Preview
-            </span>
-            <div className="flex-grow border-t border-neutral-border"></div>
-          </div>
-
-          {/* One-Click Demo Mode Button */}
-          <button
-            type="button"
-            onClick={handleDemoLogin}
-            className="w-full h-12 inline-flex items-center justify-center px-4 rounded-2xl bg-neutral-sand border border-neutral-border text-pine text-xs font-bold hover:bg-spring/10 hover:border-spring/50 transition-all group whitespace-nowrap"
-          >
-            <UserCheck className="w-4 h-4 mr-2 text-spring group-hover:scale-110 transition-transform" />
-            Quick Demo: Preview Attendee Dashboard
-          </button>
 
           <div className="pt-2 text-center text-xs text-navy/60">
             Don&apos;t have an account yet?{" "}

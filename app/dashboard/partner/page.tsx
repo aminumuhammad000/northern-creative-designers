@@ -151,15 +151,6 @@ export default function PartnerDashboard() {
                 >
                   <Icon className="w-4 h-4 flex-shrink-0" />
                   <span>{tab.label}</span>
-                  <span
-                    className={`text-[10px] px-1.5 py-0.2 rounded font-medium ${
-                      isActive
-                        ? "bg-pine/10 text-pine font-semibold"
-                        : "bg-neutral-100 text-neutral-500"
-                    }`}
-                  >
-                    {tab.micro}
-                  </span>
                 </button>
               );
             })}
