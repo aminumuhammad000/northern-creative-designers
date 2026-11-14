@@ -3,35 +3,66 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Calendar, MapPin, Trophy, Sparkles } from "lucide-react";
-import { eventConfig } from "@/config/event";
+import { ArrowRight } from "lucide-react";
 
 export function HeroSection() {
   return (
     <section className="w-full relative overflow-hidden bg-[#FAFAF8] border-b border-neutral-border/60 pt-16 pb-20 md:pt-24 md:pb-32">
-      {/* Silky ambient background radial glows */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(3,208,107,0.08),rgba(255,255,255,0))] pointer-events-none" />
-      <div className="absolute top-1/3 -right-24 w-96 h-96 bg-tangerine/[0.04] rounded-full blur-3xl pointer-events-none" />
+      {/* FULL HERO SECTION BACKGROUND COMPOSITION */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none">
+        {/* Layer 1: Creative Community in Motion (Panoramic Full-Bleed Action Texture) */}
+        <div className="absolute inset-0 w-full h-full">
+          <Image
+            src="/images/hero/creative-community-in-motion.png"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover object-center opacity-35 mix-blend-multiply"
+            priority
+          />
+        </div>
 
-      {/* Authentic Arewa Geometric Watermarks with softened opacity */}
-      <div className="absolute -top-12 -right-12 w-80 h-96 opacity-[0.035] pointer-events-none select-none blur-[0.5px]">
-        <Image
-          src="/images/pdf_extracted/arewa_motif_pattern.png"
-          alt=""
-          width={736}
-          height={845}
-          className="w-full h-full object-contain"
-          priority
-        />
-      </div>
-      <div className="absolute -bottom-16 -left-16 w-80 h-96 opacity-[0.03] pointer-events-none select-none -scale-x-100 blur-[0.5px]">
-        <Image
-          src="/images/pdf_extracted/arewa_motif_pattern.png"
-          alt=""
-          width={736}
-          height={845}
-          className="w-full h-full object-contain"
-        />
+        {/* Layer 2: Innovative Northern Nigerian Tech Collective (Silhouette Layer) */}
+        <div className="absolute inset-0 w-full h-full">
+          <Image
+            src="/images/hero/innovative-tech-collective.png"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover object-bottom opacity-30 drop-shadow-sm"
+            priority
+          />
+        </div>
+
+        {/* Layer 3: Editorial Radial & Linear Scrim (Preserves WCAG AAA Typography Legibility) */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_35%,rgba(250,250,248,0.94)_0%,rgba(250,250,248,0.72)_65%,rgba(250,250,248,0.92)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FAFAF8]/90 via-transparent to-[#FAFAF8]" />
+
+        {/* Layer 4: Brand Ambient Radial Glows */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(3,208,107,0.12),rgba(255,255,255,0))]" />
+        <div className="absolute top-1/3 -right-24 w-96 h-96 bg-tangerine/[0.05] rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -left-24 w-96 h-96 bg-spring/[0.05] rounded-full blur-3xl" />
+
+        {/* Layer 5: Authentic Arewa Geometric Watermarks */}
+        <div className="absolute -top-12 -right-12 w-80 h-96 opacity-[0.035] blur-[0.5px]">
+          <Image
+            src="/images/pdf_extracted/arewa_motif_pattern.png"
+            alt=""
+            width={736}
+            height={845}
+            className="w-full h-full object-contain"
+            priority
+          />
+        </div>
+        <div className="absolute -bottom-16 -left-16 w-80 h-96 opacity-[0.03] -scale-x-100 blur-[0.5px]">
+          <Image
+            src="/images/pdf_extracted/arewa_motif_pattern.png"
+            alt=""
+            width={736}
+            height={845}
+            className="w-full h-full object-contain"
+          />
+        </div>
       </div>
 
       <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 text-center relative z-10">
@@ -71,7 +102,7 @@ export function HeroSection() {
         {/* Smooth Glass-Style Metric Cards with Gentle Hover Elevation */}
         <div className="mt-16 pt-10 border-t border-neutral-border/60 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full text-left">
           {/* Metric 1 */}
-          <div className="p-5 sm:p-6 rounded-2xl bg-white border border-neutral-border/80 shadow-[0_2px_8px_rgba(1,56,17,0.03)] hover:-translate-y-1 hover:shadow-md hover:border-spring/40 transition-all duration-300">
+          <div className="p-5 sm:p-6 rounded-2xl bg-white/85 backdrop-blur-md border border-neutral-border/80 shadow-[0_2px_8px_rgba(1,56,17,0.03)] hover:-translate-y-1 hover:shadow-md hover:border-spring/40 transition-all duration-300">
             <span className="text-[11px] font-bold text-pine/60 uppercase tracking-wider block mb-1">
               Flagship Edition
             </span>
@@ -84,7 +115,7 @@ export function HeroSection() {
           </div>
 
           {/* Metric 2 */}
-          <div className="p-5 sm:p-6 rounded-2xl bg-white border border-neutral-border/80 shadow-[0_2px_8px_rgba(1,56,17,0.03)] hover:-translate-y-1 hover:shadow-md hover:border-spring/40 transition-all duration-300">
+          <div className="p-5 sm:p-6 rounded-2xl bg-white/85 backdrop-blur-md border border-neutral-border/80 shadow-[0_2px_8px_rgba(1,56,17,0.03)] hover:-translate-y-1 hover:shadow-md hover:border-spring/40 transition-all duration-300">
             <span className="text-[11px] font-bold text-spring uppercase tracking-wider block mb-1">
               Hackathon Pool
             </span>
@@ -97,7 +128,7 @@ export function HeroSection() {
           </div>
 
           {/* Metric 3 */}
-          <div className="p-5 sm:p-6 rounded-2xl bg-white border border-neutral-border/80 shadow-[0_2px_8px_rgba(1,56,17,0.03)] hover:-translate-y-1 hover:shadow-md hover:border-spring/40 transition-all duration-300">
+          <div className="p-5 sm:p-6 rounded-2xl bg-white/85 backdrop-blur-md border border-neutral-border/80 shadow-[0_2px_8px_rgba(1,56,17,0.03)] hover:-translate-y-1 hover:shadow-md hover:border-spring/40 transition-all duration-300">
             <span className="text-[11px] font-bold text-tangerine uppercase tracking-wider block mb-1">
               Ecosystem
             </span>
@@ -110,7 +141,7 @@ export function HeroSection() {
           </div>
 
           {/* Metric 4 */}
-          <div className="p-5 sm:p-6 rounded-2xl bg-white border border-neutral-border/80 shadow-[0_2px_8px_rgba(1,56,17,0.03)] hover:-translate-y-1 hover:shadow-md hover:border-spring/40 transition-all duration-300">
+          <div className="p-5 sm:p-6 rounded-2xl bg-white/85 backdrop-blur-md border border-neutral-border/80 shadow-[0_2px_8px_rgba(1,56,17,0.03)] hover:-translate-y-1 hover:shadow-md hover:border-spring/40 transition-all duration-300">
             <span className="text-[11px] font-bold text-pine/60 uppercase tracking-wider block mb-1">
               Host City
             </span>
