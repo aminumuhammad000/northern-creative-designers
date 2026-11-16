@@ -1,63 +1,25 @@
 import React from "react";
-import Image from "next/image";
 import { Metadata } from "next";
-import { ShieldCheck, Mail, Phone, Users, ArrowRight } from "lucide-react";
+import { ShieldCheck, Mail, Phone, ArrowRight, Crown, Users } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/Button";
+import { sectionLeads, otherTeamMembers } from "@/content/team";
+import { TeamAvatar } from "@/components/ui/TeamAvatar";
 
 export const metadata: Metadata = {
-  title: "Organising Team & Executive Committee",
+  title: "Summit Team & Leadership",
   description:
-    "Meet the leadership behind Northern Creative Designers and the organisers of Summit 2.0.",
+    "Meet the leads and committee members driving Northern Creative Designers Summit 2.0.",
 };
 
 export default function TeamPage() {
-  const committeeCommittees = [
-    {
-      title: "Executive Leadership & Governance",
-      role: "Strategic Direction, Partnerships & Institutional Alignment",
-      description:
-        "Responsible for overall summit governance, institutional partnerships across Northern Nigeria, and community standards.",
-    },
-    {
-      title: "Programme & Curriculum Committee",
-      role: "Session Curation, Keynotes & Masterclass Direction",
-      description:
-        "Ensures every keynote, panel, and workshop adheres to our core principle: practical, actionable learning over conventional talk shows.",
-    },
-    {
-      title: "Hackathon & Competition Operations",
-      role: "Challenge Architecture, Mentorship & Judging Coordination",
-      description:
-        "Oversees the Northern Design Hackathon 2.0, track briefs, scoring rubrics, and fair stage execution.",
-    },
-    {
-      title: "Technology & Platform Operations",
-      role: "Digital Infrastructure & Systems Management",
-      description:
-        "Oversees cloud web operations, attendee database records, QR ticketing validation, and live voting platform execution.",
-    },
-    {
-      title: "Exhibition & Creative Showcase Team",
-      role: "Marketplace Logistics & Design Exhibition Wall",
-      description:
-        "Curates physical booth spaces, regional art installations, and vendor partnerships for the summit floor.",
-    },
-    {
-      title: "Community & Attendee Experience",
-      role: "Hospitality, Volunteer Coordination & Logistics",
-      description:
-        "Coordinates smooth on-site check-in, attendee kits, catering, and networking mixers in Kano.",
-    },
-  ];
-
   return (
     <main className="flex-1 pb-20">
       <PageHeader
         tag="Leadership & Operations"
-        title="Organising Team & Executive Committee"
-        description="The dedicated practitioners and coordinators driving Northern Creative Designers and delivering Summit 2.0."
+        title="Summit 2.0 Team"
+        description="The dedicated leads and practitioners directing Northern Creative Designers Summit 2.0."
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 space-y-16">
@@ -92,32 +54,39 @@ export default function TeamPage() {
           </div>
         </div>
 
-        {/* Committee Functional Structure */}
+        {/* Section Leads */}
         <section className="space-y-6">
-          <div>
-            <h3 className="text-2xl sm:text-3xl font-bold text-pine mt-1">
-              Summit 2.0 Working Committees
-            </h3>
+          <div className="flex items-center gap-2.5">
+            <span className="p-2 rounded-xl bg-pine text-spring">
+              <Crown className="w-5 h-5" />
+            </span>
+            <div>
+              <h3 className="text-2xl font-bold text-pine">
+                Summit Leads
+              </h3>
+              <p className="text-xs text-navy/60">
+                Core leadership directing operations and project delivery
+              </p>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {committeeCommittees.map((comm, idx) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sectionLeads.map((member) => (
               <div
-                key={idx}
-                className="p-6 rounded-2xl bg-white border border-neutral-border hover:border-pine/30 transition-all flex flex-col justify-between"
+                key={member.id}
+                className="p-6 rounded-2xl bg-white border border-neutral-border hover:border-pine/30 shadow-sm flex items-center gap-4"
               >
-                <div>
-                  <span className="text-xs font-bold text-spring uppercase tracking-wider">
-                    Desk 0{idx + 1}
-                  </span>
-                  <h4 className="font-bold text-pine text-lg mt-1 mb-1">
-                    {comm.title}
+                <TeamAvatar
+                  name={member.name}
+                  image={member.image}
+                  size="md"
+                />
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-base sm:text-lg font-bold text-pine truncate">
+                    {member.name}
                   </h4>
-                  <p className="text-xs font-semibold text-tangerine mb-3">
-                    {comm.role}
-                  </p>
-                  <p className="text-xs sm:text-sm text-navy/75 leading-relaxed">
-                    {comm.description}
+                  <p className="text-xs sm:text-sm font-semibold text-tangerine truncate mt-0.5">
+                    {member.role}
                   </p>
                 </div>
               </div>
@@ -125,7 +94,47 @@ export default function TeamPage() {
           </div>
         </section>
 
-        {/* Volunteer & Community Callout */}
+        {/* All Other Team Members */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-2.5">
+            <span className="p-2 rounded-xl bg-pine/10 text-pine">
+              <Users className="w-5 h-5" />
+            </span>
+            <div>
+              <h3 className="text-2xl font-bold text-pine">
+                Team Members
+              </h3>
+              <p className="text-xs text-navy/60">
+                Operational specialists and coordinators supporting execution
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {otherTeamMembers.map((member) => (
+              <div
+                key={member.id}
+                className="p-4 rounded-xl bg-white border border-neutral-border hover:border-spring/50 shadow-sm flex items-center gap-3.5"
+              >
+                <TeamAvatar
+                  name={member.name}
+                  image={member.image}
+                  size="sm"
+                />
+                <div className="min-w-0 flex-1">
+                  <h5 className="font-bold text-pine text-sm truncate">
+                    {member.name}
+                  </h5>
+                  <p className="text-xs text-navy/70 truncate mt-0.5">
+                    {member.role}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Volunteer Callout */}
         <section className="p-8 rounded-2xl bg-pine text-white flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-1 max-w-xl">
             <h4 className="text-xl font-bold text-white">

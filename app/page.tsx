@@ -5,6 +5,7 @@ import { SummitIntroSection } from "@/components/sections/SummitIntroSection";
 import { ProgrammeHighlightsSection } from "@/components/sections/ProgrammeHighlightsSection";
 import { SpeakersSection } from "@/components/sections/SpeakersSection";
 import { HackathonSection } from "@/components/sections/HackathonSection";
+import { TeamSection } from "@/components/sections/TeamSection";
 import { CommitmentSection } from "@/components/sections/CommitmentSection";
 import { RegistrationCTASection } from "@/components/sections/RegistrationCTASection";
 
@@ -29,10 +30,13 @@ export default function HomePage() {
       {/* 6. Programme Highlights & Staggered Architecture (Faithfully adapted to program feature.png & PDF Page 08) */}
       <ProgrammeHighlightsSection />
 
-      {/* 7. Commitment in Action & Verified Past Impact */}
+      {/* 7. Summit 2.0 Management Structure & Team */}
+      <TeamSection />
+
+      {/* 8. Commitment in Action & Verified Past Impact */}
       <CommitmentSection />
 
-      {/* 8. High-Conversion Registration CTA */}
+      {/* 9. High-Conversion Registration CTA */}
       <RegistrationCTASection />
     </main>
   );
