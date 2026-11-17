@@ -889,12 +889,12 @@ export default function RegisterPage() {
                     </p>
                   </div>
 
-                  <div className="pt-4 flex items-center justify-between border-t border-neutral-border gap-4">
+                  <div className="pt-4 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between border-t border-neutral-border gap-3 sm:gap-4">
                     <button
                       type="button"
                       disabled={isSubmitting}
                       onClick={() => setCurrentStep(3)}
-                      className="inline-flex items-center justify-center h-12 px-5 rounded-full border border-neutral-border text-xs font-semibold uppercase tracking-wider text-navy/80 hover:bg-neutral-sand transition-colors whitespace-nowrap"
+                      className="w-full sm:w-auto inline-flex items-center justify-center h-12 px-6 rounded-full border border-neutral-border text-xs font-semibold uppercase tracking-wider text-navy/80 hover:bg-neutral-sand transition-colors whitespace-nowrap flex-shrink-0"
                     >
                       <ArrowLeft className="w-4 h-4 mr-2 flex-shrink-0" />
                       Back
@@ -903,16 +903,16 @@ export default function RegisterPage() {
                       type="button"
                       disabled={isSubmitting}
                       onClick={handleFinalSubmit}
-                      className="inline-flex items-center justify-center h-12 sm:h-14 px-8 rounded-full bg-spring text-navy text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-[#02b25b] hover:shadow-lg disabled:opacity-50 transition-all whitespace-nowrap shadow-xs"
+                      className="w-full sm:w-auto inline-flex items-center justify-center h-12 sm:h-14 px-6 sm:px-8 rounded-full bg-spring text-navy text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-[#02b25b] hover:shadow-lg disabled:opacity-50 transition-all whitespace-nowrap shadow-xs flex-shrink-0"
                     >
                       {isSubmitting ? (
                         <>
                           <div className="w-4 h-4 border-2 border-navy border-t-transparent rounded-full animate-spin mr-2 flex-shrink-0" />
-                          Generating Pass...
+                          Submitting Registration...
                         </>
                       ) : (
                         <>
-                          Confirm &amp; Generate Digital Pass
+                          Submit Registration
                           <ArrowRight className="w-4 h-4 ml-2 flex-shrink-0" />
                         </>
                       )}

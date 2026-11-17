@@ -331,10 +331,10 @@ export default function HackathonRegisterPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-[#00CB67] hover:bg-[#02b25b] text-[#063B18] text-xs font-black tracking-wider uppercase shadow-sm hover:shadow transition-all disabled:opacity-60 cursor-pointer"
+                className="w-full sm:w-fit inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-[#00CB67] hover:bg-[#02b25b] text-[#063B18] text-xs sm:text-sm font-black tracking-wider uppercase shadow-sm hover:shadow transition-all disabled:opacity-60 cursor-pointer whitespace-nowrap flex-shrink-0"
               >
                 <span>{isSubmitting ? "Submitting..." : "Submit Registration"}</span>
-                <Send className="w-3.5 h-3.5 ml-2" />
+                <Send className="w-3.5 h-3.5 ml-2 flex-shrink-0" />
               </button>
             </div>
           </form>
