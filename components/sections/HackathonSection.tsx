@@ -51,7 +51,7 @@ export function HackathonSection() {
           </div>
 
           <p className="text-xs sm:text-sm text-navy/70 leading-relaxed font-normal mb-6 sm:mb-8">
-            120-minute live stage execution. Teams of 2–4 build under constraints with real-time jury evaluation and audience voting.
+            120-minute live stage execution. Individual designers build under strict constraints with real-time jury evaluation and audience voting.
           </p>
 
           {/* Action Buttons */}

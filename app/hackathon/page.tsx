@@ -48,7 +48,7 @@ export default function HackathonPage() {
             </h2>
             <p className="text-white/80 text-sm sm:text-base leading-relaxed">
               Following the celebrated 2025 Northern Design Hackathon (which awarded
-              ₦100,000 in cash prizes), Hackathon 2.0 brings finalist teams onto the
+              ₦100,000 in cash prizes), Hackathon 2.0 brings individual finalist designers onto the
               main summit stage in Kano for a 2-hour live execution sprint with audience voting.
             </p>
             <div className="flex flex-wrap items-center gap-4 text-xs text-white/80 pt-2 font-mono">
@@ -59,7 +59,7 @@ export default function HackathonPage() {
               <span>•</span>
               <span className="flex items-center gap-1.5">
                 <Users2 className="w-4 h-4 text-spring" />
-                Teams of 2 to 4
+                Individual Designers
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5">
@@ -71,7 +71,7 @@ export default function HackathonPage() {
 
           <div className="flex flex-col sm:flex-row items-center gap-3 flex-shrink-0 w-full lg:w-auto">
             <Button href="/hackathon/register" variant="primary" size="lg" className="w-full sm:w-auto">
-              Register Team to Compete
+              Register to Compete
             </Button>
             <Button
               href="/voting-rules"
@@ -144,14 +144,14 @@ export default function HackathonPage() {
               </div>
               <div className="p-6 space-y-3 bg-pine flex-1 flex flex-col justify-between">
                 <p className="text-xs sm:text-sm text-white/80 leading-relaxed">
-                  120 minutes on the main stage. 10+ selected finalist teams build live under strict constraints. Audience and jury cast real-time votes via credential badges.
+                  120 minutes on the main stage. Selected individual finalist designers build live under strict constraints. Audience and jury cast real-time votes via credential badges.
                 </p>
                 <div className="pt-3 border-t border-white/15 flex items-center justify-between">
                   <Link
                     href="/hackathon/register"
                     className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-spring uppercase tracking-wider hover:underline"
                   >
-                    <span>Apply Your Team Now</span>
+                    <span>Register as Individual Now</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
@@ -160,35 +160,43 @@ export default function HackathonPage() {
           </div>
         </section>
 
-        {/* 3 Challenge Tracks */}
+        {/* Challenge Tracks */}
         <section className="space-y-6">
           <div>
             <h3 className="text-2xl sm:text-3xl font-black text-pine tracking-tight">
-              Three Official Challenge Tracks
+              Competition Categories
             </h3>
             <p className="text-navy/70 text-sm mt-1">
-              Select your category upon team registration.
+              Select your category (Brand Identity or UI/UX) upon individual registration.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {hackathon.tracks.map((track, idx) => (
-              <div
-                key={idx}
-                className="p-6 rounded-2xl bg-white border border-neutral-border hover:border-pine/30 transition-all space-y-3 shadow-xs hover:shadow-md"
-              >
-                <div className="w-10 h-10 rounded-xl bg-pine text-spring font-bold flex items-center justify-center text-sm shadow-xs">
-                  0{idx + 1}
-                </div>
-                <h4 className="text-lg font-bold text-pine leading-snug">{track.title}</h4>
-                <p className="text-xs sm:text-sm text-navy/75 leading-relaxed">
-                  {track.description}
-                </p>
-                <div className="pt-2 text-[11px] font-mono text-spring font-bold">
-                  ✦ Live Stage Pitch Required
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-6 rounded-2xl bg-white border border-neutral-border hover:border-pine/30 transition-all space-y-3 shadow-xs hover:shadow-md">
+              <div className="w-10 h-10 rounded-xl bg-pine text-spring font-bold flex items-center justify-center text-sm shadow-xs">
+                01
               </div>
-            ))}
+              <h4 className="text-lg font-bold text-pine leading-snug">Brand Identity</h4>
+              <p className="text-xs sm:text-sm text-navy/75 leading-relaxed">
+                Translating authentic Northern motifs and visual languages into scalable contemporary branding systems, logos, packaging, and cultural typography.
+              </p>
+              <div className="pt-2 text-[11px] font-mono text-spring font-bold">
+                ✦ Live Stage Execution &amp; Pitch
+              </div>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-white border border-neutral-border hover:border-pine/30 transition-all space-y-3 shadow-xs hover:shadow-md">
+              <div className="w-10 h-10 rounded-xl bg-pine text-spring font-bold flex items-center justify-center text-sm shadow-xs">
+                02
+              </div>
+              <h4 className="text-lg font-bold text-pine leading-snug">UI/UX Design</h4>
+              <p className="text-xs sm:text-sm text-navy/75 leading-relaxed">
+                Designing intuitive digital product experiences, mobile application interfaces, and interactive prototypes tailored to regional problems.
+              </p>
+              <div className="pt-2 text-[11px] font-mono text-spring font-bold">
+                ✦ Live Stage Execution &amp; Pitch
+              </div>
+            </div>
           </div>
         </section>
 
@@ -206,9 +214,9 @@ export default function HackathonPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="p-5 rounded-2xl bg-white border border-neutral-border space-y-2">
               <span className="text-xs font-bold text-spring font-mono">Step 1</span>
-              <h5 className="font-bold text-pine text-sm">Team Roster Selection</h5>
+              <h5 className="font-bold text-pine text-sm">Portfolio Selection</h5>
               <p className="text-xs text-navy/70 leading-relaxed">
-                Submit team portfolio and roster for selection before deadline.
+                Submit individual portfolio and profile for qualification before deadline.
               </p>
             </div>
             <div className="p-5 rounded-2xl bg-white border border-neutral-border space-y-2">

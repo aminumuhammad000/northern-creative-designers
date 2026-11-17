@@ -140,7 +140,7 @@ export const landingPageContent = {
     title: "Northern Design Hackathon 2.0",
     subtitle: "2-Hour Live Design Sprint: Craft, Speed, and Problem Solving",
     description:
-      "Following the successful 2025 Northern Design Hackathon (which awarded ₦100,000 in cash prizes), Hackathon 2.0 elevates the challenge to a live stage format. Selected teams will tackle regional cultural and commercial briefs live during the summit.",
+      "Following the successful 2025 Northern Design Hackathon (which awarded ₦100,000 in cash prizes), Hackathon 2.0 elevates the challenge to an individual live stage format. Selected individual designers will tackle regional cultural and commercial briefs live during the summit.",
     tracks: [
       {
         title: "Cultural Heritage & Modern Digital Identity",

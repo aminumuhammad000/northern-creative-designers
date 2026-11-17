@@ -59,18 +59,21 @@ export async function submitExhibitorApplicationAction(data: ExhibitorApplicatio
   }
 }
 
-export interface HackathonTeamData {
-  teamName: string
-  leadName: string
-  leadEmail: string
-  leadPhone: string
-  teamSize: string
-  track: string
+export interface HackathonRegistrationData {
+  name: string
+  organization?: string
+  email: string
+  phone: string
+  gender: string
+  city: string
+  category: string // 'Brand Identity' | 'UI/UX'
   portfolioUrl: string
-  teamSummary: string
 }
 
-export async function registerHackathonTeamAction(data: HackathonTeamData) {
+// Backward compatibility interface
+export type HackathonTeamData = HackathonRegistrationData
+
+export async function registerHackathonAction(data: HackathonRegistrationData) {
   try {
     const adminSupabase = createAdminClient()
 
@@ -85,24 +88,54 @@ export async function registerHackathonTeamAction(data: HackathonTeamData) {
       return { success: false, error: 'Active hackathon not found.' }
     }
 
-    // 2. Insert team
+    // 2. Prepare contestant identifier and details
+    const candidateName = data.name.trim()
+    const orgSuffix = data.organization?.trim() ? ` (${data.organization.trim()})` : ""
+    const citySuffix = data.city?.trim() ? ` [${data.city.trim()}]` : ""
+    const contestantIdentifier = `${candidateName}${orgSuffix}${citySuffix}`
+
+    // 3. Insert individual contestant
     const { data: team, error } = await adminSupabase
       .from('hackathon_teams')
       .insert({
         hackathon_id: hackathon.id,
-        team_name: data.teamName,
-        lead_name: data.leadName,
-        lead_email: data.leadEmail,
-        lead_phone: data.leadPhone,
-        team_size: parseInt(data.teamSize, 10) || 2,
-        track: data.track,
-        portfolio_url: data.portfolioUrl || null,
+        team_name: contestantIdentifier,
+        lead_name: candidateName,
+        lead_email: data.email.trim().toLowerCase(),
+        lead_phone: data.phone.trim(),
+        team_size: 1, // Individual registration
+        track: data.category.trim(),
+        portfolio_url: data.portfolioUrl.trim() || null,
         status: 'applied',
       })
       .select('id')
       .single()
 
     if (error) {
+      // Handle potential unique constraint collision on team_name
+      if (error.code === '23505') {
+        const fallbackIdentifier = `${candidateName}${citySuffix} - ${Date.now().toString().slice(-4)}`
+        const { data: retryTeam, error: retryError } = await adminSupabase
+          .from('hackathon_teams')
+          .insert({
+            hackathon_id: hackathon.id,
+            team_name: fallbackIdentifier,
+            lead_name: candidateName,
+            lead_email: data.email.trim().toLowerCase(),
+            lead_phone: data.phone.trim(),
+            team_size: 1,
+            track: data.category.trim(),
+            portfolio_url: data.portfolioUrl.trim() || null,
+            status: 'applied',
+          })
+          .select('id')
+          .single()
+
+        if (retryError) {
+          return { success: false, error: retryError.message }
+        }
+        return { success: true, id: retryTeam.id }
+      }
       return { success: false, error: error.message }
     }
 
@@ -110,7 +143,23 @@ export async function registerHackathonTeamAction(data: HackathonTeamData) {
   } catch (err: unknown) {
     return {
       success: false,
-      error: err instanceof Error ? err.message : 'Failed to submit team registration.',
+      error: err instanceof Error ? err.message : 'Failed to submit registration.',
     }
   }
+}
+
+// Backward compatibility alias
+export async function registerHackathonTeamAction(data: any) {
+  // Map legacy fields if passed
+  const formattedData: HackathonRegistrationData = {
+    name: data.name || data.leadName || '',
+    organization: data.organization || '',
+    email: data.email || data.leadEmail || '',
+    phone: data.phone || data.leadPhone || '',
+    gender: data.gender || 'Not Specified',
+    city: data.city || data.location || 'Kano',
+    category: data.category || data.track || 'Brand Identity',
+    portfolioUrl: data.portfolioUrl || '',
+  }
+  return registerHackathonAction(formattedData)
 }

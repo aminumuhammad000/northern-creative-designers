@@ -1496,13 +1496,13 @@ export default function AdminPortalPage() {
           <div className="space-y-4">
             <div className="p-6 rounded-2xl bg-white border border-neutral-200/90 shadow-2xs flex items-center justify-between">
               <div>
-                <h3 className="font-bold text-pine text-base">Stage Sprint Hackathon Teams</h3>
+                <h3 className="font-bold text-pine text-base">Stage Sprint Hackathon Candidates</h3>
                 <p className="text-xs text-neutral-500">
                   Manage the 2-Hour Live Stage Finalists and voting eligibility for the live summit arena.
                 </p>
               </div>
               <span className="text-xs font-bold px-3 py-1 rounded-full bg-neutral-100 text-neutral-700">
-                {hackathonTeams.length} Sprint Teams
+                {hackathonTeams.length} Contestants
               </span>
             </div>
 
