@@ -50,7 +50,7 @@ export function HeroSection() {
           <div
             key={slide.src}
             className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? "opacity-60" : "opacity-0"
+              index === currentSlide ? "opacity-75" : "opacity-0"
             }`}
           >
             <Image
@@ -64,9 +64,9 @@ export function HeroSection() {
           </div>
         ))}
 
-        {/* Balanced Scrim: Keeps background photos clear and vibrant while ensuring crisp typography contrast */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_45%,rgba(250,250,248,0.85)_0%,rgba(250,250,248,0.55)_55%,rgba(250,250,248,0.80)_100%)]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FAFAF8]/85 via-transparent to-[#FAFAF8]" />
+        {/* Reduced Scrim: Softened overlay opacity so the background images appear clearer and more vivid */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_45%,rgba(250,250,248,0.72)_0%,rgba(250,250,248,0.40)_55%,rgba(250,250,248,0.65)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FAFAF8]/70 via-transparent to-[#FAFAF8]/90" />
 
         {/* Subtle Brand Ambient Glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[450px] bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(3,208,107,0.10),rgba(250,250,248,0))]" />
@@ -83,7 +83,7 @@ export function HeroSection() {
           </p>
         </div>
 
-        <p className="mt-6 sm:mt-7 text-base sm:text-lg md:text-xl text-navy/80 max-w-3xl mx-auto leading-relaxed font-normal">
+        <p className="mt-6 sm:mt-7 text-base sm:text-lg md:text-xl text-navy/90 max-w-3xl mx-auto leading-relaxed font-medium">
           The premier annual gathering for designers, strategists, developers, and visual storytellers across Northern Nigeria. Bridging rich cultural heritage with modern digital craft, artificial intelligence, and sustainable commercial pathways.
         </p>
 
