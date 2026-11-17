@@ -67,7 +67,7 @@ export interface HackathonRegistrationData {
   gender: string
   city: string
   category: string // 'Brand Identity' | 'UI/UX'
-  portfolioUrl: string
+  portfolioUrl?: string
 }
 
 // Backward compatibility interface
@@ -105,7 +105,7 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
         lead_phone: data.phone.trim(),
         team_size: 1, // Individual registration
         track: data.category.trim(),
-        portfolio_url: data.portfolioUrl.trim() || null,
+        portfolio_url: data.portfolioUrl?.trim() || null,
         status: 'applied',
       })
       .select('id')
@@ -125,7 +125,7 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
             lead_phone: data.phone.trim(),
             team_size: 1,
             track: data.category.trim(),
-            portfolio_url: data.portfolioUrl.trim() || null,
+            portfolio_url: data.portfolioUrl?.trim() || null,
             status: 'applied',
           })
           .select('id')

@@ -302,13 +302,12 @@ export default function HackathonRegisterPage() {
               {/* Portfolio */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-pine uppercase tracking-wider block">
-                  Portfolio <span className="text-spring font-bold">*</span>
+                  Portfolio <span className="text-neutral-400 font-normal lowercase">(optional)</span>
                 </label>
                 <div className="relative">
                   <Globe className="w-4 h-4 text-neutral-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     type="url"
-                    required
                     placeholder="https://behance.net/username, Figma, Dribbble, or Drive link"
                     className="w-full h-12 pl-11 pr-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine transition-all shadow-2xs"
                     value={formData.portfolioUrl}
@@ -318,7 +317,7 @@ export default function HackathonRegisterPage() {
                   />
                 </div>
                 <p className="text-[11px] text-navy/60">
-                  Provide a link where the judges can review your best design work.
+                  Optional: Provide a link to your design portfolio, Behance, or Figma profile.
                 </p>
               </div>
             </div>
