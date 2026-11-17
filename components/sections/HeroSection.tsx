@@ -7,20 +7,28 @@ import { ArrowRight } from "lucide-react";
 
 const heroSlides = [
   {
-    src: "/images/community/ncd_hall_audience.jpg",
-    alt: "Northern Creative Designers Summit Audience",
+    src: "/images/hero/slides/slide_1.jpg",
+    alt: "Northern Creative Designers Summit Hall Audience",
   },
   {
-    src: "/images/community/ncd_banner_group.jpg",
-    alt: "Northern Creative Designers Community Group",
+    src: "/images/hero/slides/slide_2.jpg",
+    alt: "Northern Creative Designers Attendees in Session",
   },
   {
-    src: "/images/community/ncd_class_training.jpg",
-    alt: "Design Workshop and Training Session",
+    src: "/images/hero/slides/slide_3.jpg",
+    alt: "Northern Creative Designers Workshop Activity",
   },
   {
-    src: "/images/community/ncd_peer_interaction.jpg",
-    alt: "Designers Networking and Collaborating",
+    src: "/images/hero/slides/slide_4.jpg",
+    alt: "Northern Creative Designers Summit Community",
+  },
+  {
+    src: "/images/hero/slides/slide_5.jpg",
+    alt: "Northern Creative Designers Group Collaboration",
+  },
+  {
+    src: "/images/hero/slides/slide_6.jpg",
+    alt: "Northern Creative Designers Delegates Interaction",
   },
 ];
 
@@ -42,7 +50,7 @@ export function HeroSection() {
           <div
             key={slide.src}
             className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? "opacity-55" : "opacity-0"
+              index === currentSlide ? "opacity-60" : "opacity-0"
             }`}
           >
             <Image
@@ -56,8 +64,8 @@ export function HeroSection() {
           </div>
         ))}
 
-        {/* Balanced Scrim: Keeps background photos clearly recognizable while ensuring crisp text contrast */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_45%,rgba(250,250,248,0.88)_0%,rgba(250,250,248,0.65)_55%,rgba(250,250,248,0.85)_100%)]" />
+        {/* Balanced Scrim: Keeps background photos clear and vibrant while ensuring crisp typography contrast */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_45%,rgba(250,250,248,0.85)_0%,rgba(250,250,248,0.55)_55%,rgba(250,250,248,0.80)_100%)]" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#FAFAF8]/85 via-transparent to-[#FAFAF8]" />
 
         {/* Subtle Brand Ambient Glow */}
