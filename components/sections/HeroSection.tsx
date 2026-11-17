@@ -1,75 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
-const heroSlides = [
-  {
-    src: "/images/hero/slides/slide_1.jpg",
-    alt: "Northern Creative Designers Summit Hall Audience",
-  },
-  {
-    src: "/images/hero/slides/slide_2.jpg",
-    alt: "Northern Creative Designers Attendees in Session",
-  },
-  {
-    src: "/images/hero/slides/slide_3.jpg",
-    alt: "Northern Creative Designers Workshop Activity",
-  },
-  {
-    src: "/images/hero/slides/slide_4.jpg",
-    alt: "Northern Creative Designers Summit Community",
-  },
-  {
-    src: "/images/hero/slides/slide_5.jpg",
-    alt: "Northern Creative Designers Group Collaboration",
-  },
-  {
-    src: "/images/hero/slides/slide_6.jpg",
-    alt: "Northern Creative Designers Delegates Interaction",
-  },
-];
-
 export function HeroSection() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
   return (
-    <section className="w-full relative overflow-hidden bg-[#FAFAF8] pt-20 pb-24 md:pt-28 md:pb-36">
-      {/* REAL PHOTOGRAPHIC BACKGROUND SLIDESHOW */}
+    <section className="w-full relative overflow-hidden bg-[#FAFAF8] pt-20 pb-24 md:pt-28 md:pb-36 border-b border-neutral-border/50">
+      {/* Subtle brand ambient glow for soft depth without images */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none">
-        {heroSlides.map((slide, index) => (
-          <div
-            key={slide.src}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? "opacity-75" : "opacity-0"
-            }`}
-          >
-            <Image
-              src={slide.src}
-              alt={slide.alt}
-              fill
-              priority={index === 0}
-              sizes="100vw"
-              className="object-cover object-center"
-            />
-          </div>
-        ))}
-
-        {/* Reduced Scrim: Softened overlay opacity so the background images appear clearer and more vivid */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_45%,rgba(250,250,248,0.72)_0%,rgba(250,250,248,0.40)_55%,rgba(250,250,248,0.65)_100%)]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FAFAF8]/70 via-transparent to-[#FAFAF8]/90" />
-
-        {/* Subtle Brand Ambient Glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[450px] bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(3,208,107,0.10),rgba(250,250,248,0))]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[450px] bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(3,208,107,0.08),rgba(250,250,248,0))]" />
       </div>
 
       {/* Centered Hero Content */}
@@ -83,7 +23,7 @@ export function HeroSection() {
           </p>
         </div>
 
-        <p className="mt-6 sm:mt-7 text-base sm:text-lg md:text-xl text-navy/90 max-w-3xl mx-auto leading-relaxed font-medium">
+        <p className="mt-6 sm:mt-7 text-base sm:text-lg md:text-xl text-navy/80 max-w-3xl mx-auto leading-relaxed font-normal">
           The premier annual gathering for designers, strategists, developers, and visual storytellers across Northern Nigeria. Bridging rich cultural heritage with modern digital craft, artificial intelligence, and sustainable commercial pathways.
         </p>
 
