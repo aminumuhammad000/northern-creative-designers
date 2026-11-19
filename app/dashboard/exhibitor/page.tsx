@@ -15,7 +15,7 @@ import {
   Loader2,
   AlertCircle,
 } from "lucide-react";
-import { DashboardNav } from "@/components/dashboard/DashboardNav";
+import { DashboardSidebar, DashboardTopBar } from "@/components/dashboard/DashboardSidebar";
 import {
   getExhibitorDashboardDataAction,
   searchDelegateBadgeAction,
@@ -42,6 +42,7 @@ interface CapturedLead {
 
 export default function ExhibitorDashboard() {
   const [activeTab, setActiveTab] = useState<TabId>("booth");
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [scanInput, setScanInput] = useState("");
   const [isScanning, setIsScanning] = useState(false);
   const [scanSuccess, setScanSuccess] = useState<string | null>(null);
@@ -200,47 +201,66 @@ export default function ExhibitorDashboard() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f9fafb]">
-      {/* Universal Clean Dashboard Navigation */}
-      <DashboardNav
-        userRole="exhibitor"
-        userName={exhibitorInfo.businessName}
-        badgeLabel={exhibitorInfo.assignedBooth}
+    <div className="min-h-screen flex bg-[#f8fafc]">
+      {/* Dedicated Exhibitor & Vendor Side Navigation */}
+      <DashboardSidebar
+        portalType="exhibitor_vendor"
+        portalTitle="Exhibitor / Vendor Management"
+        portalBadge="Exhibitor & Vendor"
+        userName={exhibitorInfo.businessName || "Exhibitor / Vendor"}
+        userSubtitle={`${exhibitorInfo.category} • ${exhibitorInfo.assignedBooth}`}
+        userEmail={exhibitorInfo.contactPerson}
+        items={[
+          {
+            id: "booth",
+            label: "Booth & Storefront",
+            icon: Store,
+            badge: exhibitorInfo.assignedBooth,
+          },
+          {
+            id: "products",
+            label: "Products & Catalog",
+            icon: PackageCheck,
+            badge: `${products.length}`,
+          },
+          {
+            id: "staff",
+            label: "Staff Passes",
+            icon: Users,
+            badge: `${staffList.length}/3`,
+          },
+          {
+            id: "leads",
+            label: "Lead Scanner",
+            icon: ScanLine,
+            badge: `${capturedLeads.length}`,
+          },
+        ]}
+        activeTab={activeTab}
+        onSelectTab={(tabId) => setActiveTab(tabId as TabId)}
+        mobileOpen={mobileSidebarOpen}
+        onCloseMobile={() => setMobileSidebarOpen(false)}
       />
 
-      {/* Sub-Nav Tabs Bar */}
-      <nav className="bg-white border-b border-neutral-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-6 overflow-x-auto scrollbar-none">
-            {[
-              { id: "booth", label: "Booth Specs & Setup", micro: exhibitorInfo.assignedBooth, icon: Store },
-              { id: "products", label: `Showcase Items`, micro: `${products.length} Products`, icon: PackageCheck },
-              { id: "staff", label: `Staff Passes`, micro: `${staffList.length}/3 Active`, icon: Users },
-              { id: "leads", label: `Lead Scanner`, micro: `${capturedLeads.length} Captured`, icon: ScanLine },
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as TabId)}
-                  className={`inline-flex items-center gap-2 py-3.5 text-xs transition-all whitespace-nowrap border-b-2 ${
-                    isActive
-                      ? "border-pine text-pine font-bold"
-                      : "border-transparent text-neutral-500 hover:text-neutral-900 hover:border-neutral-300 font-medium"
-                  }`}
-                >
-                  <Icon className="w-4 h-4 flex-shrink-0" />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </nav>
+      {/* Main Panel Content Area */}
+      <div className="flex-1 flex flex-col min-w-0">
+        <DashboardTopBar
+          title={
+            activeTab === "booth"
+              ? "Booth Specifications & Marketplace Setup"
+              : activeTab === "products"
+              ? "Showcase Items & Product Catalog"
+              : activeTab === "staff"
+              ? "Staff & Team Accreditation Passes"
+              : "Delegate Badge & Lead Capture Scanner"
+          }
+          subtitle={`${exhibitorInfo.businessName} • ${exhibitorInfo.assignedBooth}`}
+          badgeText={exhibitorInfo.assignedBooth}
+          onOpenMobile={() => setMobileSidebarOpen(true)}
+        />
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Main Content Area */}
+        <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* ================= TAB 1: BOOTH SPECS ================= */}
         {activeTab === "booth" && (
           <div className="space-y-6">
@@ -592,6 +612,7 @@ export default function ExhibitorDashboard() {
           </div>
         )}
       </main>
+      </div>
     </div>
   );
 }

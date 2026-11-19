@@ -14,7 +14,7 @@ import {
   Loader2,
   AlertCircle,
 } from "lucide-react";
-import { DashboardNav } from "@/components/dashboard/DashboardNav";
+import { DashboardSidebar, DashboardTopBar } from "@/components/dashboard/DashboardSidebar";
 import {
   assignVipPassAction,
   removeVipPassAction,
@@ -33,6 +33,7 @@ interface VipDelegate {
 
 export default function PartnerDashboard() {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [assetSubmitted, setAssetSubmitted] = useState(false);
   const [isSubmittingDelegate, setIsSubmittingDelegate] = useState(false);
   const [delegateError, setDelegateError] = useState<string | null>(null);
@@ -119,47 +120,45 @@ export default function PartnerDashboard() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f9fafb]">
-      {/* Universal Clean Dashboard Navigation */}
-      <DashboardNav
-        userRole="partner"
+    <div className="min-h-screen flex bg-[#f8fafc]">
+      {/* Dedicated Partner Side Navigation */}
+      <DashboardSidebar
+        portalType="partner"
+        portalTitle="Partner & Sponsor Portal"
+        portalBadge="Platinum Partner"
         userName="Amee Technology Ltd"
-        badgeLabel="Platinum Sponsor"
+        userSubtitle="Official Software Engineering Partner"
+        userEmail="contact@ameetech.com"
+        items={[
+          { id: "overview", label: "Deliverables & Milestones", icon: Award, badge: "Tier 1" },
+          { id: "assets", label: "Brand Assets & Media", icon: Upload },
+          { id: "delegates", label: "VIP Executive Passes", icon: Users, badge: `${delegates.length}/5` },
+          { id: "billing", label: "Invoicing & Agreement", icon: Receipt },
+        ]}
+        activeTab={activeTab}
+        onSelectTab={(tabId) => setActiveTab(tabId as TabId)}
+        mobileOpen={mobileSidebarOpen}
+        onCloseMobile={() => setMobileSidebarOpen(false)}
       />
 
-      {/* Sub-Nav Tabs Bar with Recognizable Micro-Badges */}
-      <nav className="bg-white border-b border-neutral-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-6 overflow-x-auto scrollbar-none">
-            {[
-              { id: "overview", label: "Sponsorship & Deliverables", micro: "Milestones", icon: Award },
-              { id: "assets", label: "Brand Assets & Media", micro: "Logo & Bio", icon: Upload },
-              { id: "delegates", label: `VIP Passes`, micro: `${delegates.length}/5 Used`, icon: Users },
-              { id: "billing", label: "Invoicing & Agreement", micro: "Paid in Full", icon: Receipt },
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as TabId)}
-                  className={`inline-flex items-center gap-2 py-3.5 text-xs transition-all whitespace-nowrap border-b-2 ${
-                    isActive
-                      ? "border-pine text-pine font-bold"
-                      : "border-transparent text-neutral-500 hover:text-neutral-900 hover:border-neutral-300 font-medium"
-                  }`}
-                >
-                  <Icon className="w-4 h-4 flex-shrink-0" />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </nav>
-
       {/* Main Content Area */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="flex-1 flex flex-col min-w-0">
+        <DashboardTopBar
+          title={
+            activeTab === "overview"
+              ? "Sponsorship Deliverables & Milestones"
+              : activeTab === "assets"
+              ? "Brand Assets & Media Kit"
+              : activeTab === "delegates"
+              ? "VIP Executive Access Passes"
+              : "Partnership Agreement & Invoicing"
+          }
+          subtitle="Amee Technology Ltd • Platinum Sponsor"
+          badgeText="Verified Partner"
+          onOpenMobile={() => setMobileSidebarOpen(true)}
+        />
+
+        <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* ================= TAB 1: OVERVIEW & DELIVERABLES ================= */}
         {activeTab === "overview" && (
           <div className="space-y-6">
@@ -515,6 +514,7 @@ export default function PartnerDashboard() {
           </div>
         )}
       </main>
+      </div>
     </div>
   );
 }

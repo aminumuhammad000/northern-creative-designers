@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
+import { sendRegistrationConfirmationEmail } from '@/lib/email'
 
 export interface RegistrationData {
   fullName: string
@@ -32,6 +33,19 @@ export async function registerAttendeeAction(data: RegistrationData) {
 
     if (isMock) {
       // In demo mode when Supabase credentials are still default placeholders
+      try {
+        await sendRegistrationConfirmationEmail({
+          email: data.email.trim(),
+          fullName: data.fullName,
+          referenceCode,
+          ticketToken,
+          creativeRole: data.creativeRole,
+          cityState: data.cityState,
+        })
+      } catch (mockEmailErr) {
+        console.error('[Mock Email Error]', mockEmailErr)
+      }
+
       return {
         success: true,
         referenceCode,
@@ -63,10 +77,11 @@ export async function registerAttendeeAction(data: RegistrationData) {
 
     // 1. Create Auth Account if password provided
     let userId: string | null = null
-    if (data.password) {
+    const trimmedPassword = data.password ? data.password.trim() : undefined
+    if (trimmedPassword) {
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: trimmedEmail,
-        password: data.password,
+        password: trimmedPassword,
         options: {
           data: {
             full_name: data.fullName,
@@ -141,6 +156,20 @@ export async function registerAttendeeAction(data: RegistrationData) {
       })
     }
 
+    // 5. Send official registration confirmation email with pass details
+    try {
+      await sendRegistrationConfirmationEmail({
+        email: trimmedEmail,
+        fullName: data.fullName,
+        referenceCode,
+        ticketToken,
+        creativeRole: data.creativeRole,
+        cityState: data.cityState,
+      })
+    } catch (emailErr) {
+      console.error('[Registration Email Error]', emailErr)
+    }
+
     revalidatePath('/dashboard')
     return {
       success: true,
@@ -158,8 +187,8 @@ export async function registerAttendeeAction(data: RegistrationData) {
 }
 
 export async function loginAction(formData: FormData) {
-  const email = formData.get('email') as string
-  const password = formData.get('password') as string
+  const email = (formData.get('email') as string || '').trim().toLowerCase()
+  const password = (formData.get('password') as string || '').trim()
 
   if (!email || !password) {
     return { success: false, error: 'Email and password are required.' }
@@ -184,8 +213,17 @@ export async function loginAction(formData: FormData) {
       return { success: false, error: error.message }
     }
 
-    revalidatePath('/dashboard')
-    return { success: true, redirectUrl: '/dashboard' }
+    // Determine appropriate dashboard based on user profile
+    const adminSupabase = createAdminClient()
+    const { data: exhibitor } = await adminSupabase
+      .from('exhibitor_applications')
+      .select('id')
+      .ilike('email', email)
+      .maybeSingle()
+
+    const targetUrl = exhibitor ? '/dashboard/exhibitor' : '/dashboard'
+    revalidatePath(targetUrl)
+    return { success: true, redirectUrl: targetUrl }
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Login failed.'
     return { success: false, error: message }

@@ -15,7 +15,7 @@ import {
   Save,
 } from "lucide-react";
 import { eventConfig } from "@/config/event";
-import { DashboardNav } from "@/components/dashboard/DashboardNav";
+import { DashboardSidebar, DashboardTopBar } from "@/components/dashboard/DashboardSidebar";
 import { DigitalPass } from "@/components/dashboard/DigitalPass";
 import {
   getAttendeeDashboardDataAction,
@@ -34,6 +34,7 @@ export default function ParticipantDashboard() {
     "session-pricing",
   ]);
   const [directoryOptIn, setDirectoryOptIn] = useState(true);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   // Live Server State
   const [isLoading, setIsLoading] = useState(true);
@@ -207,65 +208,63 @@ export default function ParticipantDashboard() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f9fafb]">
-      {/* Universal Clean Dashboard Navigation */}
-      <DashboardNav
-        userRole="attendee"
-        userName={attendee.name}
+    <div className="min-h-screen flex bg-[#f8fafc]">
+      {/* Dedicated Participant / Attendee Side Navigation */}
+      <DashboardSidebar
+        portalType="attendee"
+        portalTitle="Delegate Access"
+        portalBadge="Attendee"
+        userName={attendee.name || "Summit Delegate"}
+        userSubtitle={attendee.role || "Participant"}
+        userEmail={attendee.email || "attendee@summit.org"}
+        items={[
+          { id: "pass", label: "Digital QR Pass", icon: QrCode, badge: "Live" },
+          { id: "schedule", label: "My Schedule & Sessions", icon: Calendar },
+          { id: "profile", label: "Profile & Settings", icon: User },
+        ]}
+        activeTab={activeTab}
+        onSelectTab={(tabId) => setActiveTab(tabId as TabId)}
+        mobileOpen={mobileSidebarOpen}
+        onCloseMobile={() => setMobileSidebarOpen(false)}
       />
 
-      {/* Sub-Nav Tabs Bar */}
-      <nav className="bg-white border-b border-neutral-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-6 overflow-x-auto scrollbar-none">
-            {[
-              { id: "pass", label: "QR Pass", icon: QrCode },
-              { id: "schedule", label: "My Schedule", icon: Calendar },
-              { id: "profile", label: "Profile & Settings", icon: User },
-            ].map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as TabId)}
-                  className={`inline-flex items-center gap-2 py-3.5 text-xs transition-all whitespace-nowrap border-b-2 ${
-                    isActive
-                      ? "border-pine text-pine font-bold"
-                      : "border-transparent text-neutral-500 hover:text-neutral-900 hover:border-neutral-300 font-medium"
-                  }`}
-                >
-                  <Icon className="w-4 h-4 flex-shrink-0" />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </nav>
+      {/* Main Panel Content Area */}
+      <div className="flex-1 flex flex-col min-w-0">
+        <DashboardTopBar
+          title={
+            activeTab === "pass"
+              ? "My Summit Access Pass"
+              : activeTab === "schedule"
+              ? "Summit Schedule & Sessions"
+              : "Account Settings & Profile"
+          }
+          subtitle={`Welcome, ${attendee.name || "Delegate"}`}
+          badgeText="Attendee Pass"
+          onOpenMobile={() => setMobileSidebarOpen(true)}
+        />
 
-      {/* Global Feedback Banner */}
-      {feedbackMessage && (
-        <div className="max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-          <div
-            className={`p-3.5 rounded-xl border flex items-center gap-2.5 text-xs font-semibold ${
-              feedbackMessage.type === "success"
-                ? "bg-emerald-50 border-emerald-200 text-emerald-800"
-                : "bg-red-50 border-red-200 text-red-800"
-            }`}
-          >
-            {feedbackMessage.type === "success" ? (
-              <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-            ) : (
-              <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
-            )}
-            <span>{feedbackMessage.text}</span>
+        {/* Global Feedback Banner */}
+        {feedbackMessage && (
+          <div className="max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+            <div
+              className={`p-3.5 rounded-xl border flex items-center gap-2.5 text-xs font-semibold ${
+                feedbackMessage.type === "success"
+                  ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                  : "bg-red-50 border-red-200 text-red-800"
+              }`}
+            >
+              {feedbackMessage.type === "success" ? (
+                <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+              ) : (
+                <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+              )}
+              <span>{feedbackMessage.text}</span>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Main Content Area */}
+        <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* ================= TAB 1: DIGITAL PASS ================= */}
         {activeTab === "pass" && (
           <div className="space-y-6">
@@ -551,6 +550,7 @@ export default function ParticipantDashboard() {
           </div>
         )}
       </main>
+      </div>
     </div>
   );
 }

@@ -30,6 +30,8 @@ import {
   ChevronRight,
   Download,
   ExternalLink,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { siteConfig } from "@/config/site";
@@ -100,14 +102,6 @@ const NORTHERN_STATES = [
   "International Attendee",
 ];
 
-const SUMMIT_TRACKS = [
-  { id: "hackathon", label: "Live 2-Hour Design Hackathon & Audience Voting" },
-  { id: "masterclasses", label: "Advanced Practical Masterclasses & Sprints" },
-  { id: "client_corner", label: "Client Connect & Portfolio Pitch Reviews" },
-  { id: "exhibition", label: "Northern Creative Design Exhibition & Wall" },
-  { id: "awards", label: "Summit 2.0 Recognition Awards & Dinner" },
-];
-
 export default function RegisterPage() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
@@ -128,6 +122,9 @@ export default function RegisterPage() {
     }
   };
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [formData, setFormData] = useState<RegistrationData & { confirmPassword?: string }>({
     fullName: "",
     email: "",
@@ -146,19 +143,10 @@ export default function RegisterPage() {
   });
 
   const updateField = (field: string, value: string | string[]) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const toggleInterest = (trackId: string) => {
-    const current = formData.interests || [];
-    if (current.includes(trackId)) {
-      updateField(
-        "interests",
-        current.filter((id) => id !== trackId)
-      );
-    } else {
-      updateField("interests", [...current, trackId]);
+    if (errorMessage) {
+      setErrorMessage("");
     }
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleNextStep = async (e: React.FormEvent) => {
@@ -169,33 +157,57 @@ export default function RegisterPage() {
     if (currentStep === 1) {
       if (!formData.fullName.trim()) {
         setErrorMessage("Please enter your full name.");
+        window.scrollTo({ top: 250, behavior: "smooth" });
         return;
       }
       if (!formData.email.trim() || !formData.email.includes("@")) {
         setErrorMessage("Please enter a valid email address.");
+        window.scrollTo({ top: 250, behavior: "smooth" });
         return;
       }
-      if (formData.password && formData.password.length < 6) {
+      
+      const trimmedPassword = (formData.password || "").trim();
+      const trimmedConfirm = (formData.confirmPassword || "").trim();
+
+      if (!trimmedPassword) {
+        setErrorMessage("Please create an account password (minimum 6 characters).");
+        window.scrollTo({ top: 250, behavior: "smooth" });
+        return;
+      }
+      if (trimmedPassword.length < 6) {
         setErrorMessage("Password should be at least 6 characters.");
+        window.scrollTo({ top: 250, behavior: "smooth" });
         return;
       }
-      if (formData.password && formData.password !== formData.confirmPassword) {
-        setErrorMessage("Passwords do not match.");
+      if (trimmedPassword !== trimmedConfirm) {
+        setErrorMessage("Passwords do not match. Please verify spelling, capitalization, or click the eye icon to view your password.");
+        window.scrollTo({ top: 250, behavior: "smooth" });
         return;
       }
       if (!formData.phone.trim()) {
         setErrorMessage("Please provide a WhatsApp contact phone number.");
+        window.scrollTo({ top: 250, behavior: "smooth" });
         return;
+      }
+
+      // Sync trimmed values into state to avoid hidden whitespace issues
+      if (formData.password !== trimmedPassword || formData.confirmPassword !== trimmedConfirm) {
+        setFormData((prev) => ({
+          ...prev,
+          password: trimmedPassword,
+          confirmPassword: trimmedConfirm,
+        }));
       }
 
       // Check if email is already registered before moving to step 2
       setIsSubmitting(true);
       try {
-        const check = await checkEmailRegisteredAction(formData.email);
+        const check = await checkEmailRegisteredAction(formData.email.trim());
         if (check.isRegistered) {
           setIsAlreadyRegistered(true);
-          setErrorMessage(check.message || `An attendee with email ${formData.email} is already registered. Please log in.`);
+          setErrorMessage(check.message || `An attendee with email ${formData.email.trim()} is already registered. Please log in.`);
           setIsSubmitting(false);
+          window.scrollTo({ top: 250, behavior: "smooth" });
           return;
         }
       } catch {
@@ -213,9 +225,6 @@ export default function RegisterPage() {
       }
       setCurrentStep(3);
       window.scrollTo({ top: 300, behavior: "smooth" });
-    } else if (currentStep === 3) {
-      setCurrentStep(4);
-      window.scrollTo({ top: 300, behavior: "smooth" });
     }
   };
 
@@ -225,7 +234,14 @@ export default function RegisterPage() {
     setIsAlreadyRegistered(false);
 
     try {
-      const response = await registerAttendeeAction(formData);
+      const payload: RegistrationData = {
+        ...formData,
+        fullName: formData.fullName.trim(),
+        email: formData.email.trim(),
+        password: formData.password ? formData.password.trim() : undefined,
+        phone: formData.phone.trim(),
+      };
+      const response = await registerAttendeeAction(payload);
 
       if (response.success && response.referenceCode) {
         setConfirmedResult({
@@ -271,7 +287,8 @@ export default function RegisterPage() {
                   Welcome to Summit 2.0, {formData.fullName}!
                 </h2>
                 <p className="text-xs sm:text-sm text-navy/70 leading-relaxed">
-                  Your official digital access pass is ready. We look forward to hosting you in Kano on 19th December, 2026.
+                  Your official digital access pass is ready. A confirmation email with your pass details and reference code has been dispatched to{" "}
+                  <strong className="text-pine font-semibold">{formData.email}</strong>. We look forward to hosting you in Kano on 19th December, 2026.
                 </p>
               </div>
             </div>
@@ -423,12 +440,11 @@ export default function RegisterPage() {
           <div className="space-y-8">
             {/* Step Progress Tracker */}
             <div className="p-4 sm:p-6 rounded-2xl bg-neutral-sand border border-neutral-border">
-              <div className="flex items-center justify-between max-w-2xl mx-auto">
+              <div className="flex items-center justify-between max-w-xl mx-auto">
                 {[
                   { step: 1, label: "Account" },
                   { step: 2, label: "Discipline" },
-                  { step: 3, label: "Summit Goals" },
-                  { step: 4, label: "Review & Pass" },
+                  { step: 3, label: "Review & Pass" },
                 ].map((item, idx) => {
                   const isCompleted = currentStep > item.step;
                   const isCurrent = currentStep === item.step;
@@ -454,7 +470,7 @@ export default function RegisterPage() {
                           {item.label}
                         </span>
                       </div>
-                      {idx < 3 && (
+                      {idx < 2 && (
                         <div
                           className={`flex-1 h-0.5 mx-2 sm:mx-4 transition-colors duration-300 ${
                             currentStep > idx + 1 ? "bg-spring" : "bg-neutral-200"
@@ -509,7 +525,7 @@ export default function RegisterPage() {
               {currentStep === 1 && (
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div className="border-b border-neutral-border pb-4">
-                    <span className="text-xs font-bold text-spring uppercase tracking-wider">Step 1 of 4</span>
+                    <span className="text-xs font-bold text-spring uppercase tracking-wider">Step 1 of 3</span>
                     <h2 className="text-2xl font-bold text-pine mt-1">Your Account & Contact Information</h2>
                     <p className="text-xs sm:text-sm text-navy/70 mt-1">
                       Create your Northern Creative account to manage your summit ticket, access hackathon voting, and receive real-time updates.
@@ -582,40 +598,102 @@ export default function RegisterPage() {
 
                     {/* Password */}
                     <div className="space-y-2 group">
-                      <label className="text-xs font-bold text-pine uppercase tracking-wider flex items-center">
-                        Account Password
-                        <span className="text-spring ml-1 font-bold text-sm leading-none">*</span>
-                      </label>
+                      <div className="flex items-center justify-between">
+                        <label className="text-xs font-bold text-pine uppercase tracking-wider flex items-center" htmlFor="account-password">
+                          Account Password
+                          <span className="text-spring ml-1 font-bold text-sm leading-none">*</span>
+                        </label>
+                        {formData.password && formData.password.trim().length >= 6 && (
+                          <span className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
+                            <Check className="w-3 h-3 stroke-[3]" /> Min 6 chars
+                          </span>
+                        )}
+                      </div>
                       <div className="relative">
                         <Lock className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2 group-focus-within:text-spring transition-colors pointer-events-none" />
                         <input
-                          type="password"
+                          id="account-password"
+                          name="password"
+                          type={showPassword ? "text" : "password"}
+                          autoComplete="new-password"
                           required
                           placeholder="Minimum 6 characters"
                           value={formData.password}
                           onChange={(e) => updateField("password", e.target.value)}
-                          className="w-full h-12 pl-10 pr-4 rounded-xl border border-neutral-border bg-neutral-sand/40 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-spring focus:border-transparent text-sm font-medium text-pine placeholder:text-neutral-400 transition-all shadow-2xs"
+                          className={`w-full h-12 pl-10 pr-12 rounded-xl border bg-neutral-sand/40 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 text-sm font-medium text-pine placeholder:text-neutral-400 transition-all shadow-2xs ${
+                            formData.password && formData.password.trim().length < 6
+                              ? "border-amber-300 focus:ring-amber-400"
+                              : "border-neutral-border focus:ring-spring focus:border-transparent"
+                          }`}
                         />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-pine p-1 rounded-lg focus:outline-none focus:ring-1 focus:ring-spring transition-colors cursor-pointer"
+                          aria-label={showPassword ? "Hide password" : "Show password"}
+                        >
+                          {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
                       </div>
+                      {formData.password && formData.password.trim().length > 0 && formData.password.trim().length < 6 && (
+                        <p className="text-[11px] text-amber-600 font-medium">
+                          Password must be at least 6 characters (currently {formData.password.trim().length}).
+                        </p>
+                      )}
                     </div>
 
                     {/* Confirm Password */}
                     <div className="space-y-2 group">
-                      <label className="text-xs font-bold text-pine uppercase tracking-wider flex items-center">
-                        Confirm Password
-                        <span className="text-spring ml-1 font-bold text-sm leading-none">*</span>
-                      </label>
+                      <div className="flex items-center justify-between">
+                        <label className="text-xs font-bold text-pine uppercase tracking-wider flex items-center" htmlFor="account-confirm-password">
+                          Confirm Password
+                          <span className="text-spring ml-1 font-bold text-sm leading-none">*</span>
+                        </label>
+                        {formData.confirmPassword && (
+                          (formData.password || "").trim() === formData.confirmPassword.trim() ? (
+                            <span className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
+                              <Check className="w-3 h-3 stroke-[3]" /> Passwords match
+                            </span>
+                          ) : (
+                            <span className="text-[11px] font-semibold text-amber-600">
+                              Does not match
+                            </span>
+                          )
+                        )}
+                      </div>
                       <div className="relative">
                         <Lock className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2 group-focus-within:text-spring transition-colors pointer-events-none" />
                         <input
-                          type="password"
+                          id="account-confirm-password"
+                          name="confirmPassword"
+                          type={showConfirmPassword ? "text" : "password"}
+                          autoComplete="new-password"
                           required
                           placeholder="Re-enter password"
                           value={formData.confirmPassword}
                           onChange={(e) => updateField("confirmPassword", e.target.value)}
-                          className="w-full h-12 pl-10 pr-4 rounded-xl border border-neutral-border bg-neutral-sand/40 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-spring focus:border-transparent text-sm font-medium text-pine placeholder:text-neutral-400 transition-all shadow-2xs"
+                          className={`w-full h-12 pl-10 pr-12 rounded-xl border bg-neutral-sand/40 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 text-sm font-medium text-pine placeholder:text-neutral-400 transition-all shadow-2xs ${
+                            formData.confirmPassword && (formData.password || "").trim() !== formData.confirmPassword.trim()
+                              ? "border-amber-300 focus:ring-amber-400"
+                              : formData.confirmPassword && (formData.password || "").trim() === formData.confirmPassword.trim()
+                              ? "border-emerald-300 focus:ring-emerald-400"
+                              : "border-neutral-border focus:ring-spring focus:border-transparent"
+                          }`}
                         />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword((prev) => !prev)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-pine p-1 rounded-lg focus:outline-none focus:ring-1 focus:ring-spring transition-colors cursor-pointer"
+                          aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                        >
+                          {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
                       </div>
+                      {formData.confirmPassword && (formData.password || "").trim() !== formData.confirmPassword.trim() && (
+                        <p className="text-[11px] text-amber-600 font-medium">
+                          Passwords do not match yet. Click the eye icon to verify spelling and capitalization.
+                        </p>
+                      )}
                     </div>
 
                     {/* Location / State */}
@@ -664,7 +742,7 @@ export default function RegisterPage() {
               {currentStep === 2 && (
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div className="border-b border-neutral-border pb-4">
-                    <span className="text-xs font-bold text-spring uppercase tracking-wider">Step 2 of 4</span>
+                    <span className="text-xs font-bold text-spring uppercase tracking-wider">Step 2 of 3</span>
                     <h2 className="text-2xl font-bold text-pine mt-1">Creative Craft & Professional Profile</h2>
                     <p className="text-xs sm:text-sm text-navy/70 mt-1">
                       Help us tailor sessions, badges, and the summit talent directory to your craft.
@@ -746,96 +824,18 @@ export default function RegisterPage() {
                       type="submit"
                       className="inline-flex items-center justify-center h-12 px-7 rounded-full bg-pine text-white text-xs font-bold uppercase tracking-wider hover:bg-pine-light transition-colors shadow-2xs whitespace-nowrap"
                     >
-                      Continue to Summit Goals
+                      Continue to Review Pass
                       <ArrowRight className="w-4 h-4 ml-2 text-spring flex-shrink-0" />
                     </button>
                   </div>
                 </div>
               )}
 
-              {/* STEP 3: SUMMIT GOALS & LOGISTICS */}
+              {/* STEP 3: REVIEW & CONFIRM PASS */}
               {currentStep === 3 && (
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div className="border-b border-neutral-border pb-4">
-                    <span className="text-xs font-bold text-spring uppercase tracking-wider">Step 3 of 4</span>
-                    <h2 className="text-2xl font-bold text-pine mt-1">Summit Experience & Preferences</h2>
-                    <p className="text-xs sm:text-sm text-navy/70 mt-1">
-                      Choose the specific summit tracks you wish to participate in.
-                    </p>
-                  </div>
-
-                  {/* Tracks of Interest */}
-                  <div className="space-y-2.5">
-                    <label className="text-xs font-bold text-pine uppercase tracking-wider block">
-                      Summit Tracks of Interest (Select all that apply)
-                    </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {SUMMIT_TRACKS.map((t) => {
-                        const isChecked = (formData.interests || []).includes(t.id);
-                        return (
-                          <div
-                            key={t.id}
-                            onClick={() => toggleInterest(t.id)}
-                            className={`p-3.5 rounded-xl border cursor-pointer text-xs font-medium flex items-center gap-3 transition-colors ${
-                              isChecked
-                                ? "border-spring bg-spring/10 text-pine font-bold"
-                                : "border-neutral-border bg-neutral-sand/50 text-navy/80 hover:border-spring/50"
-                            }`}
-                          >
-                            <div
-                              className={`w-4 h-4 rounded flex items-center justify-center border ${
-                                isChecked ? "bg-spring border-spring text-navy" : "border-neutral-300 bg-white"
-                              }`}
-                            >
-                              {isChecked && <Check className="w-3 h-3 stroke-[3]" />}
-                            </div>
-                            <span>{t.label}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Special Expectations */}
-                  <div className="space-y-2 pt-2 group">
-                    <label className="text-xs font-bold text-pine uppercase tracking-wider flex items-center">
-                      What is your key expectation or goal for Summit 2.0?
-                      <span className="text-navy/40 lowercase text-[11px] font-normal ml-1.5">(optional)</span>
-                    </label>
-                    <textarea
-                      rows={3}
-                      placeholder="e.g. Seeking design agency mentorship, connecting with tech startup founders, or competing in the hackathon..."
-                      value={formData.specialExpectations}
-                      onChange={(e) => updateField("specialExpectations", e.target.value)}
-                      className="w-full p-4 rounded-xl border border-neutral-border bg-neutral-sand/40 hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-spring focus:border-transparent text-sm font-medium text-pine placeholder:text-neutral-400 transition-all shadow-2xs resize-none"
-                    />
-                  </div>
-
-                  <div className="pt-4 flex items-center justify-between border-t border-neutral-border gap-4">
-                    <button
-                      type="button"
-                      onClick={() => setCurrentStep(2)}
-                      className="inline-flex items-center justify-center h-12 px-5 rounded-full border border-neutral-border text-xs font-semibold uppercase tracking-wider text-navy/80 hover:bg-neutral-sand transition-colors whitespace-nowrap"
-                    >
-                      <ArrowLeft className="w-4 h-4 mr-2 flex-shrink-0" />
-                      Back
-                    </button>
-                    <button
-                      type="submit"
-                      className="inline-flex items-center justify-center h-12 px-7 rounded-full bg-pine text-white text-xs font-bold uppercase tracking-wider hover:bg-pine-light transition-colors shadow-2xs whitespace-nowrap"
-                    >
-                      Review Registration
-                      <ArrowRight className="w-4 h-4 ml-2 text-spring flex-shrink-0" />
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 4: REVIEW & CONFIRM PASS */}
-              {currentStep === 4 && (
-                <div className="space-y-6 animate-in fade-in duration-200">
-                  <div className="border-b border-neutral-border pb-4">
-                    <span className="text-xs font-bold text-spring uppercase tracking-wider">Step 4 of 4</span>
+                    <span className="text-xs font-bold text-spring uppercase tracking-wider">Step 3 of 3</span>
                     <h2 className="text-2xl font-bold text-pine mt-1">Review & Confirm Your Summit Pass</h2>
                     <p className="text-xs sm:text-sm text-navy/70 mt-1">
                       Please verify your information before generating your official Summit 2.0 digital pass.
@@ -893,7 +893,7 @@ export default function RegisterPage() {
                     <button
                       type="button"
                       disabled={isSubmitting}
-                      onClick={() => setCurrentStep(3)}
+                      onClick={() => setCurrentStep(2)}
                       className="w-full sm:w-auto inline-flex items-center justify-center h-12 px-6 rounded-full border border-neutral-border text-xs font-semibold uppercase tracking-wider text-navy/80 hover:bg-neutral-sand transition-colors whitespace-nowrap flex-shrink-0"
                     >
                       <ArrowLeft className="w-4 h-4 mr-2 flex-shrink-0" />

@@ -37,6 +37,14 @@ export function HeroSection() {
           </Link>
 
           <Link
+            href="/exhibitors/apply"
+            className="inline-flex items-center justify-center px-8 sm:px-9 py-3.5 sm:py-4 rounded-full bg-pine text-white text-xs sm:text-sm font-bold tracking-wider uppercase shadow-[0_4px_16px_rgba(11,61,44,0.25)] hover:bg-[#0d4a36] hover:shadow-[0_6px_22px_rgba(11,61,44,0.35)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-pine"
+          >
+            <span>Exhibit or Vendor Stall</span>
+            <ArrowRight className="w-4 h-4 ml-2 text-spring" />
+          </Link>
+
+          <Link
             href="/NCD Summit 26.pdf"
             className="inline-flex items-center justify-center px-8 sm:px-9 py-3.5 sm:py-4 rounded-full bg-[#6C5CE7] text-white text-xs sm:text-sm font-bold tracking-wider uppercase shadow-[0_4px_16px_rgba(108,92,231,0.25)] hover:bg-[#5a4ad1] hover:shadow-[0_6px_22px_rgba(108,92,231,0.35)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6C5CE7]"
           >

@@ -8,6 +8,7 @@ export const mainNavItems: NavItem[] = [
   { title: "About", href: "/#about-summit" },
   { title: "Programme", href: "/programme" },
   { title: "Hackathon", href: "/hackathon" },
+  { title: "Exhibitors & Vendors", href: "/exhibitors/apply" },
   { title: "Partners", href: "/partners" },
 ];
 

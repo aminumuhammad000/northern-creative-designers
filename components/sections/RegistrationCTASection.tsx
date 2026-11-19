@@ -57,15 +57,23 @@ export function RegistrationCTASection() {
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-5 pt-2">
             <Link
               href="/register"
-              className="inline-flex items-center justify-center px-10 py-4 rounded-full bg-spring text-navy text-sm font-black tracking-wider uppercase hover:bg-[#02b25b] hover:scale-105 active:scale-95 transition-all shadow-lg"
+              className="inline-flex items-center justify-center px-9 sm:px-10 py-4 rounded-full bg-spring text-navy text-sm font-black tracking-wider uppercase hover:bg-[#02b25b] hover:scale-105 active:scale-95 transition-all shadow-lg"
             >
               <span>Register to Attend</span>
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
 
             <Link
+              href="/exhibitors/apply"
+              className="inline-flex items-center justify-center px-8 sm:px-9 py-4 rounded-full bg-white text-pine text-sm font-black tracking-wider uppercase hover:bg-neutral-100 hover:scale-105 active:scale-95 transition-all shadow-md"
+            >
+              <span>Apply as Exhibitor / Vendor</span>
+              <ArrowRight className="w-4 h-4 ml-2 text-pine" />
+            </Link>
+
+            <Link
               href="/NCD Summit 26.pdf"
-              className="inline-flex items-center justify-center px-9 py-4 rounded-full bg-white/10 border border-white/30 text-white text-sm font-extrabold tracking-wider uppercase hover:bg-white/20 hover:scale-105 active:scale-95 transition-all"
+              className="inline-flex items-center justify-center px-8 sm:px-9 py-4 rounded-full bg-white/10 border border-white/30 text-white text-sm font-extrabold tracking-wider uppercase hover:bg-white/20 hover:scale-105 active:scale-95 transition-all"
             >
               <span>Download PDF Brochure</span>
             </Link>
