@@ -1,6 +1,7 @@
 'use server'
 
 import { createAdminClient } from '@/lib/supabase/admin'
+import { sendHackathonConfirmationEmail } from '@/lib/email'
 
 export interface ExhibitorApplicationData {
   businessName: string
@@ -77,15 +78,82 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
   try {
     const adminSupabase = createAdminClient()
 
-    // 1. Fetch active hackathon
-    const { data: hackathon, error: hackathonErr } = await adminSupabase
+    // 1. Fetch active hackathon (with auto-resolution fallback)
+    let hackathonId: string | null = null
+
+    // 1a. Try active hackathon
+    const { data: activeHackathon, error: activeErr } = await adminSupabase
       .from('hackathons')
       .select('id')
       .eq('status', 'active')
       .maybeSingle()
 
-    if (hackathonErr || !hackathon) {
-      return { success: false, error: 'Active hackathon not found.' }
+    if (activeHackathon?.id) {
+      hackathonId = activeHackathon.id
+    } else {
+      // 1b. Try any existing hackathon
+      const { data: anyHackathon } = await adminSupabase
+        .from('hackathons')
+        .select('id')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+
+      if (anyHackathon?.id) {
+        hackathonId = anyHackathon.id
+      } else {
+        // 1c. If no hackathon row exists, auto-seed default hackathon
+        let eventId: string | null = null
+        const { data: existingEvent } = await adminSupabase
+          .from('events')
+          .select('id')
+          .eq('slug', 'summit-2-0')
+          .maybeSingle()
+
+        if (existingEvent?.id) {
+          eventId = existingEvent.id
+        } else {
+          const { data: newEvent } = await adminSupabase
+            .from('events')
+            .insert({
+              slug: 'summit-2-0',
+              name: 'Northern Creative Designers Summit',
+              edition: '2.0',
+              theme: 'Roots & Vectors: Shaping the Future of Arewa Design',
+              venue: 'Meena Event Centre, Kano, Nigeria',
+              city: 'Kano',
+              country: 'Nigeria',
+              event_date: '2026-12-19 08:30:00+01',
+              is_active: true,
+              registration_open: true,
+              voting_open: false,
+            })
+            .select('id')
+            .maybeSingle()
+          eventId = newEvent?.id || null
+        }
+
+        if (eventId) {
+          const defaultHackathonId = 'a0000000-0000-0000-0000-000000000001'
+          const { data: createdHackathon } = await adminSupabase
+            .from('hackathons')
+            .insert({
+              id: defaultHackathonId,
+              event_id: eventId,
+              title: 'Roots & Vectors: 2-Hour Live Stage Design Sprint',
+              sprint_duration_minutes: 120,
+              status: 'active',
+            })
+            .select('id')
+            .maybeSingle()
+          hackathonId = createdHackathon?.id || defaultHackathonId
+        }
+      }
+    }
+
+    if (!hackathonId) {
+      const detail = activeErr ? ` (${activeErr.message})` : ''
+      return { success: false, error: `Active hackathon not found in database${detail}. Please ensure hackathons table is seeded.` }
     }
 
     // 2. Prepare contestant identifier and details
@@ -98,7 +166,7 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
     const { data: team, error } = await adminSupabase
       .from('hackathon_teams')
       .insert({
-        hackathon_id: hackathon.id,
+        hackathon_id: hackathonId,
         team_name: contestantIdentifier,
         lead_name: candidateName,
         lead_email: data.email.trim().toLowerCase(),
@@ -118,7 +186,7 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
         const { data: retryTeam, error: retryError } = await adminSupabase
           .from('hackathon_teams')
           .insert({
-            hackathon_id: hackathon.id,
+            hackathon_id: hackathonId,
             team_name: fallbackIdentifier,
             lead_name: candidateName,
             lead_email: data.email.trim().toLowerCase(),
@@ -134,10 +202,31 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
         if (retryError) {
           return { success: false, error: retryError.message }
         }
+
+        // Fire confirmation email in background
+        sendHackathonConfirmationEmail({
+          email: data.email.trim().toLowerCase(),
+          fullName: candidateName,
+          track: data.category.trim(),
+          city: data.city?.trim(),
+          organization: data.organization?.trim(),
+          registrationId: retryTeam?.id,
+        }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
+
         return { success: true, id: retryTeam.id }
       }
       return { success: false, error: error.message }
     }
+
+    // Fire confirmation email in background
+    sendHackathonConfirmationEmail({
+      email: data.email.trim().toLowerCase(),
+      fullName: candidateName,
+      track: data.category.trim(),
+      city: data.city?.trim(),
+      organization: data.organization?.trim(),
+      registrationId: team?.id,
+    }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
 
     return { success: true, id: team.id }
   } catch (err: unknown) {
