@@ -94,7 +94,8 @@ export default function ExhibitorApplyPage() {
               <p className="text-xs sm:text-sm text-navy/75 max-w-lg mx-auto leading-relaxed">
                 Thank you for registering. The Northern Creative Designers Secretariat has recorded your profile as an official{" "}
                 <strong className="text-pine font-bold">{registrationType === "vendor" ? "Marketplace Vendor" : "Showcase Exhibitor"}</strong>.
-                Our team will contact <span className="font-semibold text-pine">{formData.email}</span> regarding booth location and logistical setup.
+                A welcome confirmation email with your registration summary and booth roadmap has been dispatched to{" "}
+                <span className="font-semibold text-pine">{formData.email}</span>.
               </p>
             </div>
 

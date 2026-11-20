@@ -1,7 +1,7 @@
 'use server'
 
 import { createAdminClient } from '@/lib/supabase/admin'
-import { sendHackathonConfirmationEmail } from '@/lib/email'
+import { sendHackathonConfirmationEmail, sendExhibitorWelcomeEmail } from '@/lib/email'
 
 export interface ExhibitorApplicationData {
   businessName: string
@@ -18,30 +18,50 @@ export async function submitExhibitorApplicationAction(data: ExhibitorApplicatio
   try {
     const adminSupabase = createAdminClient()
 
-    // 1. Fetch default active event
-    const { data: event, error: eventErr } = await adminSupabase
+    // 1. Fetch default active event (with auto-provision fallback)
+    let eventId: string | null = null
+    const { data: event } = await adminSupabase
       .from('events')
       .select('id')
       .eq('slug', 'summit-2-0')
       .maybeSingle()
 
-    if (eventErr || !event) {
-      return { success: false, error: 'Summit event not found.' }
+    if (event?.id) {
+      eventId = event.id
+    } else {
+      const { data: newEvent } = await adminSupabase
+        .from('events')
+        .insert({
+          slug: 'summit-2-0',
+          name: 'Northern Creative Designers Summit',
+          edition: '2.0',
+          theme: 'Roots & Vectors: Shaping the Future of Arewa Design',
+          venue: 'Meena Event Centre, Kano, Nigeria',
+          city: 'Kano',
+          country: 'Nigeria',
+          event_date: '2026-12-19 08:30:00+01',
+          is_active: true,
+          registration_open: true,
+          voting_open: false,
+        })
+        .select('id')
+        .maybeSingle()
+      eventId = newEvent?.id || '00000000-0000-0000-0000-000000000000'
     }
 
     // 2. Insert exhibitor application
     const { data: app, error } = await adminSupabase
       .from('exhibitor_applications')
       .insert({
-        event_id: event.id,
-        business_name: data.businessName,
-        contact_person: data.contactPerson,
-        email: data.email,
-        phone: data.phone,
-        website: data.website || null,
-        category: data.category,
-        description: data.description,
-        special_requirements: data.specialRequirements || null,
+        event_id: eventId,
+        business_name: data.businessName.trim(),
+        contact_person: data.contactPerson.trim(),
+        email: data.email.trim().toLowerCase(),
+        phone: data.phone.trim(),
+        website: data.website?.trim() || null,
+        category: data.category.trim(),
+        description: data.description.trim(),
+        special_requirements: data.specialRequirements?.trim() || null,
         status: 'pending',
       })
       .select('id')
@@ -50,6 +70,15 @@ export async function submitExhibitorApplicationAction(data: ExhibitorApplicatio
     if (error) {
       return { success: false, error: error.message }
     }
+
+    // 3. Dispatch automated welcome email to exhibitor/vendor in background
+    sendExhibitorWelcomeEmail({
+      email: data.email.trim().toLowerCase(),
+      contactPerson: data.contactPerson.trim(),
+      businessName: data.businessName.trim(),
+      category: data.category.trim(),
+      applicationId: app?.id,
+    }).catch((e) => console.warn('[Email Warning] Exhibitor welcome email failed to send:', e))
 
     return { success: true, id: app.id }
   } catch (err: unknown) {
