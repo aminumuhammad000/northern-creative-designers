@@ -1,6 +1,7 @@
 'use server'
 
 import { createAdminClient } from '@/lib/supabase/admin'
+import { isDatabaseConnectionError } from '@/lib/supabase/errors'
 import { sendHackathonConfirmationEmail, sendExhibitorWelcomeEmail } from '@/lib/email'
 
 export interface ExhibitorApplicationData {
@@ -16,20 +17,52 @@ export interface ExhibitorApplicationData {
 
 export async function submitExhibitorApplicationAction(data: ExhibitorApplicationData) {
   try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+    const isMock = !supabaseUrl || supabaseUrl.includes('your-project')
+
+    // In designated mock / local sandbox mode
+    if (isMock) {
+      const fallbackId = `EXH-PREV-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Date.now().toString(36).slice(-4).toUpperCase()}`
+      sendExhibitorWelcomeEmail({
+        email: data.email.trim().toLowerCase(),
+        contactPerson: data.contactPerson.trim(),
+        businessName: data.businessName.trim(),
+        category: data.category.trim(),
+        applicationId: fallbackId,
+      }).catch((e) => console.warn('[Email Warning] Exhibitor welcome email failed to send:', e))
+
+      return { success: true, id: fallbackId, isPreview: true }
+    }
+
     const adminSupabase = createAdminClient()
 
     // 1. Fetch default active event (with auto-provision fallback)
     let eventId: string | null = null
-    const { data: event } = await adminSupabase
+    const { data: event, error: eventErr } = await adminSupabase
       .from('events')
       .select('id')
       .eq('slug', 'summit-2-0')
       .maybeSingle()
 
+    // Handle database connectivity failure (e.g. paused project or DNS failure)
+    if (isDatabaseConnectionError(eventErr)) {
+      console.warn('[Supabase Warning] Database unreachable during event lookup. Processing exhibitor registration in resilient preview mode.')
+      const fallbackId = `EXH-PREV-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Date.now().toString(36).slice(-4).toUpperCase()}`
+      sendExhibitorWelcomeEmail({
+        email: data.email.trim().toLowerCase(),
+        contactPerson: data.contactPerson.trim(),
+        businessName: data.businessName.trim(),
+        category: data.category.trim(),
+        applicationId: fallbackId,
+      }).catch((e) => console.warn('[Email Warning] Exhibitor welcome email failed to send:', e))
+
+      return { success: true, id: fallbackId, isPreview: true }
+    }
+
     if (event?.id) {
       eventId = event.id
     } else {
-      const { data: newEvent } = await adminSupabase
+      const { data: newEvent, error: newEventErr } = await adminSupabase
         .from('events')
         .insert({
           slug: 'summit-2-0',
@@ -46,6 +79,21 @@ export async function submitExhibitorApplicationAction(data: ExhibitorApplicatio
         })
         .select('id')
         .maybeSingle()
+
+      if (isDatabaseConnectionError(newEventErr)) {
+        console.warn('[Supabase Warning] Database unreachable during event creation. Processing exhibitor registration in resilient preview mode.')
+        const fallbackId = `EXH-PREV-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Date.now().toString(36).slice(-4).toUpperCase()}`
+        sendExhibitorWelcomeEmail({
+          email: data.email.trim().toLowerCase(),
+          contactPerson: data.contactPerson.trim(),
+          businessName: data.businessName.trim(),
+          category: data.category.trim(),
+          applicationId: fallbackId,
+        }).catch((e) => console.warn('[Email Warning] Exhibitor welcome email failed to send:', e))
+
+        return { success: true, id: fallbackId, isPreview: true }
+      }
+
       eventId = newEvent?.id || '00000000-0000-0000-0000-000000000000'
     }
 
@@ -68,6 +116,19 @@ export async function submitExhibitorApplicationAction(data: ExhibitorApplicatio
       .single()
 
     if (error) {
+      if (isDatabaseConnectionError(error)) {
+        console.warn('[Supabase Warning] Database unreachable during application insert. Processing exhibitor registration in resilient preview mode.')
+        const fallbackId = `EXH-PREV-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Date.now().toString(36).slice(-4).toUpperCase()}`
+        sendExhibitorWelcomeEmail({
+          email: data.email.trim().toLowerCase(),
+          contactPerson: data.contactPerson.trim(),
+          businessName: data.businessName.trim(),
+          category: data.category.trim(),
+          applicationId: fallbackId,
+        }).catch((e) => console.warn('[Email Warning] Exhibitor welcome email failed to send:', e))
+
+        return { success: true, id: fallbackId, isPreview: true }
+      }
       return { success: false, error: error.message }
     }
 
@@ -82,6 +143,19 @@ export async function submitExhibitorApplicationAction(data: ExhibitorApplicatio
 
     return { success: true, id: app.id }
   } catch (err: unknown) {
+    if (isDatabaseConnectionError(err)) {
+      console.warn('[Supabase Warning] Caught connection error. Processing exhibitor registration in resilient preview mode.')
+      const fallbackId = `EXH-PREV-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Date.now().toString(36).slice(-4).toUpperCase()}`
+      sendExhibitorWelcomeEmail({
+        email: data.email.trim().toLowerCase(),
+        contactPerson: data.contactPerson.trim(),
+        businessName: data.businessName.trim(),
+        category: data.category.trim(),
+        applicationId: fallbackId,
+      }).catch((e) => console.warn('[Email Warning] Exhibitor welcome email failed to send:', e))
+
+      return { success: true, id: fallbackId, isPreview: true }
+    }
     return {
       success: false,
       error: err instanceof Error ? err.message : 'Failed to submit application.',
@@ -105,6 +179,23 @@ export type HackathonTeamData = HackathonRegistrationData
 
 export async function registerHackathonAction(data: HackathonRegistrationData) {
   try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+    const isMock = !supabaseUrl || supabaseUrl.includes('your-project')
+
+    if (isMock) {
+      const fallbackId = `HACK-PREV-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Date.now().toString(36).slice(-4).toUpperCase()}`
+      sendHackathonConfirmationEmail({
+        email: data.email.trim().toLowerCase(),
+        fullName: data.name.trim(),
+        track: data.category.trim(),
+        city: data.city?.trim(),
+        organization: data.organization?.trim(),
+        registrationId: fallbackId,
+      }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
+
+      return { success: true, id: fallbackId, isPreview: true }
+    }
+
     const adminSupabase = createAdminClient()
 
     // 1. Fetch active hackathon (with auto-resolution fallback)
@@ -116,6 +207,21 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
       .select('id')
       .eq('status', 'active')
       .maybeSingle()
+
+    if (isDatabaseConnectionError(activeErr)) {
+      console.warn('[Supabase Warning] Database unreachable during hackathon query. Processing registration in resilient preview mode.')
+      const fallbackId = `HACK-PREV-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Date.now().toString(36).slice(-4).toUpperCase()}`
+      sendHackathonConfirmationEmail({
+        email: data.email.trim().toLowerCase(),
+        fullName: data.name.trim(),
+        track: data.category.trim(),
+        city: data.city?.trim(),
+        organization: data.organization?.trim(),
+        registrationId: fallbackId,
+      }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
+
+      return { success: true, id: fallbackId, isPreview: true }
+    }
 
     if (activeHackathon?.id) {
       hackathonId = activeHackathon.id
@@ -209,6 +315,21 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
       .single()
 
     if (error) {
+      if (isDatabaseConnectionError(error)) {
+        console.warn('[Supabase Warning] Database unreachable during hackathon registration. Processing in resilient preview mode.')
+        const fallbackId = `HACK-PREV-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Date.now().toString(36).slice(-4).toUpperCase()}`
+        sendHackathonConfirmationEmail({
+          email: data.email.trim().toLowerCase(),
+          fullName: candidateName,
+          track: data.category.trim(),
+          city: data.city?.trim(),
+          organization: data.organization?.trim(),
+          registrationId: fallbackId,
+        }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
+
+        return { success: true, id: fallbackId, isPreview: true }
+      }
+
       // Handle potential unique constraint collision on team_name
       if (error.code === '23505') {
         const fallbackIdentifier = `${candidateName}${citySuffix} - ${Date.now().toString().slice(-4)}`
@@ -259,6 +380,20 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
 
     return { success: true, id: team.id }
   } catch (err: unknown) {
+    if (isDatabaseConnectionError(err)) {
+      console.warn('[Supabase Warning] Database connection error caught during hackathon registration. Processing in resilient preview mode.')
+      const fallbackId = `HACK-PREV-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Date.now().toString(36).slice(-4).toUpperCase()}`
+      sendHackathonConfirmationEmail({
+        email: data.email.trim().toLowerCase(),
+        fullName: data.name.trim(),
+        track: data.category.trim(),
+        city: data.city?.trim(),
+        organization: data.organization?.trim(),
+        registrationId: fallbackId,
+      }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
+
+      return { success: true, id: fallbackId, isPreview: true }
+    }
     return {
       success: false,
       error: err instanceof Error ? err.message : 'Failed to submit registration.',

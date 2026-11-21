@@ -211,6 +211,7 @@ export async function sendRegistrationConfirmationEmail(payload: RegistrationEma
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
+      signal: AbortSignal.timeout(6000),
       body: JSON.stringify({
         from: fromAddress,
         to: [payload.email],
@@ -393,6 +394,7 @@ export async function sendHackathonConfirmationEmail(
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
+      signal: AbortSignal.timeout(6000),
       body: JSON.stringify({
         from: fromAddress,
         to: [payload.email],
@@ -575,6 +577,7 @@ export async function sendExhibitorWelcomeEmail(
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
+      signal: AbortSignal.timeout(6000),
       body: JSON.stringify({
         from: fromAddress,
         to: [payload.email],
