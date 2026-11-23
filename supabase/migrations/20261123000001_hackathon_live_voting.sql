@@ -90,45 +90,16 @@ DROP POLICY IF EXISTS "Admins have full access to audit logs" ON public.hackatho
 CREATE POLICY "Admins have full access to audit logs" ON public.hackathon_audit_logs
   FOR ALL USING (auth.role() = 'service_role');
 
--- 8. Seed default project information for the initial finalists
-UPDATE public.hackathon_teams
-SET 
-  professional_title = 'Lead Product & Interaction Designer',
-  avatar_url = '/images/community/ncd_student_showcase.jpg',
-  project_title = 'Kano Heritage UI: Hausa Motif Design System',
-  short_description = 'An accessible, culturally-grounded design system translating indigenous Hausa architecture into scalable mobile interfaces.',
-  detailed_description = 'Kano Heritage UI digitizes Northern Nigerian geometric patterns and decorative wall motifs (Zanen Gida) into WCAG-compliant design tokens, icon sets, and React components tailored for financial and e-commerce apps across the Sahel region.',
-  problem_statement = 'Modern Northern Nigerian fintech apps lack localized cultural resonance and accessibility for bilingual Hausa-English speakers.',
-  proposed_solution = 'A unified vector design kit with typography optimized for Arewa cultural identity and high-contrast accessibility.',
-  target_audience = 'Northern Nigerian digital product designers, mobile app builders, and regional technology startups.',
-  presentation_url = 'https://figma.com/@ncd_heritage_ui',
-  status = 'stage_finalist'
-WHERE id = 'b0000000-0000-0000-0000-000000000001';
+-- 8. Storage bucket setup for persistent participant photographs
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('hackathon-avatars', 'hackathon-avatars', true)
+ON CONFLICT (id) DO UPDATE SET public = true;
 
-UPDATE public.hackathon_teams
-SET 
-  professional_title = 'Brand Identity & Visual Typographer',
-  avatar_url = '/images/community/ncd_class_training.jpg',
-  project_title = 'Tafarki Craft: Contemporary Leather Branding',
-  short_description = 'A contemporary visual identity and sustainable packaging system rooted in centuries-old Kano tannery craftsmanship.',
-  detailed_description = 'Tafarki Craft synthesizes traditional vegetal tanning textures, stamp marks, and Arabic-Hausa calligraphic vectors into an export-ready brand packaging suite for artisan tanners.',
-  problem_statement = 'Generational Northern leathercraft artisans struggle to access global luxury markets due to obsolete packaging and unstandardized visual identities.',
-  proposed_solution = 'A modern luxury branding standard with QR-verified authenticity certificates, tactile box packaging, and localized typography.',
-  target_audience = 'Artisanal leather cooperatives, fashion designers, and international luxury craft distributors.',
-  presentation_url = 'https://behance.net/gallery/tafarki_craft',
-  status = 'stage_finalist'
-WHERE id = 'b0000000-0000-0000-0000-000000000002';
+-- Storage RLS Policies
+DROP POLICY IF EXISTS "Public can view hackathon avatars" ON storage.objects;
+CREATE POLICY "Public can view hackathon avatars" ON storage.objects
+  FOR SELECT USING (bucket_id = 'hackathon-avatars');
 
-UPDATE public.hackathon_teams
-SET 
-  professional_title = 'Creative Director & 3D Interactive Specialist',
-  avatar_url = '/images/community/ncd_peer_interaction.jpg',
-  project_title = 'Arewa Archives: 3D Folklore Interactive',
-  short_description = 'An immersive web-based 3D digital museum preserving historical Northern artifacts, folklore, and textiles.',
-  detailed_description = 'Arewa Archives brings classical Sahelian artifacts, royal regalia, and oral histories to life through real-time WebGL interactive 3D models and spatial audio recordings.',
-  problem_statement = 'Historical Arewa cultural relics are scattered and under-documented in digital educational curricula for youth.',
-  proposed_solution = 'An open web-based 3D repository optimized for low-bandwidth mobile devices with interactive Hausa audio guides.',
-  target_audience = 'Students, cultural researchers, museums, and the global African diaspora.',
-  presentation_url = 'https://arewa-archives.example.com',
-  status = 'stage_finalist'
-WHERE id = 'b0000000-0000-0000-0000-000000000003';
+DROP POLICY IF EXISTS "Admins can upload hackathon avatars" ON storage.objects;
+CREATE POLICY "Admins can upload hackathon avatars" ON storage.objects
+  FOR ALL USING (bucket_id = 'hackathon-avatars');

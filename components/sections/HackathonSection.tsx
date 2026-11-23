@@ -61,22 +61,22 @@ export function HackathonSection() {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <Link
-              href="/hackathon"
+              href="/hackathon/vote"
               className="w-full sm:flex-[2] py-3 sm:py-3.5 px-6 rounded-full bg-[#00CB67] hover:bg-[#02b25b] text-[#063B18] text-xs font-black tracking-wider uppercase text-center transition-all shadow-sm active:scale-98"
             >
-              HACKATHON DETAILS
+              VOTE LIVE NOW
             </Link>
             <Link
-              href="/hackathon/register"
+              href="/hackathon/participants"
               className="w-full sm:flex-[2] py-3 sm:py-3.5 px-6 rounded-full bg-[#063B18] hover:bg-[#042810] text-white text-xs font-bold tracking-wider uppercase text-center transition-all shadow-sm active:scale-98 whitespace-nowrap"
             >
-              APPLY FOR HACKATHON
+              MEET THE FINALISTS
             </Link>
             <Link
-              href="/voting-rules"
-              className="w-full sm:flex-[1] py-3 sm:py-3.5 px-6 rounded-full bg-white hover:bg-neutral-50 text-[#063B18] border border-neutral-border text-xs font-bold tracking-wider uppercase text-center transition-all shadow-xs active:scale-98 whitespace-nowrap"
+              href="/hackathon/leaderboard"
+              className="w-full sm:flex-[1.5] py-3 sm:py-3.5 px-6 rounded-full bg-white hover:bg-neutral-50 text-[#063B18] border border-neutral-border text-xs font-bold tracking-wider uppercase text-center transition-all shadow-xs active:scale-98 whitespace-nowrap"
             >
-              HACKATHON RULES
+              LEADERBOARD
             </Link>
           </div>
 

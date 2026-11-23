@@ -490,17 +490,6 @@ export async function updateHackathonTeamAction(
   status: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    if (isLocalDevMode()) {
-      const store = getLocalStore()
-      const team = store.hackathon_teams.find((t) => t.id === id)
-      if (team) {
-        team.status = status
-        saveLocalStore(store)
-      }
-      revalidatePath('/admin')
-      return { success: true }
-    }
-
     const adminSupabase = createAdminClient()
     const { error } = await adminSupabase
       .from('hackathon_teams')
@@ -508,25 +497,29 @@ export async function updateHackathonTeamAction(
       .eq('id', id)
 
     if (error) {
-      if (isDatabaseConnectionError(error)) {
-        const store = getLocalStore()
-        const team = store.hackathon_teams.find((t) => t.id === id)
-        if (team) {
-          team.status = status
-          saveLocalStore(store)
-        }
-        revalidatePath('/admin')
-        return { success: true }
-      }
       throw error
     }
 
+    // Record audit log
+    try {
+      await adminSupabase.from('hackathon_audit_logs').insert({
+        action: 'update_team_status',
+        actor: 'admin',
+        details: { team_id: id, new_status: status },
+      })
+    } catch {
+      // non-fatal
+    }
+
     revalidatePath('/admin')
+    revalidatePath('/hackathon/participants')
+    revalidatePath('/hackathon/vote')
+    revalidatePath('/hackathon/leaderboard')
     return { success: true }
   } catch (err: unknown) {
     return {
       success: false,
-      error: err instanceof Error ? err.message : 'Failed to update hackathon team.',
+      error: err instanceof Error ? err.message : 'Failed to update hackathon team in database.',
     }
   }
 }

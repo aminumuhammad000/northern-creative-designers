@@ -25,6 +25,7 @@ import {
   FileText,
   Target,
   Sparkles,
+  Users2,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import {
@@ -62,9 +63,9 @@ export default function IndividualParticipantPage() {
       const res = await getFinalistProfileByIdAction(id);
       if (res.success && res.finalist) {
         setCandidate(res.finalist);
-        setIsVotingOpen(res.isVotingOpen);
-        setHasVotedForThis(res.hasVotedForThis);
-        setHasVotedTeamId(res.hasVotedTeamId);
+        setIsVotingOpen(res.isVotingOpen ?? false);
+        setHasVotedForThis(res.hasVotedForThis ?? false);
+        setHasVotedTeamId(res.hasVotedTeamId ?? null);
       } else {
         setErrorMsg(res.error || "Contestant not found.");
       }

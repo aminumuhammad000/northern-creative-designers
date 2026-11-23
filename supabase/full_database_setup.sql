@@ -329,7 +329,7 @@ SET theme = EXCLUDED.theme,
     subtheme = EXCLUDED.subtheme,
     event_date = EXCLUDED.event_date;
 
--- Insert Seed Hackathon
+-- Insert Official Hackathon Record
 INSERT INTO public.hackathons (
   id,
   event_id,
@@ -344,58 +344,7 @@ SELECT
   'Roots & Vectors: 2-Hour Live Stage Design Sprint',
   'Shortlisted teams build live cultural product concepts on stage in 120 minutes with audience voting.',
   120,
-  'active'
+  'upcoming'
 FROM public.events e
 WHERE e.slug = 'summit-2-0'
-ON CONFLICT (id) DO NOTHING;
-
--- Insert Seed Shortlisted Teams
-INSERT INTO public.hackathon_teams (
-  id,
-  hackathon_id,
-  team_name,
-  lead_name,
-  lead_email,
-  lead_phone,
-  team_size,
-  track,
-  pitch,
-  status
-) VALUES
-(
-  'b0000000-0000-0000-0000-000000000001'::uuid,
-  'a0000000-0000-0000-0000-000000000001'::uuid,
-  'Team Arewa Heritage UI',
-  'Fatima Sani',
-  'fatima.sani@example.com',
-  '08031112233',
-  3,
-  'UI/UX & Mobile Products',
-  'Revitalizing traditional Hausa architectural motifs into modern accessible mobile UI design systems.',
-  'shortlisted'
-),
-(
-  'b0000000-0000-0000-0000-000000000002'::uuid,
-  'a0000000-0000-0000-0000-000000000001'::uuid,
-  'Vector Craft Studio',
-  'Aliyu Umar',
-  'aliyu.umar@example.com',
-  '08034445566',
-  2,
-  'Brand Identity Systems',
-  'Bridging Northern indigenous leathercraft textures into contemporary digital visual brands.',
-  'shortlisted'
-),
-(
-  'b0000000-0000-0000-0000-000000000003'::uuid,
-  'a0000000-0000-0000-0000-000000000001'::uuid,
-  'Northern Motion Lab',
-  'Zainab Abubakar',
-  'zainab.abubakar@example.com',
-  '08037778899',
-  3,
-  '3D & Interactive Motion',
-  '3D interactive cultural archives spotlighting Arewa folklore and creative storytelling.',
-  'stage_finalist'
-)
 ON CONFLICT (id) DO NOTHING;

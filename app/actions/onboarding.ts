@@ -174,56 +174,16 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
     const citySuffix = data.city?.trim() ? ` [${data.city.trim()}]` : ''
     const contestantIdentifier = `${candidateName}${orgSuffix}${citySuffix}`
 
-    // -------------------------------------------------------------------------
-    // 1. Local Development Mode
-    // -------------------------------------------------------------------------
-    if (isLocalDevMode()) {
-      const localResult = submitLocalHackathonTeam({
-        teamName: contestantIdentifier,
-        track: trimmedTrack,
-        teamSize: 1,
-        leadName: candidateName,
-        leadEmail: trimmedEmail,
-        leadPhone: trimmedPhone,
-      })
-
-      sendHackathonConfirmationEmail({
-        email: trimmedEmail,
-        fullName: candidateName,
-        track: trimmedTrack,
-        city: data.city?.trim(),
-        organization: data.organization?.trim(),
-        registrationId: localResult.id,
-      }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
-
-      revalidatePath('/dashboard')
-      revalidatePath('/admin')
-      return { success: true, id: localResult.id, isPreview: false }
-    }
-
-    // -------------------------------------------------------------------------
-    // 2. Live Supabase Cloud Mode
-    // -------------------------------------------------------------------------
     const adminSupabase = createAdminClient()
 
     let hackathonId: string | null = null
-    const { data: activeHackathon, error: activeErr } = await adminSupabase
+    const { data: activeHackathon } = await adminSupabase
       .from('hackathons')
       .select('id')
-      .eq('status', 'active')
+      .in('status', ['active', 'voting', 'upcoming'])
+      .order('created_at', { ascending: false })
+      .limit(1)
       .maybeSingle()
-
-    if (isDatabaseConnectionError(activeErr)) {
-      const localFallback = submitLocalHackathonTeam({
-        teamName: contestantIdentifier,
-        track: trimmedTrack,
-        teamSize: 1,
-        leadName: candidateName,
-        leadEmail: trimmedEmail,
-        leadPhone: trimmedPhone,
-      })
-      return { success: true, id: localFallback.id, isPreview: false }
-    }
 
     if (activeHackathon?.id) {
       hackathonId = activeHackathon.id
@@ -241,7 +201,7 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
     }
 
     if (!hackathonId) {
-      hackathonId = 'h0000000-0000-0000-0000-000000000001'
+      hackathonId = 'a0000000-0000-0000-0000-000000000001'
     }
 
     const { data: team, error } = await adminSupabase
@@ -256,23 +216,15 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
         track: trimmedTrack,
         portfolio_url: data.portfolioUrl?.trim() || null,
         status: 'applied',
+        project_title: `${candidateName} Stage Sprint Project`,
+        short_description: `Individual live stage execution in ${trimmedTrack}.`,
       })
       .select('id')
       .single()
 
     if (error) {
-      if (isDatabaseConnectionError(error)) {
-        const localFallback = submitLocalHackathonTeam({
-          teamName: contestantIdentifier,
-          track: trimmedTrack,
-          teamSize: 1,
-          leadName: candidateName,
-          leadEmail: trimmedEmail,
-          leadPhone: trimmedPhone,
-        })
-        return { success: true, id: localFallback.id, isPreview: false }
-      }
-      return { success: false, error: error.message }
+      console.error('[Hackathon Registration Error] Supabase Insert Failed:', error)
+      return { success: false, error: 'Database error registering application: ' + error.message }
     }
 
     sendHackathonConfirmationEmail({
@@ -284,22 +236,15 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
       registrationId: team?.id,
     }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
 
-    return { success: true, id: team.id }
+    revalidatePath('/dashboard')
+    revalidatePath('/admin')
+    revalidatePath('/hackathon/participants')
+    return { success: true, id: team?.id }
   } catch (err: unknown) {
-    if (isDatabaseConnectionError(err)) {
-      const localFallback = submitLocalHackathonTeam({
-        teamName: data.name,
-        track: data.category,
-        teamSize: 1,
-        leadName: data.name,
-        leadEmail: data.email,
-        leadPhone: data.phone,
-      })
-      return { success: true, id: localFallback.id, isPreview: false }
-    }
+    console.error('[Hackathon Registration Error]', err)
     return {
       success: false,
-      error: err instanceof Error ? err.message : 'Failed to submit registration.',
+      error: err instanceof Error ? err.message : 'An unexpected database error occurred.',
     }
   }
 }
