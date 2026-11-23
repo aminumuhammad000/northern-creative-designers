@@ -3,6 +3,13 @@
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isDatabaseConnectionError } from '@/lib/supabase/errors'
+import {
+  isLocalDevMode,
+  registerLocalAttendee,
+  checkLocalEmailRegistered,
+  authenticateLocalUser,
+} from '@/lib/supabase/local-db'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { sendRegistrationConfirmationEmail } from '@/lib/email'
@@ -24,39 +31,83 @@ export interface RegistrationData {
 }
 
 export async function registerAttendeeAction(data: RegistrationData) {
-  // Generate cryptographic-style unique summit pass reference
+  const trimmedEmail = data.email.trim().toLowerCase()
+  const trimmedFullName = data.fullName.trim()
+
+  // ---------------------------------------------------------------------------
+  // 1. Local Development Mode / Offline Persistence
+  // ---------------------------------------------------------------------------
+  if (isLocalDevMode()) {
+    const localRes = registerLocalAttendee({
+      fullName: trimmedFullName,
+      email: trimmedEmail,
+      password: data.password,
+      phone: data.phone,
+      cityState: data.cityState,
+      creativeRole: data.creativeRole,
+      experienceLevel: data.experienceLevel,
+      organization: data.organization,
+      portfolioUrl: data.portfolioUrl,
+      interests: data.interests,
+      tshirtSize: data.tshirtSize,
+      dietaryRequirements: data.dietaryRequirements,
+      specialExpectations: data.specialExpectations,
+    })
+
+    if (!localRes.success) {
+      return {
+        success: false,
+        alreadyRegistered: localRes.alreadyRegistered,
+        error: localRes.error,
+        referenceCode: localRes.referenceCode,
+      }
+    }
+
+    // Set local session cookie so dashboard and ticket pages identify the user immediately
+    try {
+      const cookieStore = await cookies()
+      cookieStore.set('ncd_session_email', trimmedEmail, {
+        path: '/',
+        httpOnly: true,
+        maxAge: 60 * 60 * 24 * 7,
+      })
+    } catch {
+      // Safe to ignore if outside request context
+    }
+
+    // Send confirmation email if Resend is configured
+    try {
+      await sendRegistrationConfirmationEmail({
+        email: trimmedEmail,
+        fullName: trimmedFullName,
+        referenceCode: localRes.referenceCode,
+        ticketToken: localRes.ticketToken,
+        creativeRole: data.creativeRole,
+        cityState: data.cityState,
+      })
+    } catch (mockEmailErr) {
+      console.warn('[Local Email Notice] Could not send email (optional in local dev):', mockEmailErr)
+    }
+
+    revalidatePath('/dashboard')
+    revalidatePath('/admin')
+
+    return {
+      success: true,
+      referenceCode: localRes.referenceCode,
+      ticketToken: localRes.ticketToken,
+      message: 'Registration created and persisted to local database (.data/local-db.json).',
+      data,
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 2. Live Supabase Cloud Mode
+  // ---------------------------------------------------------------------------
   const referenceCode = `NCD26-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`
   const ticketToken = `TKT-${Math.random().toString(36).substring(2, 10).toUpperCase()}-${Date.now().toString(36).toUpperCase()}`
 
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-    const isMock = !supabaseUrl || supabaseUrl.includes('your-project')
-
-    if (isMock) {
-      // In demo mode when Supabase credentials are still default placeholders
-      try {
-        await sendRegistrationConfirmationEmail({
-          email: data.email.trim(),
-          fullName: data.fullName,
-          referenceCode,
-          ticketToken,
-          creativeRole: data.creativeRole,
-          cityState: data.cityState,
-        })
-      } catch (mockEmailErr) {
-        console.error('[Mock Email Error]', mockEmailErr)
-      }
-
-      return {
-        success: true,
-        referenceCode,
-        ticketToken,
-        message: 'Registration created in local preview mode. Add production Supabase keys to .env.local to persist directly to database.',
-        data,
-      }
-    }
-
-    const trimmedEmail = data.email.trim().toLowerCase()
     const adminSupabase = createAdminClient()
 
     // 0. Check if this email is already registered in registrations table
@@ -67,25 +118,37 @@ export async function registerAttendeeAction(data: RegistrationData) {
       .maybeSingle()
 
     if (isDatabaseConnectionError(checkErr)) {
-      console.warn('[Supabase Warning] Database unreachable during attendee check. Processing in preview mode.')
+      console.warn('[Supabase Warning] Database unreachable during attendee check. Falling back to local storage.')
+      const localFallback = registerLocalAttendee({
+        fullName: trimmedFullName,
+        email: trimmedEmail,
+        password: data.password,
+        phone: data.phone,
+        cityState: data.cityState,
+        creativeRole: data.creativeRole,
+        experienceLevel: data.experienceLevel,
+        organization: data.organization,
+        portfolioUrl: data.portfolioUrl,
+        interests: data.interests,
+        tshirtSize: data.tshirtSize,
+        dietaryRequirements: data.dietaryRequirements,
+        specialExpectations: data.specialExpectations,
+      })
+
       try {
-        await sendRegistrationConfirmationEmail({
-          email: trimmedEmail,
-          fullName: data.fullName,
-          referenceCode,
-          ticketToken,
-          creativeRole: data.creativeRole,
-          cityState: data.cityState,
+        const cookieStore = await cookies()
+        cookieStore.set('ncd_session_email', trimmedEmail, {
+          path: '/',
+          httpOnly: true,
+          maxAge: 60 * 60 * 24 * 7,
         })
-      } catch (mockEmailErr) {
-        console.error('[Mock Email Error]', mockEmailErr)
-      }
+      } catch {}
 
       return {
         success: true,
-        referenceCode,
-        ticketToken,
-        message: 'Registration created in local preview mode. Add production Supabase keys to .env.local to persist directly to database.',
+        referenceCode: localFallback.referenceCode || referenceCode,
+        ticketToken: localFallback.ticketToken || ticketToken,
+        message: 'Registration created in resilient local mode.',
         data,
       }
     }
@@ -125,23 +188,13 @@ export async function registerAttendeeAction(data: RegistrationData) {
 
         if (authError) {
           if (isDatabaseConnectionError(authError)) {
-            console.warn('[Supabase Warning] Database unreachable during auth signup. Processing in preview mode.')
-            try {
-              await sendRegistrationConfirmationEmail({
-                email: trimmedEmail,
-                fullName: data.fullName,
-                referenceCode,
-                ticketToken,
-                creativeRole: data.creativeRole,
-                cityState: data.cityState,
-              })
-            } catch {}
-
+            console.warn('[Supabase Warning] Database unreachable during auth signup. Falling back to local storage.')
+            const localFallback = registerLocalAttendee(data)
             return {
               success: true,
-              referenceCode,
-              ticketToken,
-              message: 'Registration created in local preview mode.',
+              referenceCode: localFallback.referenceCode || referenceCode,
+              ticketToken: localFallback.ticketToken || ticketToken,
+              message: 'Registration created in resilient local mode.',
               data,
             }
           }
@@ -172,23 +225,13 @@ export async function registerAttendeeAction(data: RegistrationData) {
       .maybeSingle()
 
     if (isDatabaseConnectionError(eventErr)) {
-      console.warn('[Supabase Warning] Database unreachable during event lookup. Processing in preview mode.')
-      try {
-        await sendRegistrationConfirmationEmail({
-          email: trimmedEmail,
-          fullName: data.fullName,
-          referenceCode,
-          ticketToken,
-          creativeRole: data.creativeRole,
-          cityState: data.cityState,
-        })
-      } catch {}
-
+      console.warn('[Supabase Warning] Database unreachable during event lookup. Falling back to local storage.')
+      const localFallback = registerLocalAttendee(data)
       return {
         success: true,
-        referenceCode,
-        ticketToken,
-        message: 'Registration created in local preview mode.',
+        referenceCode: localFallback.referenceCode || referenceCode,
+        ticketToken: localFallback.ticketToken || ticketToken,
+        message: 'Registration created in resilient local mode.',
         data,
       }
     }
@@ -221,23 +264,13 @@ export async function registerAttendeeAction(data: RegistrationData) {
 
     if (regError) {
       if (isDatabaseConnectionError(regError)) {
-        console.warn('[Supabase Warning] Database unreachable during registration insert. Processing in preview mode.')
-        try {
-          await sendRegistrationConfirmationEmail({
-            email: trimmedEmail,
-            fullName: data.fullName,
-            referenceCode,
-            ticketToken,
-            creativeRole: data.creativeRole,
-            cityState: data.cityState,
-          })
-        } catch {}
-
+        console.warn('[Supabase Warning] Database unreachable during registration insert. Falling back to local storage.')
+        const localFallback = registerLocalAttendee(data)
         return {
           success: true,
-          referenceCode,
-          ticketToken,
-          message: 'Registration created in local preview mode.',
+          referenceCode: localFallback.referenceCode || referenceCode,
+          ticketToken: localFallback.ticketToken || ticketToken,
+          message: 'Registration created in resilient local mode.',
           data,
         }
       }
@@ -277,23 +310,13 @@ export async function registerAttendeeAction(data: RegistrationData) {
     }
   } catch (err: unknown) {
     if (isDatabaseConnectionError(err)) {
-      console.warn('[Supabase Warning] Caught connection error. Processing in preview mode.')
-      try {
-        await sendRegistrationConfirmationEmail({
-          email: data.email.trim(),
-          fullName: data.fullName,
-          referenceCode,
-          ticketToken,
-          creativeRole: data.creativeRole,
-          cityState: data.cityState,
-        })
-      } catch {}
-
+      console.warn('[Supabase Warning] Caught connection error. Falling back to local storage.')
+      const localFallback = registerLocalAttendee(data)
       return {
         success: true,
-        referenceCode,
-        ticketToken,
-        message: 'Registration created in local preview mode.',
+        referenceCode: localFallback.referenceCode || referenceCode,
+        ticketToken: localFallback.ticketToken || ticketToken,
+        message: 'Registration created in resilient local mode.',
         data,
       }
     }
@@ -306,21 +329,41 @@ export async function registerAttendeeAction(data: RegistrationData) {
 }
 
 export async function loginAction(formData: FormData) {
-  const email = (formData.get('email') as string || '').trim().toLowerCase()
-  const password = (formData.get('password') as string || '').trim()
+  const email = ((formData.get('email') as string) || '').trim().toLowerCase()
+  const password = ((formData.get('password') as string) || '').trim()
 
   if (!email || !password) {
     return { success: false, error: 'Email and password are required.' }
   }
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-  const isMock = !supabaseUrl || supabaseUrl.includes('your-project')
+  // ---------------------------------------------------------------------------
+  // 1. Local Development Mode Login
+  // ---------------------------------------------------------------------------
+  if (isLocalDevMode()) {
+    const authResult = authenticateLocalUser(email, password)
+    if (!authResult.success) {
+      return { success: false, error: authResult.error || 'Invalid email or password.' }
+    }
 
-  if (isMock) {
-    // In mock/preview mode, simulate sign-in to demonstrate the dashboard
-    return { success: true, redirectUrl: '/dashboard' }
+    try {
+      const cookieStore = await cookies()
+      cookieStore.set('ncd_session_email', email, {
+        path: '/',
+        httpOnly: true,
+        maxAge: 60 * 60 * 24 * 7,
+      })
+    } catch {}
+
+    const targetUrl =
+      authResult.isExhibitor || email.includes('vendor') || email.includes('exhibitor')
+        ? '/dashboard/exhibitor'
+        : '/dashboard'
+    return { success: true, redirectUrl: targetUrl }
   }
 
+  // ---------------------------------------------------------------------------
+  // 2. Live Supabase Login
+  // ---------------------------------------------------------------------------
   try {
     const supabase = await createClient()
     const { error } = await supabase.auth.signInWithPassword({
@@ -330,7 +373,15 @@ export async function loginAction(formData: FormData) {
 
     if (error) {
       if (isDatabaseConnectionError(error)) {
-        console.warn('[Supabase Warning] Database unreachable during login. Allowing preview sign-in.')
+        console.warn('[Supabase Warning] Database unreachable during login. Allowing local sign-in.')
+        try {
+          const cookieStore = await cookies()
+          cookieStore.set('ncd_session_email', email, {
+            path: '/',
+            httpOnly: true,
+            maxAge: 60 * 60 * 24 * 7,
+          })
+        } catch {}
         const targetUrl = email.includes('vendor') || email.includes('exhibitor') ? '/dashboard/exhibitor' : '/dashboard'
         return { success: true, redirectUrl: targetUrl }
       }
@@ -355,7 +406,15 @@ export async function loginAction(formData: FormData) {
     return { success: true, redirectUrl: targetUrl }
   } catch (err: unknown) {
     if (isDatabaseConnectionError(err)) {
-      console.warn('[Supabase Warning] Caught database connection error during login. Allowing preview sign-in.')
+      console.warn('[Supabase Warning] Caught database connection error during login. Allowing local sign-in.')
+      try {
+        const cookieStore = await cookies()
+        cookieStore.set('ncd_session_email', email, {
+          path: '/',
+          httpOnly: true,
+          maxAge: 60 * 60 * 24 * 7,
+        })
+      } catch {}
       const targetUrl = email.includes('vendor') || email.includes('exhibitor') ? '/dashboard/exhibitor' : '/dashboard'
       return { success: true, redirectUrl: targetUrl }
     }
@@ -372,6 +431,17 @@ export async function checkEmailRegisteredAction(email: string): Promise<{
     const trimmedEmail = email.trim().toLowerCase()
     if (!trimmedEmail || !trimmedEmail.includes('@')) return { isRegistered: false }
 
+    if (isLocalDevMode()) {
+      const localCheck = checkLocalEmailRegistered(trimmedEmail)
+      if (localCheck.isRegistered) {
+        return {
+          isRegistered: true,
+          message: `This email (${trimmedEmail}) is already registered for Summit 2.0. Please log in to view your pass.`,
+        }
+      }
+      return { isRegistered: false }
+    }
+
     const adminSupabase = createAdminClient()
     const { data: existingReg, error } = await adminSupabase
       .from('registrations')
@@ -380,6 +450,13 @@ export async function checkEmailRegisteredAction(email: string): Promise<{
       .maybeSingle()
 
     if (error || isDatabaseConnectionError(error)) {
+      const localCheck = checkLocalEmailRegistered(trimmedEmail)
+      if (localCheck.isRegistered) {
+        return {
+          isRegistered: true,
+          message: `This email (${trimmedEmail}) is already registered for Summit 2.0. Please log in to view your pass.`,
+        }
+      }
       return { isRegistered: false }
     }
 
@@ -397,10 +474,12 @@ export async function checkEmailRegisteredAction(email: string): Promise<{
 }
 
 export async function signOutAction() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-  const isMock = !supabaseUrl || supabaseUrl.includes('your-project')
+  try {
+    const cookieStore = await cookies()
+    cookieStore.delete('ncd_session_email')
+  } catch {}
 
-  if (!isMock) {
+  if (!isLocalDevMode()) {
     try {
       const supabase = await createClient()
       await supabase.auth.signOut()

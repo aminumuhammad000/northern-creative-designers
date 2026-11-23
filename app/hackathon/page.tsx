@@ -3,18 +3,12 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Zap,
-  Trophy,
   Users2,
   Clock,
-  CheckCircle2,
   Lock,
   ArrowRight,
-  ShieldAlert,
-  Sparkles,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { landingPageContent } from "@/content/landing-page";
 import { Button } from "@/components/ui/Button";
 
 export const metadata: Metadata = {
@@ -24,8 +18,6 @@ export const metadata: Metadata = {
 };
 
 export default function HackathonPage() {
-  const { hackathon } = landingPageContent;
-
   return (
     <main className="flex-1 pb-20">
       <PageHeader
@@ -39,10 +31,6 @@ export default function HackathonPage() {
         {/* Hackathon Summary Banner */}
         <section className="p-8 sm:p-10 rounded-3xl bg-pine text-white flex flex-col lg:flex-row items-center justify-between gap-8 shadow-xl">
           <div className="space-y-4 max-w-2xl">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-spring text-navy text-xs font-mono font-bold uppercase tracking-wider">
-              <Zap className="w-3.5 h-3.5" />
-              <span>Official 2026 Sprint Arena</span>
-            </span>
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
               The 2-Hour Live Design Sprint
             </h2>
@@ -60,11 +48,6 @@ export default function HackathonPage() {
               <span className="flex items-center gap-1.5">
                 <Users2 className="w-4 h-4 text-spring" />
                 Individual Designers
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-1.5">
-                <Trophy className="w-4 h-4 text-tangerine" />
-                ₦1,000,000+ Bounties
               </span>
             </div>
           </div>
@@ -106,9 +89,6 @@ export default function HackathonPage() {
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/20 backdrop-blur-xs text-white text-[10px] font-mono font-bold uppercase tracking-wider">
-                  Previous: 2025 Hackathon 1.0
-                </span>
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                   <p className="font-black text-lg">Inaugural Regional Design Sprint</p>
                   <p className="text-white/75 text-xs font-mono">₦100,000 Cash Prizes Awarded</p>
@@ -134,12 +114,8 @@ export default function HackathonPage() {
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-pine/90 via-pine/30 to-transparent" />
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-spring text-navy text-[10px] font-mono font-bold uppercase tracking-wider shadow-sm">
-                  Upcoming: 19 December 2026
-                </span>
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                   <p className="font-black text-lg">Summit 2.0 Live Stage Sprint</p>
-                  <p className="text-spring text-xs font-mono font-bold">₦1,000,000+ Hardware &amp; Cash Bounties</p>
                 </div>
               </div>
               <div className="p-6 space-y-3 bg-pine flex-1 flex flex-col justify-between">

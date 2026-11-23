@@ -30,21 +30,25 @@ export function HackathonSection() {
         <div className="rounded-[2rem] sm:rounded-[2.5rem] bg-[#F6FFF8] border border-neutral-border/70 p-4 sm:p-6 md:p-8 shadow-sm">
           
           {/* Main Focus Photo */}
-          <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-xl sm:rounded-2xl overflow-hidden mb-5 sm:mb-6 bg-black/10">
-            <Image
-              src="/images/community/hackathon_2025_sprint.png"
-              alt="Northern Design Hackathon 2025 Sprint"
-              fill
-              className="object-cover object-center"
-              priority
-            />
-          </div>
+          <Link href="/hackathon" className="block group">
+            <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-xl sm:rounded-2xl overflow-hidden mb-5 sm:mb-6 bg-black/10">
+              <Image
+                src="/images/community/hackathon_2025_sprint.png"
+                alt="Northern Design Hackathon 2025 Sprint"
+                fill
+                className="object-cover object-center group-hover:scale-102 transition-transform duration-500"
+                priority
+              />
+            </div>
+          </Link>
 
           {/* Details & Copy */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2 sm:mb-3">
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-navy tracking-tight">
-              Northern Design Hackathon 1.0
-            </h3>
+            <Link href="/hackathon" className="group">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-navy tracking-tight group-hover:text-pine transition-colors">
+                Northern Design Hackathon 1.0
+              </h3>
+            </Link>
             <span className="text-xs sm:text-sm font-mono font-bold text-pine sm:text-right">
               ₦100,000 Cash Prizes Awarded
             </span>
@@ -57,8 +61,14 @@ export function HackathonSection() {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <Link
+              href="/hackathon"
+              className="w-full sm:flex-[2] py-3 sm:py-3.5 px-6 rounded-full bg-[#00CB67] hover:bg-[#02b25b] text-[#063B18] text-xs font-black tracking-wider uppercase text-center transition-all shadow-sm active:scale-98"
+            >
+              HACKATHON DETAILS
+            </Link>
+            <Link
               href="/hackathon/register"
-              className="w-full sm:flex-[3] md:flex-[4] py-3 sm:py-3.5 px-6 rounded-full bg-[#00CB67] hover:bg-[#02b25b] text-[#063B18] text-xs font-black tracking-wider uppercase text-center transition-all shadow-sm active:scale-98"
+              className="w-full sm:flex-[2] py-3 sm:py-3.5 px-6 rounded-full bg-[#063B18] hover:bg-[#042810] text-white text-xs font-bold tracking-wider uppercase text-center transition-all shadow-sm active:scale-98 whitespace-nowrap"
             >
               APPLY FOR HACKATHON
             </Link>

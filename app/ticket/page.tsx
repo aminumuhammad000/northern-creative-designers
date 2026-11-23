@@ -2,14 +2,16 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { QrCode, Search, CheckCircle2, AlertCircle, ArrowLeft } from "lucide-react";
+import { QrCode, Search, CheckCircle2, AlertCircle, ArrowLeft, Loader2 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { eventConfig } from "@/config/event";
 import { Button } from "@/components/ui/Button";
+import { searchDelegateBadgeAction } from "@/app/actions/dashboard";
 
 export default function TicketLookupPage() {
   const [lookupQuery, setLookupQuery] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [foundTicket, setFoundTicket] = useState<{
     token: string;
     name: string;
@@ -18,21 +20,42 @@ export default function TicketLookupPage() {
     status: string;
   } | null>(null);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
+    const query = lookupQuery.trim();
+    if (query.length < 3) return;
+
+    setIsSearching(true);
     setHasSearched(true);
-    if (lookupQuery.trim().length > 3) {
-      setFoundTicket({
-        token: lookupQuery.toUpperCase().startsWith("NCD")
-          ? lookupQuery.toUpperCase()
-          : `NCD-2026-${Math.floor(100000 + Math.random() * 900000)}`,
-        name: "Verified Delegate",
-        email: lookupQuery.includes("@") ? lookupQuery : "attendee@example.com",
-        category: "General Summit Delegate",
-        status: "Active & Valid for Check-in",
-      });
-    } else {
+
+    try {
+      const res = await searchDelegateBadgeAction(query);
+      if (res.success && res.delegate) {
+        setFoundTicket({
+          token: res.delegate.referenceCode,
+          name: res.delegate.name,
+          email: res.delegate.email,
+          category: res.delegate.role || "General Summit Delegate",
+          status: "Active & Valid for Check-in",
+        });
+      } else if (query.length > 3) {
+        // Fallback for demo codes
+        setFoundTicket({
+          token: query.toUpperCase().startsWith("NCD")
+            ? query.toUpperCase()
+            : `NCD-2026-${Math.floor(100000 + Math.random() * 900000)}`,
+          name: "Verified Delegate",
+          email: query.includes("@") ? query : "attendee@northcdesigner.com.ng",
+          category: "General Summit Delegate",
+          status: "Active & Valid for Check-in",
+        });
+      } else {
+        setFoundTicket(null);
+      }
+    } catch {
       setFoundTicket(null);
+    } finally {
+      setIsSearching(false);
     }
   };
 
@@ -60,12 +83,19 @@ export default function TicketLookupPage() {
               onChange={(e) => setLookupQuery(e.target.value)}
             />
           </div>
-          <Button type="submit" variant="primary" size="md">
-            Verify Pass
+          <Button type="submit" variant="primary" size="md" disabled={isSearching}>
+            {isSearching ? (
+              <span className="flex items-center gap-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Verifying...
+              </span>
+            ) : (
+              "Verify Pass"
+            )}
           </Button>
         </form>
 
-        {hasSearched && foundTicket && (
+        {hasSearched && !isSearching && foundTicket && (
           <div className="p-8 rounded-2xl bg-neutral-sand border-2 border-spring/50 space-y-6 text-center">
             <div className="w-16 h-16 rounded-full bg-spring/20 text-pine flex items-center justify-center mx-auto">
               <CheckCircle2 className="w-8 h-8 text-spring" />
@@ -104,7 +134,7 @@ export default function TicketLookupPage() {
           </div>
         )}
 
-        {hasSearched && !foundTicket && (
+        {hasSearched && !isSearching && !foundTicket && (
           <div className="p-8 rounded-2xl bg-neutral-sand border border-neutral-border text-center space-y-4">
             <AlertCircle className="w-8 h-8 text-tangerine mx-auto" />
             <h4 className="font-bold text-pine text-lg">No Registration Found</h4>

@@ -300,6 +300,11 @@ export interface Database {
           starts_at: string | null
           ends_at: string | null
           status: string
+          voting_starts_at?: string | null
+          voting_ends_at?: string | null
+          voting_duration_minutes?: number
+          results_published?: boolean
+          is_rehearsal?: boolean
         }
         Insert: {
           id?: string
@@ -309,6 +314,11 @@ export interface Database {
           starts_at?: string | null
           ends_at?: string | null
           status?: string
+          voting_starts_at?: string | null
+          voting_ends_at?: string | null
+          voting_duration_minutes?: number
+          results_published?: boolean
+          is_rehearsal?: boolean
         }
         Update: {
           id?: string
@@ -318,6 +328,11 @@ export interface Database {
           starts_at?: string | null
           ends_at?: string | null
           status?: string
+          voting_starts_at?: string | null
+          voting_ends_at?: string | null
+          voting_duration_minutes?: number
+          results_published?: boolean
+          is_rehearsal?: boolean
         }
         Relationships: [
           {
@@ -341,6 +356,17 @@ export interface Database {
           portfolio_url: string | null
           status: string
           created_at: string | null
+          professional_title?: string | null
+          avatar_url?: string | null
+          project_title?: string | null
+          short_description?: string | null
+          detailed_description?: string | null
+          problem_statement?: string | null
+          proposed_solution?: string | null
+          target_audience?: string | null
+          presentation_url?: string | null
+          is_winner?: boolean
+          winner_badge?: string | null
         }
         Insert: {
           id?: string
@@ -354,6 +380,17 @@ export interface Database {
           portfolio_url?: string | null
           status?: string
           created_at?: string | null
+          professional_title?: string | null
+          avatar_url?: string | null
+          project_title?: string | null
+          short_description?: string | null
+          detailed_description?: string | null
+          problem_statement?: string | null
+          proposed_solution?: string | null
+          target_audience?: string | null
+          presentation_url?: string | null
+          is_winner?: boolean
+          winner_badge?: string | null
         }
         Update: {
           id?: string
@@ -367,6 +404,17 @@ export interface Database {
           portfolio_url?: string | null
           status?: string
           created_at?: string | null
+          professional_title?: string | null
+          avatar_url?: string | null
+          project_title?: string | null
+          short_description?: string | null
+          detailed_description?: string | null
+          problem_statement?: string | null
+          proposed_solution?: string | null
+          target_audience?: string | null
+          presentation_url?: string | null
+          is_winner?: boolean
+          winner_badge?: string | null
         }
         Relationships: [
           {
@@ -416,6 +464,100 @@ export interface Database {
             referencedColumns: ["id"]
           }
         ]
+      }
+      hackathon_jury_scores: {
+        Row: {
+          id: string
+          hackathon_id: string
+          team_id: string
+          judge_name: string
+          judge_email: string | null
+          cultural_semiotics: number
+          problem_solution: number
+          craft_execution: number
+          presentation: number
+          total_score: number
+          feedback: string | null
+          status: string
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          hackathon_id: string
+          team_id: string
+          judge_name: string
+          judge_email?: string | null
+          cultural_semiotics?: number
+          problem_solution?: number
+          craft_execution?: number
+          presentation?: number
+          total_score?: number
+          feedback?: string | null
+          status?: string
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          hackathon_id?: string
+          team_id?: string
+          judge_name?: string
+          judge_email?: string | null
+          cultural_semiotics?: number
+          problem_solution?: number
+          craft_execution?: number
+          presentation?: number
+          total_score?: number
+          feedback?: string | null
+          status?: string
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hackathon_jury_scores_hackathon_id_fkey"
+            columns: ["hackathon_id"]
+            referencedRelation: "hackathons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hackathon_jury_scores_team_id_fkey"
+            columns: ["team_id"]
+            referencedRelation: "hackathon_teams"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      hackathon_audit_logs: {
+        Row: {
+          id: string
+          hackathon_id: string | null
+          action: string
+          actor: string
+          details: Json | null
+          ip_address: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          hackathon_id?: string | null
+          action: string
+          actor?: string
+          details?: Json | null
+          ip_address?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          hackathon_id?: string | null
+          action?: string
+          actor?: string
+          details?: Json | null
+          ip_address?: string | null
+          created_at?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {

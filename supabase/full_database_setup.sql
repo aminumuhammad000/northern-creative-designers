@@ -119,6 +119,11 @@ CREATE TABLE IF NOT EXISTS public.hackathons (
   sprint_duration_minutes INT NOT NULL DEFAULT 120,
   starts_at TIMESTAMPTZ,
   ends_at TIMESTAMPTZ,
+  voting_starts_at TIMESTAMPTZ,
+  voting_ends_at TIMESTAMPTZ,
+  voting_duration_minutes INT NOT NULL DEFAULT 20,
+  results_published BOOLEAN DEFAULT false,
+  is_rehearsal BOOLEAN DEFAULT false,
   status TEXT NOT NULL DEFAULT 'upcoming' -- upcoming, active, voting, completed
 );
 
@@ -129,10 +134,21 @@ CREATE TABLE IF NOT EXISTS public.hackathon_teams (
   lead_name TEXT NOT NULL,
   lead_email TEXT NOT NULL,
   lead_phone TEXT NOT NULL,
-  team_size INT NOT NULL DEFAULT 2,
+  team_size INT NOT NULL DEFAULT 1,
   track TEXT NOT NULL,
   portfolio_url TEXT,
   pitch TEXT,
+  professional_title TEXT,
+  avatar_url TEXT,
+  project_title TEXT,
+  short_description TEXT,
+  detailed_description TEXT,
+  problem_statement TEXT,
+  proposed_solution TEXT,
+  target_audience TEXT,
+  presentation_url TEXT,
+  is_winner BOOLEAN DEFAULT false,
+  winner_badge TEXT,
   status TEXT NOT NULL DEFAULT 'applied', -- applied, shortlisted, stage_finalist, winner
   created_at TIMESTAMPTZ DEFAULT timezone('utc', now())
 );
@@ -145,6 +161,34 @@ CREATE TABLE IF NOT EXISTS public.hackathon_votes (
   ip_hash TEXT,
   created_at TIMESTAMPTZ DEFAULT timezone('utc', now()),
   CONSTRAINT unique_vote_per_token UNIQUE (hackathon_id, voter_token)
+);
+
+CREATE TABLE IF NOT EXISTS public.hackathon_jury_scores (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  hackathon_id UUID NOT NULL REFERENCES public.hackathons(id) ON DELETE CASCADE,
+  team_id UUID NOT NULL REFERENCES public.hackathon_teams(id) ON DELETE CASCADE,
+  judge_name TEXT NOT NULL,
+  judge_email TEXT,
+  cultural_semiotics NUMERIC(5,2) NOT NULL DEFAULT 0,
+  problem_solution NUMERIC(5,2) NOT NULL DEFAULT 0,
+  craft_execution NUMERIC(5,2) NOT NULL DEFAULT 0,
+  presentation NUMERIC(5,2) NOT NULL DEFAULT 0,
+  total_score NUMERIC(5,2) NOT NULL DEFAULT 0,
+  feedback TEXT,
+  status TEXT NOT NULL DEFAULT 'draft',
+  created_at TIMESTAMPTZ DEFAULT timezone('utc', now()),
+  updated_at TIMESTAMPTZ DEFAULT timezone('utc', now()),
+  CONSTRAINT unique_judge_team UNIQUE (hackathon_id, team_id, judge_name)
+);
+
+CREATE TABLE IF NOT EXISTS public.hackathon_audit_logs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  hackathon_id UUID REFERENCES public.hackathons(id) ON DELETE CASCADE,
+  action TEXT NOT NULL,
+  actor TEXT NOT NULL DEFAULT 'admin',
+  details JSONB,
+  ip_address TEXT,
+  created_at TIMESTAMPTZ DEFAULT timezone('utc', now())
 );
 
 -- ==============================================================================
