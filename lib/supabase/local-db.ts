@@ -56,6 +56,7 @@ export interface LocalExhibitor {
   special_requirements?: string | null
   status: string
   assigned_booth: string
+  notes?: string | null
   created_at: string
 }
 
@@ -503,6 +504,7 @@ export function submitLocalExhibitorApplication(data: {
   category: string
   description: string
   specialRequirements?: string
+  notes?: string
 }) {
   const store = getLocalStore()
   const id = `exh_${Math.random().toString(36).substring(2, 7)}_${Date.now()}`
@@ -519,6 +521,7 @@ export function submitLocalExhibitorApplication(data: {
     special_requirements: data.specialRequirements || null,
     status: 'pending',
     assigned_booth: `Booth #M-${Math.floor(10 + Math.random() * 40)}`,
+    notes: data.notes || null,
     created_at: new Date().toISOString(),
   }
 

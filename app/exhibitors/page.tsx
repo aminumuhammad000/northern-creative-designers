@@ -91,7 +91,18 @@ export default function ExhibitorsPage() {
                 </li>
               </ul>
 
-              <div className="pt-4 border-t border-white/15 text-xs text-white/60">
+              <div className="p-4 rounded-xl bg-white/10 border border-white/10 space-y-2">
+                <div className="flex items-center justify-between text-xs sm:text-sm">
+                  <span className="text-white/80 font-medium">Exhibitor Showcase:</span>
+                  <span className="font-extrabold text-spring">₦30,000</span>
+                </div>
+                <div className="flex items-center justify-between text-xs sm:text-sm border-t border-white/10 pt-2">
+                  <span className="text-white/80 font-medium">Marketplace Vendor:</span>
+                  <span className="font-extrabold text-spring">₦25,000</span>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-white/15 text-xs text-white/60">
                 <ShieldCheck className="w-4 h-4 text-spring inline mr-1" />
                 Applications subject to committee curation to guarantee industry relevance.
               </div>

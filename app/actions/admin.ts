@@ -58,6 +58,7 @@ export interface AdminExhibitor {
   status: string
   assigned_booth: string | null
   website: string | null
+  notes?: string | null
   created_at: string | null
 }
 

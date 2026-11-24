@@ -10,6 +10,7 @@ import {
 import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { sendHackathonConfirmationEmail, sendExhibitorWelcomeEmail } from '@/lib/email'
+import { uploadImage } from '@/lib/cloudinary'
 
 export interface ExhibitorApplicationData {
   businessName: string
@@ -20,6 +21,27 @@ export interface ExhibitorApplicationData {
   category: string
   description: string
   specialRequirements?: string
+  enrollmentFee?: string
+  paymentProofUrl?: string
+  paymentProofFileName?: string
+}
+
+export async function uploadPaymentProofAction(base64DataUri: string, fileName?: string) {
+  try {
+    if (!base64DataUri || typeof base64DataUri !== 'string') {
+      return { success: false, error: 'No file data received.' }
+    }
+    const res = await uploadImage(base64DataUri, 'ncd-summit/payment-proofs')
+    if (res.success && res.url) {
+      return { success: true, url: res.url, publicId: res.public_id }
+    }
+    return { success: false, error: 'Failed to upload payment receipt.' }
+  } catch (err: unknown) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : 'Error uploading payment proof.',
+    }
+  }
 }
 
 export async function submitExhibitorApplicationAction(data: ExhibitorApplicationData) {
@@ -28,12 +50,19 @@ export async function submitExhibitorApplicationAction(data: ExhibitorApplicatio
     const trimmedContact = data.contactPerson.trim()
     const trimmedBusiness = data.businessName.trim()
     const trimmedCategory = data.category.trim()
+    const computedFee =
+      data.enrollmentFee ||
+      (trimmedCategory.toLowerCase().includes('vendor') ? '₦25,000' : '₦30,000')
+    const formattedNotes = `[Fee: ${computedFee}] [Proof: ${data.paymentProofUrl || 'Pending'}] [File: ${data.paymentProofFileName || 'None'}]`
 
     // -------------------------------------------------------------------------
     // 1. Local Development Mode
     // -------------------------------------------------------------------------
     if (isLocalDevMode()) {
-      const localResult = submitLocalExhibitorApplication(data)
+      const localResult = submitLocalExhibitorApplication({
+        ...data,
+        notes: formattedNotes,
+      })
 
       try {
         const cookieStore = await cookies()
@@ -50,6 +79,8 @@ export async function submitExhibitorApplicationAction(data: ExhibitorApplicatio
         businessName: trimmedBusiness,
         category: trimmedCategory,
         applicationId: localResult.id,
+        enrollmentFee: computedFee,
+        paymentProofUploaded: Boolean(data.paymentProofUrl),
       }).catch((e) => console.warn('[Email Warning] Exhibitor welcome email failed:', e))
 
       revalidatePath('/dashboard/exhibitor')
@@ -120,13 +151,17 @@ export async function submitExhibitorApplicationAction(data: ExhibitorApplicatio
         description: data.description.trim(),
         special_requirements: data.specialRequirements?.trim() || null,
         status: 'pending',
+        notes: formattedNotes,
       })
       .select('id')
       .single()
 
     if (error) {
       if (isDatabaseConnectionError(error)) {
-        const localFallback = submitLocalExhibitorApplication(data)
+        const localFallback = submitLocalExhibitorApplication({
+          ...data,
+          notes: formattedNotes,
+        })
         return { success: true, id: localFallback.id, isPreview: false }
       }
       return { success: false, error: error.message }
@@ -138,12 +173,21 @@ export async function submitExhibitorApplicationAction(data: ExhibitorApplicatio
       businessName: trimmedBusiness,
       category: trimmedCategory,
       applicationId: app.id,
+      enrollmentFee: computedFee,
+      paymentProofUploaded: Boolean(data.paymentProofUrl),
     }).catch((e) => console.warn('[Email Warning] Exhibitor welcome email failed:', e))
 
     return { success: true, id: app.id }
   } catch (err: unknown) {
     if (isDatabaseConnectionError(err)) {
-      const localFallback = submitLocalExhibitorApplication(data)
+      const computedFee =
+        data.enrollmentFee ||
+        (data.category.toLowerCase().includes('vendor') ? '₦25,000' : '₦30,000')
+      const formattedNotes = `[Fee: ${computedFee}] [Proof: ${data.paymentProofUrl || 'Pending'}] [File: ${data.paymentProofFileName || 'None'}]`
+      const localFallback = submitLocalExhibitorApplication({
+        ...data,
+        notes: formattedNotes,
+      })
       return { success: true, id: localFallback.id, isPreview: false }
     }
     return {

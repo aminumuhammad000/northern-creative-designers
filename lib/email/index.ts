@@ -436,10 +436,12 @@ export interface ExhibitorEmailPayload {
   businessName: string
   category: string
   applicationId?: string
+  enrollmentFee?: string
+  paymentProofUploaded?: boolean
 }
 
 function getExhibitorEmailHtml(payload: ExhibitorEmailPayload): string {
-  const { contactPerson, businessName, email, category, applicationId } = payload
+  const { contactPerson, businessName, email, category, applicationId, enrollmentFee, paymentProofUploaded } = payload
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://northcdesigners.org'
 
   return `
@@ -496,6 +498,18 @@ function getExhibitorEmailHtml(payload: ExhibitorEmailPayload): string {
                       <tr>
                         <td style="padding: 6px 0; color: #64748b;">Exhibition Track:</td>
                         <td style="padding: 6px 0; color: #02b25b; font-weight: 700;">${category}</td>
+                      </tr>
+                      ${enrollmentFee ? `
+                      <tr>
+                        <td style="padding: 6px 0; color: #64748b;">Enrollment Fee:</td>
+                        <td style="padding: 6px 0; color: #0b3d2c; font-weight: 700;">${enrollmentFee}</td>
+                      </tr>
+                      ` : ''}
+                      <tr>
+                        <td style="padding: 6px 0; color: #64748b;">Payment Proof:</td>
+                        <td style="padding: 6px 0; color: ${paymentProofUploaded ? '#02b25b' : '#d97706'}; font-weight: 600;">
+                          ${paymentProofUploaded ? 'Uploaded (Pending Verification)' : 'Pending'}
+                        </td>
                       </tr>
                       <tr>
                         <td style="padding: 6px 0; color: #64748b;">Application Status:</td>

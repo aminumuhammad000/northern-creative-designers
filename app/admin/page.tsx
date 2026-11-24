@@ -1856,6 +1856,7 @@ export default function AdminPortalPage() {
                         <th className="py-3 px-4 sm:px-6">Brand / Company</th>
                         <th className="py-3 px-4">Contact Person</th>
                         <th className="py-3 px-4">Category</th>
+                        <th className="py-3 px-4">Fee &amp; Payment Proof</th>
                         <th className="py-3 px-4">Booth Assignment</th>
                         <th className="py-3 px-4">Status</th>
                         <th className="py-3 px-4 text-right">Actions</th>
@@ -1885,6 +1886,33 @@ export default function AdminPortalPage() {
                             <span className="px-2 py-0.5 rounded bg-neutral-100 text-neutral-700 text-[11px] font-medium">
                               {ex.category}
                             </span>
+                          </td>
+                          <td className="py-3 px-4">
+                            {(() => {
+                              const isVendor = ex.category?.toLowerCase().includes("vendor");
+                              const feeMatch = ex.notes?.match(/\[Fee:\s*([^\]]+)\]/);
+                              const proofMatch = ex.notes?.match(/\[Proof:\s*([^\]]+)\]/);
+                              const feeText = feeMatch ? feeMatch[1] : (isVendor ? "₦25,000" : "₦30,000");
+                              const proofUrl = proofMatch && proofMatch[1] !== "Pending" && proofMatch[1] !== "None" ? proofMatch[1] : null;
+
+                              return (
+                                <div className="space-y-1">
+                                  <span className="font-extrabold text-pine text-xs block">{feeText}</span>
+                                  {proofUrl ? (
+                                    <a
+                                      href={proofUrl}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200 transition-colors"
+                                    >
+                                      <span>View Receipt ↗</span>
+                                    </a>
+                                  ) : (
+                                    <span className="text-[10px] text-amber-700 font-medium block">No proof attached</span>
+                                  )}
+                                </div>
+                              );
+                            })()}
                           </td>
                           <td className="py-3 px-4">
                             <span className="font-mono text-xs font-bold text-pine">
