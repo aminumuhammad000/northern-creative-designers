@@ -1,6 +1,6 @@
 # Northern Creative Designers Design System (`BRAND_SYSTEM.md`)
 
-This document serves as the implementation-level single source of truth for the **Northern Creative Designers Summit 2.0 digital platform**. It translates the official brand guideline (`northern-creative-designers-brand.md`), color palette assets (`northern-creative-designers-palette/`), typography assets (`cabinet-grotesk/`), and official logo suites (`northern-creative-designers-logos/`) into verifiable code tokens and design rules.
+This document serves as the implementation-level single source of truth for the **Northern Creative Designers Summit 2.0 digital platform**. It translates the official brand guideline (`docs/northern-creative-designers-brand.md`), color palette assets (`assets/brand/palette/`), typography assets (`assets/brand/cabinet-grotesk/`), and official logo suites (`assets/brand/logos/`) into verifiable code tokens and design rules.
 
 ---
 
@@ -8,14 +8,14 @@ This document serves as the implementation-level single source of truth for the 
 
 | Asset Category | File Path / Directory | Source File Metadata | Purpose & Role |
 | :--- | :--- | :--- | :--- |
-| **Brand Guide** | `northern-creative-designers-brand.md` | Markdown documentation (6.3 KB) | Authoritative core specification |
-| **Color Tokens** | `northern-creative-designers-palette/palette.css`<br>`northern-creative-designers-palette/palette.json` | CSS Root tokens & JSON schema | Exact official hex and RGB color definitions |
-| **Typography** | `cabinet-grotesk/` (8 OTF files)<br>`public/fonts/` | OpenType font files (Thin to Black) | Primary display and heading typeface |
-| **Logos** | `northern-creative-designers-logos/Frame 7.png` | 1080 × 1080 RGBA PNG | **Symbol**: The official mark on its own |
-| **Logos** | `northern-creative-designers-logos/NGD-logoArtboard-1-copy-2.png` | 1080 × 437 RGBA PNG | **Wordmark (White Text)**: For dark backgrounds (Pine/Navy) |
-| **Logos** | `northern-creative-designers-logos/NGD-logoArtboard-1-copy-3.png` | 1056 × 410 RGBA PNG | **Wordmark (Pine Text)**: For light backgrounds (White/Sand) |
-| **Social / App Icon** | `northern-creative-designers-social/northern-creative-designers-profile-picture.png` | 1080 × 1080 RGBA PNG | **App Icon & Social Avatar**: Official mark centered on Pine |
-| **Social Banner** | `northern-creative-designers-social/northern-creative-designers-banner.png` | 1500 × 500 RGBA PNG | Official brand graphic composition |
+| **Brand Guide** | `docs/northern-creative-designers-brand.md` | Markdown documentation (6.3 KB) | Authoritative core specification |
+| **Color Tokens** | `assets/brand/palette/palette.css`<br>`assets/brand/palette/palette.json` | CSS Root tokens & JSON schema | Exact official hex and RGB color definitions |
+| **Typography** | `assets/brand/cabinet-grotesk/` (8 OTF files)<br>`public/fonts/` | OpenType font files (Thin to Black) | Primary display and heading typeface |
+| **Logos** | `assets/brand/logos/Frame 7.png` | 1080 × 1080 RGBA PNG | **Symbol**: The official mark on its own |
+| **Logos** | `assets/brand/logos/NGD-logoArtboard-1-copy-2.png` | 1080 × 437 RGBA PNG | **Wordmark (White Text)**: For dark backgrounds (Pine/Navy) |
+| **Logos** | `assets/brand/logos/NGD-logoArtboard-1-copy-3.png` | 1056 × 410 RGBA PNG | **Wordmark (Pine Text)**: For light backgrounds (White/Sand) |
+| **Social / App Icon** | `assets/brand/social/northern-creative-designers-profile-picture.png` | 1080 × 1080 RGBA PNG | **App Icon & Social Avatar**: Official mark centered on Pine |
+| **Social Banner** | `assets/brand/social/northern-creative-designers-banner.png` | 1500 × 500 RGBA PNG | Official brand graphic composition |
 
 ---
 
