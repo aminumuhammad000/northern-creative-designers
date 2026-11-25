@@ -540,36 +540,30 @@ export async function adminSignInAction(
     // Staff / admin passkey login
     const isStaffEmail =
       trimmedEmail === 'support@northcdesigner.com.ng' ||
+      trimmedEmail === 'support@northcdesigners.com.ng' ||
       trimmedEmail.endsWith('@northcdesigner.com.ng') ||
-      trimmedEmail === 'admin@northcdesigner.com.ng'
+      trimmedEmail.endsWith('@northcdesigners.com.ng') ||
+      trimmedEmail === 'admin@northcdesigner.com.ng' ||
+      trimmedEmail === 'admin@northcdesigners.com.ng'
 
-    if ((isStaffEmail || isLocalDevMode()) && (pass === configuredAdminPass || pass === 'NCDSummit2026!')) {
+    if (isStaffEmail && (pass === configuredAdminPass || pass === 'NCDSummit2026!')) {
       return { success: true }
     }
 
-    if (isLocalDevMode()) {
-      if (pass.length >= 6) {
+    // Try live Supabase auth if configured and not matched above
+    if (!isLocalDevMode()) {
+      const supabase = await createClient()
+      const { data: authData, error } = await supabase.auth.signInWithPassword({
+        email: trimmedEmail,
+        password: pass,
+      })
+
+      if (!error && authData.user) {
         return { success: true }
       }
-      return { success: false, error: 'Invalid admin credentials.' }
     }
 
-    // Try live Supabase auth if not local mode
-    const supabase = await createClient()
-    const { data: authData, error } = await supabase.auth.signInWithPassword({
-      email: trimmedEmail,
-      password: pass,
-    })
-
-    if (!error && authData.user) {
-      return { success: true }
-    }
-
-    if (isStaffEmail && (pass === 'NCDSummit2026!' || pass.length >= 6)) {
-      return { success: true }
-    }
-
-    return { success: false, error: error?.message || 'Invalid staff credentials.' }
+    return { success: false, error: 'Invalid administrative email or passkey. Access denied.' }
   } catch (err: unknown) {
     return {
       success: false,

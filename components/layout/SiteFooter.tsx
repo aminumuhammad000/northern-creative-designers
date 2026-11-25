@@ -20,8 +20,8 @@ export function SiteFooter() {
   const pathname = usePathname();
   const currentYear = 2026;
 
-  // Do not render public site footer on dashboard portal pages
-  if (pathname?.startsWith("/dashboard")) {
+  // Do not render public site footer on dashboard or admin portal pages
+  if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/admin")) {
     return null;
   }
 

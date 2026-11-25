@@ -26,8 +26,8 @@ export function SiteHeader() {
     setMobileMenuOpen(false);
   }
 
-  // Do not render public site header on dashboard portal pages
-  if (pathname?.startsWith("/dashboard")) {
+  // Do not render public site header on dashboard or admin portal pages
+  if (pathname?.startsWith("/dashboard") || pathname?.startsWith("/admin")) {
     return null;
   }
 
