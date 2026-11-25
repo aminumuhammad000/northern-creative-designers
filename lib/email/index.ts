@@ -129,7 +129,7 @@ function getRegistrationEmailHtml(payload: RegistrationEmailPayload): string {
               </table>
 
               <p style="margin: 20px 0 0 0; color: #64748b; font-size: 12px; text-align: center;">
-                Need assistance? Email us at <a href="mailto:support@northcdesigner.com.ng" style="color: #0b3d2c; font-weight: 600;">support@northcdesigner.com.ng</a>
+                Need assistance? Email us at <a href="mailto:support@northcdesigners.com.ng" style="color: #0b3d2c; font-weight: 600;">support@northcdesigners.com.ng</a>
               </p>
             </td>
           </tr>
@@ -179,7 +179,7 @@ Log in to access and view your digital QR pass anytime:
 ${loginUrl}
 
 Northern Creative Designers Executive Committee
-Contact: support@northcdesigner.com.ng
+Contact: support@northcdesigners.com.ng
   `.trim()
 }
 
@@ -197,7 +197,7 @@ export async function sendRegistrationConfirmationEmail(payload: RegistrationEma
   const primarySender =
     process.env.RESEND_FROM_EMAIL ||
     process.env.EMAIL_FROM ||
-    'Northern Creative Designers <support@northcdesigner.com.ng>'
+    'Northern Creative Designers <support@northcdesigners.com.ng>'
   const fallbackSender = 'NCD Summit 2.0 <onboarding@resend.dev>'
 
   const subject = `Your Summit 2.0 Pass Confirmed [${payload.referenceCode}]`
@@ -380,7 +380,7 @@ export async function sendHackathonConfirmationEmail(
   const primarySender =
     process.env.RESEND_FROM_EMAIL ||
     process.env.EMAIL_FROM ||
-    'Northern Creative Designers <support@northcdesigner.com.ng>'
+    'Northern Creative Designers <support@northcdesigners.com.ng>'
   const fallbackSender = 'NCD Summit 2.0 <onboarding@resend.dev>'
 
   const subject = `Hackathon 2.0 Registration Confirmed [${payload.track} Track]`
@@ -552,7 +552,7 @@ function getExhibitorEmailHtml(payload: ExhibitorEmailPayload): string {
           </tr>
           <tr>
             <td style="background-color: #f8fafc; padding: 20px 32px; border-top: 1px solid #e2e8f0; text-align: center; font-size: 12px; color: #64748b;">
-              Questions? Reply directly to this email or reach us at <a href="mailto:support@northcdesigner.com.ng" style="color: #02b25b; text-decoration: none;">support@northcdesigner.com.ng</a><br>
+              Questions? Reply directly to this email or reach us at <a href="mailto:support@northcdesigners.com.ng" style="color: #02b25b; text-decoration: none;">support@northcdesigners.com.ng</a><br>
               &copy; 2026 Northern Creative Designers Summit. Roots &amp; Vectors.
             </td>
           </tr>
@@ -577,7 +577,7 @@ export async function sendExhibitorWelcomeEmail(
   const primarySender =
     process.env.RESEND_FROM_EMAIL ||
     process.env.EMAIL_FROM ||
-    'Northern Creative Designers <support@northcdesigner.com.ng>'
+    'Northern Creative Designers <support@northcdesigners.com.ng>'
   const fallbackSender = 'NCD Summit 2.0 <onboarding@resend.dev>'
 
   const subject = `Welcome to NCD Summit 2.0 Exhibitor Showcase — ${payload.businessName}`
@@ -625,4 +625,163 @@ export async function sendExhibitorWelcomeEmail(
     console.error('[Email Error]', message)
     return { success: false, error: message }
   }
+}
+
+export interface GeneralEmailPayload {
+  to: string | string[]
+  subject: string
+  html: string
+  text?: string
+  from?: string
+}
+
+export async function sendGeneralEmail(
+  payload: GeneralEmailPayload
+): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    console.warn('[Email] RESEND_API_KEY is not configured. Skipping email dispatch.')
+    return { success: false, error: 'Email service not configured.' }
+  }
+
+  const primarySender =
+    payload.from ||
+    process.env.RESEND_FROM_EMAIL ||
+    process.env.EMAIL_FROM ||
+    'Northern Creative Designers <support@northcdesigners.com.ng>'
+  const fallbackSender = 'NCD Summit 2.0 <onboarding@resend.dev>'
+
+  const toList = Array.isArray(payload.to) ? payload.to : [payload.to]
+
+  const sendWithFrom = async (fromAddress: string) => {
+    return await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      signal: AbortSignal.timeout(8000),
+      body: JSON.stringify({
+        from: fromAddress,
+        to: toList,
+        subject: payload.subject,
+        html: payload.html,
+        text: payload.text || payload.html.replace(/<[^>]*>?/gm, ''),
+      }),
+    })
+  }
+
+  try {
+    let response = await sendWithFrom(primarySender)
+    let responseData = await response.json()
+
+    if (!response.ok && responseData?.message && responseData.message.includes('domain is not verified')) {
+      console.warn('[Email] Primary domain not verified in Resend. Retrying with fallback sender...')
+      response = await sendWithFrom(fallbackSender)
+      responseData = await response.json()
+    }
+
+    if (!response.ok) {
+      const errMsg = responseData?.message || 'Failed to dispatch email through Resend.'
+      console.error('[Email Error]', errMsg)
+      return { success: false, error: errMsg }
+    }
+
+    console.log(`[Email Success] Email sent to ${toList.join(', ')} (ID: ${responseData?.id})`)
+    return { success: true, messageId: responseData?.id }
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown email dispatch error'
+    console.error('[Email Error]', message)
+    return { success: false, error: message }
+  }
+}
+
+export interface OtpEmailPayload {
+  email: string
+  code: string
+  fullName?: string
+  purpose?: string
+}
+
+export async function sendOtpEmail(
+  payload: OtpEmailPayload
+): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  const { email, code, fullName, purpose = 'Account Verification' } = payload
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://northcdesigners.com.ng'
+
+  const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${purpose} Code</title>
+</head>
+<body style="margin: 0; padding: 24px 0; background-color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td align="center" style="padding: 12px;">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 540px; background-color: #ffffff; border-radius: 24px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);">
+          <tr>
+            <td style="background-color: #0b3d2c; padding: 28px 32px; text-align: left;">
+              <span style="display: inline-block; padding: 4px 10px; border-radius: 12px; background-color: rgba(74, 222, 128, 0.15); color: #4ade80; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">
+                ${purpose}
+              </span>
+              <h1 style="color: #ffffff; font-size: 22px; font-weight: 800; margin: 0; line-height: 1.25;">
+                Northern Creative Designers
+              </h1>
+              <p style="color: #a7f3d0; font-size: 13px; font-weight: 500; margin: 4px 0 0 0;">
+                Summit 2.0 • Roots &amp; Vectors
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 32px 32px 24px 32px; color: #1e293b; font-size: 15px; line-height: 1.6;">
+              <h2 style="color: #0b3d2c; font-size: 18px; font-weight: 700; margin: 0 0 12px 0;">
+                Hello ${fullName ? fullName : 'Delegate'},
+              </h2>
+              <p style="margin: 0 0 20px 0; color: #475569; font-size: 14px; line-height: 1.65;">
+                Use the one-time verification code below to authorize your request. This code will expire in 10 minutes.
+              </p>
+
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; border-radius: 16px; border: 2px dashed #02b25b; margin: 24px 0;">
+                <tr>
+                  <td style="padding: 24px 20px; text-align: center;">
+                    <span style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 8px;">
+                      Verification Passcode
+                    </span>
+                    <div style="font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #0b3d2c; letter-spacing: 6px; background-color: #ecfdf5; padding: 12px 24px; border-radius: 12px; display: inline-block; border: 1px solid #a7f3d0;">
+                      ${code}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin: 16px 0 0 0; color: #64748b; font-size: 13px; line-height: 1.6;">
+                If you did not request this verification code, please ignore this email or contact our security desk immediately at <a href="mailto:support@northcdesigners.com.ng" style="color: #0b3d2c; font-weight: 600;">support@northcdesigners.com.ng</a>.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 20px 32px; background-color: #f8fafc; border-top: 1px solid #e2e8f0; font-size: 12px; color: #94a3b8; text-align: center;">
+              &copy; 2026 Northern Creative Designers Summit. Roots &amp; Vectors.<br>
+              <a href="${siteUrl}" style="color: #02b25b; text-decoration: none;">northcdesigners.com.ng</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+  `.trim()
+
+  const text = `Hello ${fullName || 'Delegate'},\n\nYour one-time ${purpose} passcode is: ${code}\n\nThis code expires in 10 minutes. If you did not request this code, you can safely ignore this email.\n\nNorthern Creative Designers Summit 2.0\nsupport@northcdesigners.com.ng`
+
+  return await sendGeneralEmail({
+    to: email,
+    subject: `Your ${purpose} Code: ${code} — NCD Summit 2.0`,
+    html,
+    text,
+  })
 }

@@ -12,6 +12,7 @@ import {
   saveLocalStore,
 } from '@/lib/supabase/local-db'
 import { revalidatePath } from 'next/cache'
+import { sendGeneralEmail } from '@/lib/email'
 
 export interface AdminMetrics {
   totalRegistrations: number
@@ -685,12 +686,52 @@ export async function sendAdminEmailAction(payload: SendEmailPayload): Promise<S
       }
     }
 
+    let sentCount = 0
+    let failedCount = 0
+
+    for (const r of recipients) {
+      const emailHtml = `
+<!DOCTYPE html>
+<html>
+<body style="font-family: sans-serif; background-color: #f8fafc; padding: 24px; color: #1e293b;">
+  <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden;">
+    <div style="background-color: #0b3d2c; padding: 24px 32px; color: #ffffff;">
+      <h2 style="margin: 0; font-size: 20px;">Northern Creative Designers Summit 2.0</h2>
+      <p style="margin: 4px 0 0 0; color: #a7f3d0; font-size: 13px;">Official Announcement</p>
+    </div>
+    <div style="padding: 32px;">
+      <h3 style="margin-top: 0; color: #0b3d2c;">Hello ${r.name},</h3>
+      <div style="line-height: 1.6; font-size: 15px; color: #334155; white-space: pre-wrap;">${message}</div>
+      <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 16px 0;" />
+      <p style="font-size: 12px; color: #94a3b8; margin: 0;">
+        Northern Creative Designers • Kano, Nigeria • <a href="https://northcdesigners.com.ng" style="color: #02b25b;">northcdesigners.com.ng</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>
+      `.trim()
+
+      const result = await sendGeneralEmail({
+        to: r.email,
+        subject,
+        html: emailHtml,
+        text: `Hello ${r.name},\n\n${message}\n\nNorthern Creative Designers Summit 2.0\nhttps://northcdesigners.com.ng`,
+      })
+
+      if (result.success) {
+        sentCount++
+      } else {
+        failedCount++
+      }
+    }
+
     return {
-      success: true,
-      sentCount: recipients.length,
-      failedCount: 0,
+      success: sentCount > 0 || failedCount === 0,
+      sentCount,
+      failedCount,
       totalRecipients: recipients.length,
-      message: `Simulated dispatch of ${recipients.length} messages in local dev mode.`,
+      message: `Successfully dispatched ${sentCount} email(s)${failedCount > 0 ? ` (${failedCount} failed)` : ''}.`,
     }
   } catch (err: unknown) {
     return {
