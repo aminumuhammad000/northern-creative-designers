@@ -492,6 +492,17 @@ export async function updateHackathonTeamAction(
   status: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
+    if (isLocalDevMode()) {
+      const store = getLocalStore()
+      const team = store.hackathon_teams.find((t) => t.id === id)
+      if (team) {
+        team.status = status
+        saveLocalStore(store)
+      }
+      revalidatePath('/admin')
+      return { success: true }
+    }
+
     const adminSupabase = createAdminClient()
     const { error } = await adminSupabase
       .from('hackathon_teams')

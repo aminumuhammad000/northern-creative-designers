@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { uploadImage } from '@/lib/cloudinary'
 import { cookies, headers } from 'next/headers'
 import { revalidatePath } from 'next/cache'
+import { isLocalDevMode, getLocalStore, saveLocalStore } from '@/lib/supabase/local-db'
 
 // -----------------------------------------------------------------------------
 // Type Definitions
@@ -893,6 +894,21 @@ export async function adminSetVotingStatusAction(
   durationMinutes: number = 20
 ): Promise<{ success: boolean; message?: string; error?: string }> {
   try {
+    if (isLocalDevMode()) {
+      const store = getLocalStore()
+      if (store.hackathons && store.hackathons[0]) {
+        store.hackathons[0].status = status
+        saveLocalStore(store)
+      }
+      revalidatePath('/hackathon')
+      revalidatePath('/hackathon/vote')
+      revalidatePath('/admin')
+      return {
+        success: true,
+        message: status === 'voting' ? 'Live voting window opened.' : 'Voting status updated.',
+      }
+    }
+
     const adminSupabase = createAdminClient()
     const hackathon = await getActiveOrLatestHackathon(adminSupabase)
     if (!hackathon) {

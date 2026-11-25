@@ -598,7 +598,7 @@ export function getLocalAdminData() {
 
 export function toggleLocalTicketCheckIn(ticketId: string, checkedIn: boolean) {
   const store = getLocalStore()
-  const ticket = store.tickets.find((t) => t.id === ticketId)
+  const ticket = store.tickets.find((t) => t.id === ticketId || t.registration_id === ticketId)
   if (ticket) {
     ticket.checked_in = checkedIn
     ticket.checked_in_at = checkedIn ? new Date().toISOString() : null
