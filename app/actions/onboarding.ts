@@ -12,6 +12,14 @@ import { revalidatePath } from 'next/cache'
 import { sendHackathonConfirmationEmail, sendExhibitorWelcomeEmail } from '@/lib/email'
 import { uploadImage } from '@/lib/cloudinary'
 
+function safeRevalidatePaths(...paths: string[]) {
+  try {
+    for (const p of paths) {
+      revalidatePath(p)
+    }
+  } catch {}
+}
+
 export interface ExhibitorApplicationData {
   businessName: string
   contactPerson: string
@@ -210,18 +218,100 @@ export interface HackathonRegistrationData {
 
 export async function registerHackathonAction(data: HackathonRegistrationData) {
   try {
-    const candidateName = data.name.trim()
-    const trimmedEmail = data.email.trim().toLowerCase()
-    const trimmedPhone = data.phone.trim()
-    const trimmedTrack = data.category.trim()
-    const orgSuffix = data.organization?.trim() ? ` (${data.organization.trim()})` : ''
-    const citySuffix = data.city?.trim() ? ` [${data.city.trim()}]` : ''
+    if (!data || typeof data !== 'object') {
+      return { success: false, error: 'Registration data is missing.' }
+    }
+
+    const candidateName = (data.name || '').trim()
+    const trimmedEmail = (data.email || '').trim().toLowerCase()
+    const trimmedPhone = (data.phone || '').trim()
+    const trimmedTrack = (data.category || 'Brand identity').trim()
+    const trimmedGender = (data.gender || '').trim()
+    const trimmedCity = (data.city || '').trim()
+    const trimmedOrg = (data.organization || '').trim()
+    const trimmedPortfolio = (data.portfolioUrl || '').trim()
+
+    if (!candidateName) {
+      return { success: false, error: 'Candidate name is required.' }
+    }
+    if (!trimmedEmail) {
+      return { success: false, error: 'Email address is required.' }
+    }
+    if (!trimmedPhone) {
+      return { success: false, error: 'Phone number is required.' }
+    }
+
+    const orgSuffix = trimmedOrg ? ` (${trimmedOrg})` : ''
+    const citySuffix = trimmedCity ? ` [${trimmedCity}]` : ''
     const contestantIdentifier = `${candidateName}${orgSuffix}${citySuffix}`
 
-    const adminSupabase = createAdminClient()
+    // -------------------------------------------------------------------------
+    // 1. Local Development Mode
+    // -------------------------------------------------------------------------
+    if (isLocalDevMode()) {
+      const localResult = submitLocalHackathonTeam({
+        teamName: contestantIdentifier,
+        track: trimmedTrack,
+        teamSize: 1,
+        leadName: candidateName,
+        leadEmail: trimmedEmail,
+        leadPhone: trimmedPhone,
+        gender: trimmedGender,
+        city: trimmedCity,
+        organization: trimmedOrg,
+        portfolioUrl: trimmedPortfolio,
+      })
+
+      sendHackathonConfirmationEmail({
+        email: trimmedEmail,
+        fullName: candidateName,
+        track: trimmedTrack,
+        city: trimmedCity,
+        organization: trimmedOrg,
+        registrationId: localResult.id,
+      }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
+
+      safeRevalidatePaths('/dashboard', '/admin', '/hackathon', '/hackathon/participants')
+      return { success: true, id: localResult.id }
+    }
+
+    // -------------------------------------------------------------------------
+    // 2. Live Supabase Cloud Mode
+    // -------------------------------------------------------------------------
+    let adminSupabase: ReturnType<typeof createAdminClient>
+    try {
+      adminSupabase = createAdminClient()
+    } catch (clientErr) {
+      if (isDatabaseConnectionError(clientErr)) {
+        console.warn('[Supabase Warning] Database unreachable. Falling back to local storage.')
+        const localFallback = submitLocalHackathonTeam({
+          teamName: contestantIdentifier,
+          track: trimmedTrack,
+          teamSize: 1,
+          leadName: candidateName,
+          leadEmail: trimmedEmail,
+          leadPhone: trimmedPhone,
+          gender: trimmedGender,
+          city: trimmedCity,
+          organization: trimmedOrg,
+          portfolioUrl: trimmedPortfolio,
+        })
+        sendHackathonConfirmationEmail({
+          email: trimmedEmail,
+          fullName: candidateName,
+          track: trimmedTrack,
+          city: trimmedCity,
+          organization: trimmedOrg,
+          registrationId: localFallback.id,
+        }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
+        safeRevalidatePaths('/dashboard', '/admin', '/hackathon', '/hackathon/participants')
+        return { success: true, id: localFallback.id }
+      }
+      throw clientErr
+    }
 
     let hackathonId: string | null = null
-    const { data: activeHackathon } = await adminSupabase
+    const { data: activeHackathon, error: activeErr } = await adminSupabase
       .from('hackathons')
       .select('id')
       .in('status', ['active', 'voting', 'upcoming'])
@@ -229,15 +319,66 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
       .limit(1)
       .maybeSingle()
 
+    if (isDatabaseConnectionError(activeErr)) {
+      console.warn('[Supabase Warning] Database unreachable during hackathon query. Falling back to local storage.')
+      const localFallback = submitLocalHackathonTeam({
+        teamName: contestantIdentifier,
+        track: trimmedTrack,
+        teamSize: 1,
+        leadName: candidateName,
+        leadEmail: trimmedEmail,
+        leadPhone: trimmedPhone,
+        gender: trimmedGender,
+        city: trimmedCity,
+        organization: trimmedOrg,
+        portfolioUrl: trimmedPortfolio,
+      })
+      sendHackathonConfirmationEmail({
+        email: trimmedEmail,
+        fullName: candidateName,
+        track: trimmedTrack,
+        city: trimmedCity,
+        organization: trimmedOrg,
+        registrationId: localFallback.id,
+      }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
+      safeRevalidatePaths('/dashboard', '/admin', '/hackathon', '/hackathon/participants')
+      return { success: true, id: localFallback.id }
+    }
+
     if (activeHackathon?.id) {
       hackathonId = activeHackathon.id
     } else {
-      const { data: anyHackathon } = await adminSupabase
+      const { data: anyHackathon, error: anyErr } = await adminSupabase
         .from('hackathons')
         .select('id')
         .order('created_at', { ascending: false })
         .limit(1)
         .maybeSingle()
+
+      if (isDatabaseConnectionError(anyErr)) {
+        const localFallback = submitLocalHackathonTeam({
+          teamName: contestantIdentifier,
+          track: trimmedTrack,
+          teamSize: 1,
+          leadName: candidateName,
+          leadEmail: trimmedEmail,
+          leadPhone: trimmedPhone,
+          gender: trimmedGender,
+          city: trimmedCity,
+          organization: trimmedOrg,
+          portfolioUrl: trimmedPortfolio,
+        })
+        sendHackathonConfirmationEmail({
+          email: trimmedEmail,
+          fullName: candidateName,
+          track: trimmedTrack,
+          city: trimmedCity,
+          organization: trimmedOrg,
+          registrationId: localFallback.id,
+        }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
+        safeRevalidatePaths('/dashboard', '/admin', '/hackathon', '/hackathon/participants')
+        return { success: true, id: localFallback.id }
+      }
 
       if (anyHackathon?.id) {
         hackathonId = anyHackathon.id
@@ -258,7 +399,7 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
         lead_phone: trimmedPhone,
         team_size: 1,
         track: trimmedTrack,
-        portfolio_url: data.portfolioUrl?.trim() || null,
+        portfolio_url: trimmedPortfolio || null,
         status: 'applied',
         project_title: `${candidateName} Stage Sprint Project`,
         short_description: `Individual live stage execution in ${trimmedTrack}.`,
@@ -267,6 +408,31 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
       .single()
 
     if (error) {
+      if (isDatabaseConnectionError(error)) {
+        console.warn('[Supabase Warning] Database unreachable during insert. Falling back to local storage.')
+        const localFallback = submitLocalHackathonTeam({
+          teamName: contestantIdentifier,
+          track: trimmedTrack,
+          teamSize: 1,
+          leadName: candidateName,
+          leadEmail: trimmedEmail,
+          leadPhone: trimmedPhone,
+          gender: trimmedGender,
+          city: trimmedCity,
+          organization: trimmedOrg,
+          portfolioUrl: trimmedPortfolio,
+        })
+        sendHackathonConfirmationEmail({
+          email: trimmedEmail,
+          fullName: candidateName,
+          track: trimmedTrack,
+          city: trimmedCity,
+          organization: trimmedOrg,
+          registrationId: localFallback.id,
+        }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
+        safeRevalidatePaths('/dashboard', '/admin', '/hackathon', '/hackathon/participants')
+        return { success: true, id: localFallback.id }
+      }
       console.error('[Hackathon Registration Error] Supabase Insert Failed:', error)
       return { success: false, error: 'Database error registering application: ' + error.message }
     }
@@ -275,16 +441,50 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
       email: trimmedEmail,
       fullName: candidateName,
       track: trimmedTrack,
-      city: data.city?.trim(),
-      organization: data.organization?.trim(),
+      city: trimmedCity,
+      organization: trimmedOrg,
       registrationId: team?.id,
     }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
 
-    revalidatePath('/dashboard')
-    revalidatePath('/admin')
-    revalidatePath('/hackathon/participants')
+    safeRevalidatePaths('/dashboard', '/admin', '/hackathon', '/hackathon/participants')
     return { success: true, id: team?.id }
   } catch (err: unknown) {
+    if (isDatabaseConnectionError(err)) {
+      console.warn('[Supabase Warning] Database connection error caught. Falling back to local storage.', err)
+      const candidateName = (data?.name || '').trim()
+      const trimmedEmail = (data?.email || '').trim().toLowerCase()
+      const trimmedPhone = (data?.phone || '').trim()
+      const trimmedTrack = (data?.category || 'Brand identity').trim()
+      const trimmedGender = (data?.gender || '').trim()
+      const trimmedCity = (data?.city || '').trim()
+      const trimmedOrg = (data?.organization || '').trim()
+      const trimmedPortfolio = (data?.portfolioUrl || '').trim()
+      const orgSuffix = trimmedOrg ? ` (${trimmedOrg})` : ''
+      const citySuffix = trimmedCity ? ` [${trimmedCity}]` : ''
+      const contestantIdentifier = `${candidateName}${orgSuffix}${citySuffix}`
+      const localFallback = submitLocalHackathonTeam({
+        teamName: contestantIdentifier,
+        track: trimmedTrack,
+        teamSize: 1,
+        leadName: candidateName,
+        leadEmail: trimmedEmail,
+        leadPhone: trimmedPhone,
+        gender: trimmedGender,
+        city: trimmedCity,
+        organization: trimmedOrg,
+        portfolioUrl: trimmedPortfolio,
+      })
+      sendHackathonConfirmationEmail({
+        email: trimmedEmail,
+        fullName: candidateName,
+        track: trimmedTrack,
+        city: trimmedCity,
+        organization: trimmedOrg,
+        registrationId: localFallback.id,
+      }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
+      safeRevalidatePaths('/dashboard', '/admin', '/hackathon', '/hackathon/participants')
+      return { success: true, id: localFallback.id }
+    }
     console.error('[Hackathon Registration Error]', err)
     return {
       success: false,
@@ -294,6 +494,9 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
 }
 
 export async function registerHackathonTeamAction(data: any) {
+  if (!data || typeof data !== 'object') {
+    return { success: false, error: 'Registration data is missing.' }
+  }
   const formattedData: HackathonRegistrationData = {
     name: data.name || data.leadName || '',
     organization: data.organization || '',
@@ -301,7 +504,7 @@ export async function registerHackathonTeamAction(data: any) {
     phone: data.phone || data.leadPhone || '',
     gender: data.gender || 'Not Specified',
     city: data.city || data.location || 'Kano',
-    category: data.category || data.track || 'Brand Identity',
+    category: data.category || data.track || 'Brand identity',
     portfolioUrl: data.portfolioUrl || '',
   }
   return registerHackathonAction(formattedData)

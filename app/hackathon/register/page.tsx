@@ -24,8 +24,24 @@ export default function HackathonRegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.name?.trim()) {
+      setErrorMessage("Please enter your full name.");
+      return;
+    }
+    if (!formData.email?.trim()) {
+      setErrorMessage("Please enter your email address.");
+      return;
+    }
+    if (!formData.phone?.trim()) {
+      setErrorMessage("Please enter your phone number.");
+      return;
+    }
     if (!formData.gender) {
       setErrorMessage("Please select your gender.");
+      return;
+    }
+    if (!formData.city?.trim()) {
+      setErrorMessage("Please enter your location/city.");
       return;
     }
     setIsSubmitting(true);
@@ -37,8 +53,10 @@ export default function HackathonRegisterPage() {
       } else {
         setErrorMessage(res.error || "Failed to submit hackathon registration.");
       }
-    } catch {
-      setErrorMessage("An unexpected error occurred. Please try again.");
+    } catch (err: unknown) {
+      setErrorMessage(
+        err instanceof Error ? err.message : "An unexpected error occurred. Please try again."
+      );
     } finally {
       setIsSubmitting(false);
     }

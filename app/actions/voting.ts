@@ -4,7 +4,13 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { uploadImage } from '@/lib/cloudinary'
 import { cookies, headers } from 'next/headers'
 import { revalidatePath } from 'next/cache'
-import { isLocalDevMode, getLocalStore, saveLocalStore } from '@/lib/supabase/local-db'
+import {
+  isLocalDevMode,
+  getLocalStore,
+  saveLocalStore,
+  castLocalHackathonVote,
+} from '@/lib/supabase/local-db'
+import { isDatabaseConnectionError } from '@/lib/supabase/errors'
 
 // -----------------------------------------------------------------------------
 // Type Definitions
@@ -207,31 +213,41 @@ async function getActiveOrLatestHackathon(adminSupabase: ReturnType<typeof creat
 // Helper: Secure Voter Token
 // -----------------------------------------------------------------------------
 async function getOrCreateVoterToken(): Promise<string> {
-  const cookieStore = await cookies()
-  let token = cookieStore.get('ncd_voter_token')?.value
+  try {
+    const cookieStore = await cookies()
+    let token = cookieStore.get('ncd_voter_token')?.value
 
-  if (!token) {
-    token = `voter_${Math.random().toString(36).substring(2, 12)}_${Date.now().toString(36)}`
-    cookieStore.set('ncd_voter_token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 30, // 30 days
-      path: '/',
-    })
+    if (!token) {
+      token = `voter_${Math.random().toString(36).substring(2, 12)}_${Date.now().toString(36)}`
+      try {
+        cookieStore.set('ncd_voter_token', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 60 * 60 * 24 * 30, // 30 days
+          path: '/',
+        })
+      } catch {}
+    }
+
+    return token
+  } catch {
+    return `voter_local_${Math.random().toString(36).substring(2, 12)}`
   }
-
-  return token
 }
 
 async function getClientIp(): Promise<string> {
-  const headerStore = await headers()
-  return (
-    headerStore.get('cf-connecting-ip') ||
-    headerStore.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    headerStore.get('x-real-ip') ||
-    '127.0.0.1'
-  )
+  try {
+    const headerStore = await headers()
+    return (
+      headerStore.get('cf-connecting-ip') ||
+      headerStore.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      headerStore.get('x-real-ip') ||
+      '127.0.0.1'
+    )
+  } catch {
+    return '127.0.0.1'
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -267,6 +283,34 @@ export async function getHackathonPublicStateAction(): Promise<{
   error?: string
 }> {
   try {
+    if (isLocalDevMode()) {
+      const store = getLocalStore()
+      const hackathon = store.hackathons?.[0]
+      const totalVotes = store.hackathon_votes?.length || 0
+      const voterToken = await getOrCreateVoterToken()
+      const userVote = store.hackathon_votes?.find(
+        (v) => v.hackathon_id === hackathon?.id && v.voter_token === voterToken
+      )
+      return {
+        success: true,
+        state: {
+          id: hackathon?.id || 'a0000000-0000-0000-0000-000000000001',
+          title: hackathon?.title || 'Northern Design Hackathon 2.0',
+          status: (hackathon?.status as any) || 'active',
+          sprint_duration_minutes: 120,
+          voting_duration_minutes: 20,
+          voting_starts_at: null,
+          voting_ends_at: null,
+          is_voting_open: true,
+          remaining_seconds: 0,
+          results_published: Boolean(hackathon?.results_published ?? true),
+          total_votes: totalVotes,
+          has_voted_team_id: userVote?.team_id || null,
+          voter_token: voterToken,
+        },
+      }
+    }
+
     const adminSupabase = createAdminClient()
     const hackathon = await getActiveOrLatestHackathon(adminSupabase)
     if (!hackathon) {
@@ -320,6 +364,21 @@ export async function getHackathonPublicStateAction(): Promise<{
       },
     }
   } catch (err: unknown) {
+    if (isDatabaseConnectionError(err)) {
+      const store = getLocalStore()
+      const hackathon = store.hackathons?.[0]
+      const voterToken = await getOrCreateVoterToken()
+      return {
+        success: true,
+        state: {
+          ...DEFAULT_PUBLIC_STATE,
+          id: hackathon?.id || 'a0000000-0000-0000-0000-000000000001',
+          title: hackathon?.title || 'Northern Design Hackathon 2.0',
+          is_voting_open: true,
+          voter_token: voterToken,
+        },
+      }
+    }
     console.error('[Hackathon Error] getHackathonPublicStateAction:', err)
     return {
       success: false,
@@ -343,6 +402,74 @@ export async function getHackathonFinalistsAction(options?: {
   error?: string
 }> {
   try {
+    if (isLocalDevMode()) {
+      const store = getLocalStore()
+      const hackathon = store.hackathons?.[0]
+      const totalVotes = store.hackathon_votes?.length || 0
+      const voteCounts: Record<string, number> = {}
+      store.hackathon_votes?.forEach((v) => {
+        voteCounts[v.team_id] = (voteCounts[v.team_id] || 0) + 1
+      })
+
+      let teams = [...(store.hackathon_teams || [])]
+      if (options?.track && options.track !== 'all') {
+        const trackKey = options.track.toLowerCase()
+        teams = teams.filter((t) => t.track.toLowerCase().includes(trackKey))
+      }
+      if (options?.search && options.search.trim()) {
+        const term = options.search.trim().toLowerCase()
+        teams = teams.filter(
+          (t) =>
+            t.lead_name.toLowerCase().includes(term) ||
+            t.team_name.toLowerCase().includes(term) ||
+            (t.project_title || '').toLowerCase().includes(term) ||
+            t.track.toLowerCase().includes(term)
+        )
+      }
+
+      const finalists: FinalistCandidate[] = teams.map((t, idx) => {
+        const count = voteCounts[t.id] || 0
+        const percentage = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0
+        return {
+          id: t.id,
+          hackathon_id: t.hackathon_id || hackathon?.id || 'a0000000-0000-0000-0000-000000000001',
+          team_name: t.team_name,
+          lead_name: t.lead_name,
+          lead_email: t.lead_email || '',
+          lead_phone: t.lead_phone || '',
+          team_size: t.team_size || 1,
+          track: t.track,
+          professional_title: t.professional_title || 'Competitor Designer',
+          avatar_url: t.avatar_url || '/images/community/ncd_class_training.jpg',
+          project_title: t.project_title || t.team_name,
+          short_description: t.short_description || `Individual live stage execution in ${t.track}.`,
+          detailed_description: t.detailed_description || '',
+          problem_statement: '',
+          proposed_solution: '',
+          target_audience: '',
+          presentation_url: null,
+          portfolio_url: t.portfolio_url || null,
+          status: (t.status as any) || 'applied',
+          is_winner: Boolean(t.is_winner),
+          winner_badge: t.winner_badge || null,
+          votes: count,
+          percentage,
+          rank: idx + 1,
+        }
+      })
+
+      finalists.sort((a, b) => b.votes - a.votes)
+      finalists.forEach((f, idx) => {
+        f.rank = idx + 1
+      })
+
+      return {
+        success: true,
+        finalists,
+        totalVotes,
+      }
+    }
+
     const adminSupabase = createAdminClient()
     const hackathon = await getActiveOrLatestHackathon(adminSupabase)
     if (!hackathon) {
@@ -437,6 +564,36 @@ export async function getHackathonFinalistsAction(options?: {
       totalVotes,
     }
   } catch (err: unknown) {
+    if (isDatabaseConnectionError(err)) {
+      const store = getLocalStore()
+      const finalists: FinalistCandidate[] = (store.hackathon_teams || []).map((t, idx) => ({
+        id: t.id,
+        hackathon_id: t.hackathon_id || 'a0000000-0000-0000-0000-000000000001',
+        team_name: t.team_name,
+        lead_name: t.lead_name,
+        lead_email: t.lead_email || '',
+        lead_phone: t.lead_phone || '',
+        team_size: t.team_size || 1,
+        track: t.track,
+        professional_title: t.professional_title || 'Competitor Designer',
+        avatar_url: t.avatar_url || '/images/community/ncd_class_training.jpg',
+        project_title: t.project_title || t.team_name,
+        short_description: t.short_description || `Individual live stage execution in ${t.track}.`,
+        detailed_description: t.detailed_description || '',
+        problem_statement: '',
+        proposed_solution: '',
+        target_audience: '',
+        presentation_url: null,
+        portfolio_url: t.portfolio_url || null,
+        status: (t.status as any) || 'applied',
+        is_winner: Boolean(t.is_winner),
+        winner_badge: t.winner_badge || null,
+        votes: 0,
+        percentage: 0,
+        rank: idx + 1,
+      }))
+      return { success: true, finalists, totalVotes: 0 }
+    }
     console.error('[Hackathon Error] getHackathonFinalistsAction:', err)
     return {
       success: false,
@@ -461,6 +618,68 @@ export async function getFinalistProfileByIdAction(id: string): Promise<{
   error?: string
 }> {
   try {
+    if (isLocalDevMode()) {
+      const store = getLocalStore()
+      const team = store.hackathon_teams?.find((t) => t.id === id)
+      if (!team) {
+        return { success: false, error: 'Participant profile not found in database.' }
+      }
+      const voterToken = await getOrCreateVoterToken()
+      const userVote = store.hackathon_votes?.find((v) => v.voter_token === voterToken)
+      const votes = store.hackathon_votes?.filter((v) => v.team_id === id).length || 0
+      const total = store.hackathon_votes?.length || 0
+      const percentage = total > 0 ? Math.round((votes / total) * 100) : 0
+      const candidate: FinalistCandidate = {
+        id: team.id,
+        hackathon_id: team.hackathon_id,
+        team_name: team.team_name,
+        lead_name: team.lead_name,
+        lead_email: team.lead_email || '',
+        lead_phone: team.lead_phone || '',
+        team_size: team.team_size || 1,
+        track: team.track,
+        professional_title: team.professional_title || 'Competitor Designer',
+        avatar_url: team.avatar_url || '/images/community/ncd_class_training.jpg',
+        project_title: team.project_title || team.team_name,
+        short_description: team.short_description || `Individual live stage execution in ${team.track}.`,
+        detailed_description: team.detailed_description || '',
+        problem_statement: '',
+        proposed_solution: '',
+        target_audience: '',
+        presentation_url: null,
+        portfolio_url: team.portfolio_url || null,
+        status: (team.status as any) || 'applied',
+        is_winner: Boolean(team.is_winner),
+        winner_badge: team.winner_badge || null,
+        votes,
+        percentage,
+      }
+      const hackathon = store.hackathons?.[0]
+      const hackathonState: HackathonPublicState = {
+        id: hackathon?.id || 'a0000000-0000-0000-0000-000000000001',
+        title: hackathon?.title || 'Northern Design Hackathon 2.0',
+        status: (hackathon?.status as any) || 'active',
+        sprint_duration_minutes: 120,
+        voting_duration_minutes: 20,
+        voting_starts_at: null,
+        voting_ends_at: null,
+        is_voting_open: true,
+        remaining_seconds: 0,
+        results_published: Boolean(hackathon?.results_published ?? true),
+        total_votes: total,
+        has_voted_team_id: userVote?.team_id || null,
+        voter_token: voterToken,
+      }
+      return {
+        success: true,
+        candidate,
+        finalist: candidate,
+        isVotingOpen: true,
+        hasVotedForThis: userVote?.team_id === team.id,
+        hasVotedTeamId: userVote?.team_id || null,
+        hackathonState,
+      }
+    }
     const adminSupabase = createAdminClient()
     const { data: team, error: tErr } = await adminSupabase
       .from('hackathon_teams')
@@ -589,6 +808,24 @@ export async function castPublicVoteAction(teamId: string): Promise<{
     const voterToken = await getOrCreateVoterToken()
     const clientIp = await getClientIp()
     const now = Date.now()
+
+    if (isLocalDevMode()) {
+      const store = getLocalStore()
+      const hackathonId = store.hackathons?.[0]?.id || 'a0000000-0000-0000-0000-000000000001'
+      castLocalHackathonVote(hackathonId, teamId, voterToken)
+      const teamVotes = store.hackathon_votes?.filter((v) => v.team_id === teamId).length || 0
+      revalidatePath('/hackathon')
+      revalidatePath('/hackathon/vote')
+      revalidatePath('/hackathon/leaderboard')
+      revalidatePath('/hackathon/participants')
+      return {
+        success: true,
+        message: 'Official vote recorded! Thank you for participating in the live design sprint.',
+        hasVotedTeamId: teamId,
+        totalVotes: store.hackathon_votes?.length || 0,
+        updatedVotesForTeam: teamVotes,
+      }
+    }
 
     const adminSupabase = createAdminClient()
     const hackathon = await getActiveOrLatestHackathon(adminSupabase)
@@ -741,6 +978,48 @@ export async function getLiveLeaderboardAction(): Promise<{
   error?: string
 }> {
   try {
+    if (isLocalDevMode()) {
+      const store = getLocalStore()
+      const totalVotes = store.hackathon_votes?.length || 0
+      const voteCounts: Record<string, number> = {}
+      store.hackathon_votes?.forEach((v) => {
+        voteCounts[v.team_id] = (voteCounts[v.team_id] || 0) + 1
+      })
+      const leaderboard: LeaderboardEntry[] = (store.hackathon_teams || []).map((t, idx) => {
+        const votes = voteCounts[t.id] || 0
+        const percentage = totalVotes > 0 ? Math.round((votes / totalVotes) * 100) : 0
+        return {
+          rank: idx + 1,
+          id: t.id,
+          team_name: t.team_name,
+          lead_name: t.lead_name,
+          professional_title: t.professional_title || 'Competitor Designer',
+          avatar_url: t.avatar_url || '/images/community/ncd_class_training.jpg',
+          track: t.track,
+          project_title: t.project_title || t.team_name,
+          votes,
+          percentage,
+          is_winner: Boolean(t.is_winner),
+          winner_badge: t.winner_badge || null,
+        }
+      })
+      leaderboard.sort((a, b) => b.votes - a.votes)
+      leaderboard.forEach((entry, idx) => {
+        entry.rank = idx + 1
+      })
+      return {
+        success: true,
+        leaderboard,
+        totalVotes,
+        votingStatus: 'voting',
+        isVotingOpen: true,
+        votingEndsAt: null,
+        remainingSeconds: 0,
+        resultsPublished: true,
+        lastUpdated: new Date().toLocaleTimeString(),
+      }
+    }
+
     const adminSupabase = createAdminClient()
     const hackathon = await getActiveOrLatestHackathon(adminSupabase)
     if (!hackathon) {

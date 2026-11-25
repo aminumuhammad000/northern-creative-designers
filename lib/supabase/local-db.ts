@@ -69,6 +69,17 @@ export interface LocalHackathonTeam {
   lead_name: string
   lead_email?: string | null
   lead_phone?: string | null
+  gender?: string | null
+  city?: string | null
+  organization?: string | null
+  portfolio_url?: string | null
+  project_title?: string | null
+  short_description?: string | null
+  detailed_description?: string | null
+  professional_title?: string | null
+  avatar_url?: string | null
+  is_winner?: boolean
+  winner_badge?: string | null
   status: string
   created_at: string
 }
@@ -102,6 +113,7 @@ export interface LocalHackathon {
   event_id: string
   title: string
   status: string
+  results_published?: boolean
 }
 
 export interface LocalStoreData {
@@ -534,25 +546,38 @@ export function submitLocalExhibitorApplication(data: {
 export function submitLocalHackathonTeam(data: {
   teamName: string
   track: string
-  teamSize: number
+  teamSize?: number
   leadName: string
-  leadEmail: string
-  leadPhone: string
+  leadEmail?: string
+  leadPhone?: string
+  gender?: string
+  city?: string
+  organization?: string
+  portfolioUrl?: string
 }) {
   const store = getLocalStore()
   const id = `t_${Math.random().toString(36).substring(2, 7)}_${Date.now()}`
+  const hackathonId = store.hackathons?.[0]?.id || DEFAULT_HACKATHON_ID
   const team: LocalHackathonTeam = {
     id,
-    hackathon_id: DEFAULT_HACKATHON_ID,
+    hackathon_id: hackathonId,
     team_name: data.teamName.trim(),
     track: data.track.trim(),
-    team_size: data.teamSize || 4,
+    team_size: data.teamSize || 1,
     lead_name: data.leadName.trim(),
-    status: 'pending_review',
+    lead_email: data.leadEmail ? data.leadEmail.trim() : null,
+    lead_phone: data.leadPhone ? data.leadPhone.trim() : null,
+    gender: data.gender ? data.gender.trim() : null,
+    city: data.city ? data.city.trim() : null,
+    organization: data.organization ? data.organization.trim() : null,
+    portfolio_url: data.portfolioUrl ? data.portfolioUrl.trim() : null,
+    project_title: `${data.leadName.trim()} Stage Sprint Project`,
+    short_description: `Individual live stage execution in ${data.track.trim()}.`,
+    status: 'applied',
     created_at: new Date().toISOString(),
   }
 
-  store.hackathon_teams.push(team)
+  store.hackathon_teams.unshift(team)
   saveLocalStore(store)
 
   return { success: true, id, team }

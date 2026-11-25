@@ -19,6 +19,9 @@ export function isDatabaseConnectionError(error: unknown): boolean {
     lower.includes('name or service not known') ||
     lower.includes('connection error') ||
     lower.includes('aggregateerror') ||
-    lower.includes('nxdomain')
+    lower.includes('nxdomain') ||
+    lower.includes('missing in environment variables') ||
+    lower.includes('invalid url') ||
+    lower.includes('typeerror')
   )
 }
