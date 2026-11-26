@@ -76,12 +76,33 @@ export interface LocalHackathonTeam {
   project_title?: string | null
   short_description?: string | null
   detailed_description?: string | null
+  problem_statement?: string | null
+  proposed_solution?: string | null
+  target_audience?: string | null
+  presentation_url?: string | null
   professional_title?: string | null
   avatar_url?: string | null
   is_winner?: boolean
   winner_badge?: string | null
   status: string
   created_at: string
+}
+
+export interface LocalJuryScore {
+  id: string
+  hackathon_id: string
+  team_id: string
+  judge_name: string
+  judge_email?: string | null
+  cultural_semiotics: number
+  problem_solution: number
+  craft_execution: number
+  presentation: number
+  total_score: number
+  feedback?: string | null
+  status: string
+  created_at: string
+  updated_at: string
 }
 
 export interface LocalVote {

@@ -6,16 +6,15 @@ import {
   Clock,
   MapPin,
   Calendar,
-  Sparkles,
-  Zap,
   Briefcase,
   Trophy,
-  Coffee,
-  CheckCircle2,
   ArrowRight,
   Download,
   Users,
   Layers,
+  BadgeCheck,
+  Mic,
+  Timer,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { eventConfig } from "@/config/event";
@@ -35,8 +34,7 @@ export default function ProgrammePage() {
       title: "Attendee Badge Verification & Welcome Networking",
       description:
         "Fast-track QR scanning and credential badge pickup at registration desk. Morning coffee and welcome mixer with fellow delegates across 19 Northern states.",
-      icon: <Coffee className="w-5 h-5 text-spring" />,
-      location: "Main Reception & Networking Atrium",
+      icon: <BadgeCheck className="w-4 h-4 text-pine" />,
     },
     {
       time: "09:30 AM - 10:30 AM",
@@ -44,8 +42,7 @@ export default function ProgrammePage() {
       title: "Roots & Vectors: Northern Design History & Digital Semiotics",
       description:
         "An in-depth historical exploration of traditional Arewa motifs, geometry, typography, and how indigenous storytelling bridges modern global digital products.",
-      icon: <Sparkles className="w-5 h-5 text-tangerine" />,
-      location: "Main Auditorium Stage",
+      icon: <Mic className="w-4 h-4 text-pine" />,
     },
     {
       time: "10:30 AM - 11:45 AM",
@@ -53,8 +50,7 @@ export default function ProgrammePage() {
       title: "The Pricing Matrix: Navigating Regional Budgets vs Global Markets",
       description:
         "Unfiltered panel discussing sustainable pricing, value-based proposals, retainer negotiation, and international freelancing from Northern Nigeria.",
-      icon: <Briefcase className="w-5 h-5 text-spring" />,
-      location: "Main Auditorium Stage",
+      icon: <Briefcase className="w-4 h-4 text-pine" />,
     },
     {
       time: "11:45 AM - 01:45 PM",
@@ -62,8 +58,7 @@ export default function ProgrammePage() {
       title: "Northern Design Hackathon 2.0: 2-Hour Live Design Sprint",
       description:
         "Finalist teams take the stage to build real-time solutions for live briefs. Audience watches sprints develop on live hall feeds with real-time voting.",
-      icon: <Zap className="w-5 h-5 text-tangerine" />,
-      location: "Hackathon Stage & Live Feeds",
+      icon: <Timer className="w-4 h-4 text-pine" />,
     },
     {
       time: "01:45 PM - 02:45 PM",
@@ -71,8 +66,7 @@ export default function ProgrammePage() {
       title: "Client Connect Corner, Summit Marketplace & Lunch",
       description:
         "Dedicated pitch sessions between business founders and designers. Explore partner exhibition booths, portfolio reviews, and refreshments.",
-      icon: <Coffee className="w-5 h-5 text-spring" />,
-      location: "Exhibition Hall & Client Connect Corner",
+      icon: <Users className="w-4 h-4 text-pine" />,
     },
     {
       time: "02:45 PM - 04:00 PM",
@@ -80,8 +74,7 @@ export default function ProgrammePage() {
       title: "Practical AI Workflow Integration in Modern Brand Craft",
       description:
         "Hands-on demonstration on augmenting vector precision, typography systems, and high-fidelity rendering without losing cultural authenticity.",
-      icon: <Sparkles className="w-5 h-5 text-spring" />,
-      location: "Masterclass Workshop Wing",
+      icon: <Layers className="w-4 h-4 text-pine" />,
     },
     {
       time: "04:00 PM - 05:30 PM",
@@ -89,8 +82,7 @@ export default function ProgrammePage() {
       title: "Summit 2.0 Regional Awards & Hackathon Winner Announcement",
       description:
         "Presentation of trophies, hardware prizes, cash grants (following 2025's ₦100k standard), and closing reflections by the Executive Committee.",
-      icon: <Trophy className="w-5 h-5 text-tangerine" />,
-      location: "Main Auditorium Stage",
+      icon: <Trophy className="w-4 h-4 text-pine" />,
     },
   ];
 
@@ -170,59 +162,48 @@ export default function ProgrammePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Previous Edition */}
-            <div className="rounded-3xl overflow-hidden border border-neutral-border bg-white shadow-md flex flex-col group">
+            <div className="rounded-3xl overflow-hidden border border-neutral-border bg-white shadow-xs flex flex-col group">
               <div className="aspect-[16/10] relative w-full overflow-hidden bg-black/40">
                 <Image
                   src="/images/community/ncd_tutor_presenting.jpg"
-                  alt="Summit 1.0 Hands-On Training"
+                  alt="Intensive Technical Bootcamps"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/20 backdrop-blur-xs text-white text-[10px] font-mono font-bold uppercase tracking-wider">
-                  Previous: Summit 1.0
-                </span>
-                <div className="absolute bottom-4 left-4 right-4 text-white">
-                  <p className="font-black text-lg">Intensive Technical Bootcamps</p>
-                  <p className="text-white/75 text-xs font-mono">225+ Certified Practitioners Trained</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-4 left-5 right-5 text-white">
+                  <h3 className="font-black text-lg sm:text-xl tracking-tight">Intensive Technical Bootcamps</h3>
                 </div>
               </div>
-              <div className="p-6 space-y-2 bg-white flex-1 flex flex-col justify-between">
-                <p className="text-xs sm:text-sm text-navy/75 leading-relaxed">
+              <div className="p-6 bg-white flex-1 flex flex-col justify-center">
+                <p className="text-xs sm:text-sm text-navy/70 leading-relaxed">
                   Conducted three dedicated bootcamps across Brand Identity Masterlab, The Design Code, and UI/UX Digital Systems in Kano.
                 </p>
-                <div className="pt-3 border-t border-neutral-border/60 text-xs font-mono text-pine/80 font-bold">
-                  ✦ Physical Labs • Hands-On Mentorship
-                </div>
               </div>
             </div>
 
             {/* Upcoming Edition */}
-            <div className="rounded-3xl overflow-hidden border-2 border-spring bg-pine text-white shadow-xl flex flex-col group relative">
+            <div className="rounded-3xl overflow-hidden border border-pine/30 bg-pine text-white shadow-md flex flex-col group relative">
               <div className="aspect-[16/10] relative w-full overflow-hidden bg-black/40">
                 <Image
                   src="/images/community/ncd_hall_audience.jpg"
-                  alt="Summit 2.0 Full Gathering"
+                  alt="Summit 2.0: Roots & Vectors"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-pine/90 via-pine/30 to-transparent" />
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-spring text-navy text-[10px] font-mono font-bold uppercase tracking-wider shadow-sm">
-                  Upcoming: 19 December 2026
-                </span>
-                <div className="absolute bottom-4 left-4 right-4 text-white">
-                  <p className="font-black text-lg">Summit 2.0: Roots &amp; Vectors</p>
-                  <p className="text-spring text-xs font-mono font-bold">1,000+ Designers • 3 Stages • Client Connect</p>
+                <div className="absolute bottom-4 left-5 right-5 text-white">
+                  <h3 className="font-black text-lg sm:text-xl tracking-tight">Summit 2.0: Roots &amp; Vectors</h3>
                 </div>
               </div>
-              <div className="p-6 space-y-3 bg-pine flex-1 flex flex-col justify-between">
+              <div className="p-6 bg-pine flex-1 flex flex-col justify-between gap-4">
                 <p className="text-xs sm:text-sm text-white/80 leading-relaxed">
                   Full-day annual conference combining keynote addresses, unfiltered pricing panels, on-stage live hackathon, and curated exhibition galleries.
                 </p>
                 <div className="pt-3 border-t border-white/15 flex items-center justify-between">
                   <Link
                     href="/register"
-                    className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-spring uppercase tracking-wider hover:underline"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-spring uppercase tracking-wider hover:underline"
                   >
                     <span>Claim Your Delegate Pass</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -248,17 +229,14 @@ export default function ProgrammePage() {
             {tracks.map((track, tIdx) => (
               <div
                 key={tIdx}
-                className={`p-6 rounded-2xl ${track.color} shadow-sm space-y-2 flex flex-col justify-between`}
+                className={`p-6 rounded-2xl ${track.color} shadow-xs flex flex-col justify-between`}
               >
                 <div>
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider opacity-80 block mb-2">
+                  <span className="text-[10px] font-mono font-semibold uppercase tracking-wider opacity-75 block mb-2">
                     Track 0{tIdx + 1}
                   </span>
                   <h4 className="font-bold text-base leading-snug">{track.name}</h4>
-                  <p className="text-xs opacity-85 leading-relaxed mt-2">{track.desc}</p>
-                </div>
-                <div className="pt-4 border-t border-white/15 text-[11px] font-mono font-bold">
-                  <span>Sessions Included in Pass</span>
+                  <p className="text-xs opacity-85 leading-relaxed mt-2.5">{track.desc}</p>
                 </div>
               </div>
             ))}
@@ -267,48 +245,45 @@ export default function ProgrammePage() {
 
         {/* Schedule Timeline */}
         <section className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-neutral-border">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-neutral-border">
             <div>
               <h3 className="text-2xl sm:text-3xl font-black text-pine tracking-tight">
                 Full Day Timeline
               </h3>
-              <p className="text-navy/70 text-xs sm:text-sm mt-1">
+              <p className="text-navy/60 text-xs sm:text-sm mt-1">
                 All sessions run on West Africa Time (WAT) at the official Kano summit venue.
               </p>
             </div>
-            <span className="text-xs font-mono font-bold text-pine/80 bg-pine/5 px-3 py-1 rounded-full border border-pine/10 w-fit">
+            <span className="text-xs font-mono font-medium text-pine/80 bg-pine/5 px-3 py-1 rounded-full border border-pine/10 w-fit">
               7 Curated Programme Modules
             </span>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3.5">
             {scheduleItems.map((item, idx) => (
               <div
                 key={idx}
-                className="p-6 sm:p-7 rounded-2xl bg-white border border-neutral-border hover:border-pine/30 hover:shadow-md transition-all flex flex-col md:flex-row md:items-start gap-6"
+                className="p-5 sm:p-6 rounded-2xl bg-white border border-neutral-border hover:border-pine/30 hover:shadow-sm transition-all flex flex-col md:flex-row md:items-start gap-4 sm:gap-6"
               >
-                <div className="md:w-60 flex-shrink-0">
-                  <span className="inline-block px-3 py-1 rounded-full bg-pine/5 text-pine text-xs font-bold font-mono">
+                <div className="md:w-52 flex-shrink-0">
+                  <span className="inline-block px-2.5 py-0.5 rounded-md bg-neutral-100 text-pine text-[11px] font-mono font-medium tracking-tight border border-neutral-200/70">
                     {item.time}
                   </span>
-                  <p className="text-xs font-bold text-spring uppercase tracking-wider mt-2.5">
+                  <p className="text-[11px] font-bold text-pine/70 uppercase tracking-wider mt-2">
                     {item.category}
-                  </p>
-                  <p className="text-[11px] text-navy/50 font-mono mt-1">
-                    {item.location}
                   </p>
                 </div>
 
-                <div className="flex-1 space-y-2">
+                <div className="flex-1 space-y-1.5">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-neutral-sand flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 rounded-lg bg-neutral-sand/80 border border-neutral-border/60 flex items-center justify-center flex-shrink-0">
                       {item.icon}
                     </div>
                     <h3 className="text-base sm:text-lg font-bold text-pine leading-snug">
                       {item.title}
                     </h3>
                   </div>
-                  <p className="text-navy/75 text-xs sm:text-sm leading-relaxed pl-12">
+                  <p className="text-navy/70 text-xs sm:text-sm leading-relaxed pl-11">
                     {item.description}
                   </p>
                 </div>

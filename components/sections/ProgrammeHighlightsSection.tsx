@@ -57,12 +57,9 @@ export function ProgrammeHighlightsSection() {
               </div>
               <div className="p-5 sm:p-6 space-y-2 bg-white flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-lg sm:text-xl font-black text-navy tracking-tight leading-tight mb-1">
+                  <h3 className="text-lg sm:text-xl font-black text-navy tracking-tight leading-tight mb-2">
                     Hands-On Masterlabs &amp; Bootcamps
                   </h3>
-                  <span className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider text-[#00CB67] block mb-2">
-                    225+ Certified Practitioners Trained
-                  </span>
                   <p className="text-xs sm:text-sm text-navy/70 leading-relaxed font-normal">
                     Intensive physical masterclasses covering Brand Identity systems, The Design Code, and UI/UX product frameworks in Kano.
                   </p>
@@ -82,12 +79,9 @@ export function ProgrammeHighlightsSection() {
               </div>
               <div className="p-5 sm:p-6 space-y-2 bg-white flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 className="text-lg sm:text-xl font-black text-navy tracking-tight leading-tight mb-1">
+                  <h3 className="text-lg sm:text-xl font-black text-navy tracking-tight leading-tight mb-2">
                     Root &amp; Vector: 1,000 + Creators
                   </h3>
-                  <span className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider text-[#00CB67] block mb-2">
-                    225+ Certified Practitioners Trained
-                  </span>
                   <p className="text-xs sm:text-sm text-navy/70 leading-relaxed font-normal">
                     Expanded annual gathering featuring Client Connect Corner, curated physical Design Exhibition Wall, 3 keynote stages, and live Hackathon.
                   </p>
