@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Store,
@@ -20,10 +20,12 @@ import {
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/Button";
+import { RegistrationClosedBanner } from "@/components/ui/RegistrationClosedBanner";
 import {
   submitExhibitorApplicationAction,
   uploadPaymentProofAction,
 } from "@/app/actions/onboarding";
+import { getRegistrationSettingsAction } from "@/app/actions/registration-settings";
 
 const EXHIBITOR_CATEGORIES = [
   "Design Agency / Creative Studio",
@@ -47,8 +49,15 @@ export default function ExhibitorApplyPage() {
   const [registrationType, setRegistrationType] = useState<"exhibitor" | "vendor">("exhibitor");
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isRegistrationClosed, setIsRegistrationClosed] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [copiedAccount, setCopiedAccount] = useState(false);
+
+  useEffect(() => {
+    getRegistrationSettingsAction()
+      .then((s) => setIsRegistrationClosed(!s.exhibitor_open))
+      .catch(() => {});
+  }, []);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -126,6 +135,10 @@ export default function ExhibitorApplyPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isRegistrationClosed) {
+      setErrorMessage("Exhibitor and vendor registration is currently closed.");
+      return;
+    }
     setErrorMessage("");
 
     if (!paymentProofUrl && !paymentProofPreview) {
@@ -212,10 +225,20 @@ export default function ExhibitorApplyPage() {
             </div>
           </div>
         ) : (
-          <form
-            onSubmit={handleSubmit}
-            className="p-6 sm:p-10 rounded-3xl bg-white border border-neutral-border space-y-8 shadow-xs"
-          >
+          <div className="space-y-6">
+            {isRegistrationClosed && (
+              <RegistrationClosedBanner
+                title="Exhibitor & Vendor Registration is Currently Closed"
+                message="Applications for marketplace booths and vendor stands are currently closed by the organizers."
+              />
+            )}
+            <form
+              onSubmit={handleSubmit}
+              className={`p-6 sm:p-10 rounded-3xl bg-white border border-neutral-border shadow-xs ${
+                isRegistrationClosed ? "opacity-60 pointer-events-none select-none" : ""
+              }`}
+            >
+              <fieldset disabled={isRegistrationClosed} className="space-y-8">
             {/* CARD SELECTOR: EXHIBITOR vs VENDOR */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
@@ -651,7 +674,9 @@ export default function ExhibitorApplyPage() {
                 </button>
               </div>
             </div>
+            </fieldset>
           </form>
+          </div>
         )}
       </div>
     </main>

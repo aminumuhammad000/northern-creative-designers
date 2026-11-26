@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -34,9 +34,11 @@ import {
   EyeOff,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { RegistrationClosedBanner } from "@/components/ui/RegistrationClosedBanner";
 import { siteConfig } from "@/config/site";
 import { eventConfig } from "@/config/event";
 import { registerAttendeeAction, checkEmailRegisteredAction, RegistrationData } from "@/app/actions/auth";
+import { getRegistrationSettingsAction } from "@/app/actions/registration-settings";
 
 const DISCIPLINES = [
   {
@@ -142,6 +144,14 @@ export default function RegisterPage() {
     specialExpectations: "",
   });
 
+  const [isRegistrationClosed, setIsRegistrationClosed] = useState(false);
+
+  useEffect(() => {
+    getRegistrationSettingsAction()
+      .then((s) => setIsRegistrationClosed(!s.attendee_open))
+      .catch(() => {});
+  }, []);
+
   const updateField = (field: string, value: string | string[]) => {
     if (errorMessage) {
       setErrorMessage("");
@@ -151,6 +161,10 @@ export default function RegisterPage() {
 
   const handleNextStep = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isRegistrationClosed) {
+      setErrorMessage("Summit attendee registration is currently closed.");
+      return;
+    }
     setErrorMessage("");
     setIsAlreadyRegistered(false);
 
@@ -519,8 +533,21 @@ export default function RegisterPage() {
               </div>
             )}
 
+            {isRegistrationClosed && (
+              <RegistrationClosedBanner
+                title="Summit Registration is Currently Closed"
+                message="Attendee registration for Summit 2.0 is currently closed. Existing delegates can still sign in to access their digital pass."
+              />
+            )}
+
             {/* FORM CONTAINER */}
-            <form onSubmit={handleNextStep} className="bg-white rounded-3xl border border-neutral-border p-6 sm:p-10 shadow-xs space-y-8">
+            <form
+              onSubmit={handleNextStep}
+              className={`bg-white rounded-3xl border border-neutral-border p-6 sm:p-10 shadow-xs ${
+                isRegistrationClosed ? "opacity-60 pointer-events-none select-none" : ""
+              }`}
+            >
+              <fieldset disabled={isRegistrationClosed} className="space-y-8">
               {/* STEP 1: ACCOUNT & CONTACT */}
               {currentStep === 1 && (
                 <div className="space-y-6 animate-in fade-in duration-200">
@@ -920,6 +947,7 @@ export default function RegisterPage() {
                   </div>
                 </div>
               )}
+              </fieldset>
             </form>
           </div>
         )}

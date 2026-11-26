@@ -13,6 +13,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { sendRegistrationConfirmationEmail } from '@/lib/email'
+import { getRegistrationSettings } from '@/lib/registration-settings'
 
 export interface RegistrationData {
   fullName: string
@@ -31,6 +32,15 @@ export interface RegistrationData {
 }
 
 export async function registerAttendeeAction(data: RegistrationData) {
+  const settings = getRegistrationSettings()
+  if (!settings.attendee_open) {
+    return {
+      success: false,
+      alreadyRegistered: false,
+      error: 'Summit attendee registration is currently closed.',
+    }
+  }
+
   const trimmedEmail = data.email.trim().toLowerCase()
   const trimmedFullName = data.fullName.trim()
 

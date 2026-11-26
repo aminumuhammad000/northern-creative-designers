@@ -11,6 +11,7 @@ import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { sendHackathonConfirmationEmail, sendExhibitorWelcomeEmail } from '@/lib/email'
 import { uploadImage } from '@/lib/cloudinary'
+import { getRegistrationSettings } from '@/lib/registration-settings'
 
 function safeRevalidatePaths(...paths: string[]) {
   try {
@@ -53,6 +54,14 @@ export async function uploadPaymentProofAction(base64DataUri: string, fileName?:
 }
 
 export async function submitExhibitorApplicationAction(data: ExhibitorApplicationData) {
+  const settings = getRegistrationSettings()
+  if (!settings.exhibitor_open) {
+    return {
+      success: false,
+      error: 'Exhibitor and vendor registration is currently closed.',
+    }
+  }
+
   try {
     const trimmedEmail = data.email.trim().toLowerCase()
     const trimmedContact = data.contactPerson.trim()
@@ -283,6 +292,14 @@ async function saveLocalHackathonAndFinalize(params: {
 }
 
 export async function registerHackathonAction(data: HackathonRegistrationData) {
+  const settings = getRegistrationSettings()
+  if (!settings.hackathon_open) {
+    return {
+      success: false,
+      error: 'Hackathon registration is currently closed.',
+    }
+  }
+
   try {
     if (!data || typeof data !== 'object') {
       return { success: false, error: 'Registration data is missing.' }

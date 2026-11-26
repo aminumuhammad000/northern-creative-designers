@@ -843,3 +843,41 @@ export function getLocalJuryScores(hackathonId?: string) {
   }
   return scores
 }
+
+export function deleteLocalRegistration(id: string) {
+  const store = getLocalStore()
+  const before = store.registrations.length
+  store.registrations = store.registrations.filter((r) => r.id !== id)
+  store.tickets = store.tickets.filter((t) => t.registration_id !== id)
+  if (store.registrations.length === before) {
+    return { success: false, error: 'Registration not found.' }
+  }
+  saveLocalStore(store)
+  return { success: true }
+}
+
+export function deleteLocalExhibitor(id: string) {
+  const store = getLocalStore()
+  const before = store.exhibitor_applications.length
+  store.exhibitor_applications = store.exhibitor_applications.filter((e) => e.id !== id)
+  if (store.exhibitor_applications.length === before) {
+    return { success: false, error: 'Exhibitor not found.' }
+  }
+  saveLocalStore(store)
+  return { success: true }
+}
+
+export function deleteLocalHackathonTeam(id: string) {
+  const store = getLocalStore()
+  const before = store.hackathon_teams.length
+  store.hackathon_teams = store.hackathon_teams.filter((t) => t.id !== id)
+  store.hackathon_votes = store.hackathon_votes.filter((v) => v.team_id !== id)
+  if (store.hackathon_jury_scores) {
+    store.hackathon_jury_scores = store.hackathon_jury_scores.filter((s) => s.team_id !== id)
+  }
+  if (store.hackathon_teams.length === before) {
+    return { success: false, error: 'Hackathon team not found.' }
+  }
+  saveLocalStore(store)
+  return { success: true }
+}

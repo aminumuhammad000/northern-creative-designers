@@ -10,6 +10,9 @@ import {
   fastTrackLocalCheckIn,
   getLocalStore,
   saveLocalStore,
+  deleteLocalRegistration,
+  deleteLocalExhibitor,
+  deleteLocalHackathonTeam,
 } from '@/lib/supabase/local-db'
 import { revalidatePath } from 'next/cache'
 import { sendGeneralEmail } from '@/lib/email'
@@ -533,6 +536,132 @@ export async function updateHackathonTeamAction(
     return {
       success: false,
       error: err instanceof Error ? err.message : 'Failed to update hackathon team in database.',
+    }
+  }
+}
+
+export async function deleteRegistrationAction(
+  registrationId: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    if (isLocalDevMode()) {
+      const res = deleteLocalRegistration(registrationId)
+      revalidatePath('/admin')
+      revalidatePath('/dashboard')
+      return res
+    }
+
+    const adminSupabase = createAdminClient()
+    await adminSupabase.from('tickets').delete().eq('registration_id', registrationId)
+    const { error } = await adminSupabase.from('registrations').delete().eq('id', registrationId)
+
+    if (error) {
+      if (isDatabaseConnectionError(error)) {
+        const res = deleteLocalRegistration(registrationId)
+        revalidatePath('/admin')
+        return res
+      }
+      throw error
+    }
+
+    revalidatePath('/admin')
+    revalidatePath('/dashboard')
+    return { success: true }
+  } catch (err: unknown) {
+    if (isDatabaseConnectionError(err)) {
+      return deleteLocalRegistration(registrationId)
+    }
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : 'Failed to delete registration.',
+    }
+  }
+}
+
+export async function deleteExhibitorAction(
+  exhibitorId: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    if (isLocalDevMode()) {
+      const res = deleteLocalExhibitor(exhibitorId)
+      revalidatePath('/admin')
+      revalidatePath('/exhibitors')
+      return res
+    }
+
+    const adminSupabase = createAdminClient()
+    const { error } = await adminSupabase
+      .from('exhibitor_applications')
+      .delete()
+      .eq('id', exhibitorId)
+
+    if (error) {
+      if (isDatabaseConnectionError(error)) {
+        const res = deleteLocalExhibitor(exhibitorId)
+        revalidatePath('/admin')
+        return res
+      }
+      throw error
+    }
+
+    revalidatePath('/admin')
+    revalidatePath('/exhibitors')
+    return { success: true }
+  } catch (err: unknown) {
+    if (isDatabaseConnectionError(err)) {
+      return deleteLocalExhibitor(exhibitorId)
+    }
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : 'Failed to delete exhibitor.',
+    }
+  }
+}
+
+export async function deleteHackathonTeamAction(
+  teamId: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    if (isLocalDevMode()) {
+      const res = deleteLocalHackathonTeam(teamId)
+      revalidatePath('/admin')
+      revalidatePath('/hackathon')
+      revalidatePath('/hackathon/participants')
+      revalidatePath('/dashboard/hackathon')
+      revalidatePath('/dashboard/judge')
+      return res
+    }
+
+    const adminSupabase = createAdminClient()
+    try {
+      await adminSupabase.from('hackathon_votes').delete().eq('team_id', teamId)
+      await adminSupabase.from('hackathon_jury_scores').delete().eq('team_id', teamId)
+    } catch {}
+
+    const { error } = await adminSupabase.from('hackathon_teams').delete().eq('id', teamId)
+
+    if (error) {
+      if (isDatabaseConnectionError(error)) {
+        const res = deleteLocalHackathonTeam(teamId)
+        revalidatePath('/admin')
+        return res
+      }
+      throw error
+    }
+
+    revalidatePath('/admin')
+    revalidatePath('/hackathon')
+    revalidatePath('/hackathon/participants')
+    revalidatePath('/dashboard/hackathon')
+    revalidatePath('/dashboard/judge')
+    return { success: true }
+  } catch (err: unknown) {
+    if (isDatabaseConnectionError(err)) {
+      return deleteLocalHackathonTeam(teamId)
+    }
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : 'Failed to delete hackathon team.',
     }
   }
 }

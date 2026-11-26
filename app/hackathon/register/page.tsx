@@ -1,18 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CheckCircle, ArrowLeft, ArrowRight, Send, Sparkles, User, Mail, Phone, MapPin, Briefcase, Globe, Layers } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/Button";
+import { RegistrationClosedBanner } from "@/components/ui/RegistrationClosedBanner";
 import { registerHackathonAction } from "@/app/actions/onboarding";
 import { loginHackathonParticipantAction } from "@/app/actions/hackathon-dashboard";
+import { getRegistrationSettingsAction } from "@/app/actions/registration-settings";
 
 export default function HackathonRegisterPage() {
   const router = useRouter();
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isRegistrationClosed, setIsRegistrationClosed] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showReturningForm, setShowReturningForm] = useState(false);
   const [returningEmail, setReturningEmail] = useState("");
@@ -48,8 +51,18 @@ export default function HackathonRegisterPage() {
     }
   };
 
+  useEffect(() => {
+    getRegistrationSettingsAction()
+      .then((s) => setIsRegistrationClosed(!s.hackathon_open))
+      .catch(() => {});
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isRegistrationClosed) {
+      setErrorMessage("Hackathon registration is currently closed.");
+      return;
+    }
     if (!formData.name?.trim()) {
       setErrorMessage("Please enter your full name.");
       return;
@@ -214,10 +227,20 @@ export default function HackathonRegisterPage() {
               )}
             </div>
 
+            {isRegistrationClosed && (
+              <RegistrationClosedBanner
+                title="Hackathon Registration is Currently Closed"
+                message="New registrations for Hackathon 2.0 are currently closed. Already registered contestants can still access their dashboard above."
+              />
+            )}
+
             <form
               onSubmit={handleSubmit}
-              className="p-6 sm:p-10 rounded-3xl bg-white border border-neutral-border space-y-8 shadow-sm"
+              className={`p-6 sm:p-10 rounded-3xl bg-white border border-neutral-border shadow-sm ${
+                isRegistrationClosed ? "opacity-60 pointer-events-none select-none" : ""
+              }`}
             >
+              <fieldset disabled={isRegistrationClosed} className="space-y-8">
             {/* Form Header */}
             <div className="border-b border-neutral-border pb-5">
               <div className="flex items-center gap-2 mb-1">
@@ -462,6 +485,7 @@ export default function HackathonRegisterPage() {
                 <Send className="w-3.5 h-3.5 ml-2 flex-shrink-0" />
               </button>
             </div>
+            </fieldset>
           </form>
           </div>
         )}
