@@ -8,6 +8,8 @@ import {
   Building2,
   Store,
   LogOut,
+  Zap,
+  Award,
 } from "lucide-react";
 import { signOutAction } from "@/app/actions/auth";
 
@@ -31,11 +33,18 @@ export function DashboardNav({
       active: pathname === "/dashboard",
     },
     {
-      title: "Partner",
-      href: "/dashboard/partner",
-      icon: Building2,
-      tooltip: "Sponsor tier & deliverables portal",
-      active: pathname.startsWith("/dashboard/partner"),
+      title: "Hackathon",
+      href: "/dashboard/hackathon",
+      icon: Zap,
+      tooltip: "Hackathon participant dashboard & project pitch",
+      active: pathname.startsWith("/dashboard/hackathon"),
+    },
+    {
+      title: "Judges",
+      href: "/dashboard/judge",
+      icon: Award,
+      tooltip: "Official jury evaluation & decision portal",
+      active: pathname.startsWith("/dashboard/judge"),
     },
     {
       title: "Exhibitor",
@@ -43,6 +52,13 @@ export function DashboardNav({
       icon: Store,
       tooltip: "Marketplace booth & lead scanner",
       active: pathname.startsWith("/dashboard/exhibitor"),
+    },
+    {
+      title: "Partner",
+      href: "/dashboard/partner",
+      icon: Building2,
+      tooltip: "Sponsor tier & deliverables portal",
+      active: pathname.startsWith("/dashboard/partner"),
     },
   ];
 

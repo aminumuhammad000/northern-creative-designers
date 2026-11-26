@@ -9,7 +9,6 @@ import {
   ArrowLeft,
   Send,
   Check,
-  Sparkles,
   CreditCard,
   Upload,
   FileText,
@@ -220,13 +219,13 @@ export default function ExhibitorApplyPage() {
             {/* CARD SELECTOR: EXHIBITOR vs VENDOR */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
-                  Step 1: Choose Your Participation Role <span className="text-spring font-bold">*</span>
+                <label className="text-[11px] font-medium text-pine/80 uppercase tracking-wider block">
+                  Step 1: Choose Your Participation Role <span className="text-spring font-semibold">*</span>
                 </label>
                 <span className="text-[11px] text-neutral-400 font-medium">Click a card below</span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {/* Option 1: Exhibitor Card */}
                 <div
                   onClick={() => {
@@ -236,56 +235,41 @@ export default function ExhibitorApplyPage() {
                       category: EXHIBITOR_CATEGORIES[0],
                     }));
                   }}
-                  className={`p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between gap-3 text-left relative ${
+                  className={`p-3.5 sm:p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between gap-2.5 text-left relative ${
                     registrationType === "exhibitor"
-                      ? "border-spring bg-spring/10 shadow-sm ring-2 ring-spring/30"
+                      ? "border-spring bg-spring/10 shadow-xs ring-1 ring-spring/30"
                       : "border-neutral-border bg-neutral-sand/30 hover:border-spring/50 hover:bg-white"
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center justify-between gap-3">
                     <div
-                      className={`p-3 rounded-xl transition-colors ${
+                      className={`p-2 rounded-lg transition-colors ${
                         registrationType === "exhibitor"
                           ? "bg-pine text-spring shadow-xs"
                           : "bg-neutral-200/80 text-neutral-600"
                       }`}
                     >
-                      <Store className="w-5 h-5" />
+                      <Store className="w-4 h-4" />
                     </div>
                     <div
-                      className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
+                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
                         registrationType === "exhibitor"
                           ? "border-spring bg-spring text-navy"
                           : "border-neutral-300 bg-white"
                       }`}
                     >
-                      {registrationType === "exhibitor" && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                      {registrationType === "exhibitor" && <Check className="w-3 h-3 stroke-[3]" />}
                     </div>
                   </div>
 
-                  <div>
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h4 className="font-bold text-pine text-base">Exhibitor Showcase</h4>
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-pine/10 text-pine uppercase">
-                          Studio / Tech
-                        </span>
-                      </div>
-                      <div className="text-right shrink-0">
-                        <span className="text-base font-extrabold text-pine block">₦30,000</span>
-                        <span className="text-[10px] font-bold text-navy/60 uppercase tracking-wider block -mt-0.5">
-                          Enrollment Fee
-                        </span>
-                      </div>
+                  <div className="flex items-end justify-between gap-2">
+                    <h4 className="font-bold text-pine text-sm sm:text-base">Exhibitor Showcase</h4>
+                    <div className="text-right shrink-0">
+                      <span className="text-sm sm:text-base font-extrabold text-pine block leading-tight">₦30,000</span>
+                      <span className="text-[9px] font-semibold text-navy/60 uppercase tracking-wider block">
+                        Enrollment Fee
+                      </span>
                     </div>
-                    <p className="text-xs text-navy/70 mt-1.5 leading-relaxed">
-                      For Design Agencies, Creative Studios, Tech &amp; SaaS Tools, Cloud Software, and Media Studios showcasing craft and B2B services.
-                    </p>
-                  </div>
-
-                  <div className="pt-2 border-t border-neutral-200/80 flex items-center gap-1.5 text-[11px] font-semibold text-pine">
-                    <span className="w-1.5 h-1.5 rounded-full bg-spring" />
-                    Includes Showcase Booth, Directory &amp; Lead Scanner
                   </div>
                 </div>
 
@@ -298,56 +282,41 @@ export default function ExhibitorApplyPage() {
                       category: VENDOR_CATEGORIES[0],
                     }));
                   }}
-                  className={`p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between gap-3 text-left relative ${
+                  className={`p-3.5 sm:p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between gap-2.5 text-left relative ${
                     registrationType === "vendor"
-                      ? "border-spring bg-spring/10 shadow-sm ring-2 ring-spring/30"
+                      ? "border-spring bg-spring/10 shadow-xs ring-1 ring-spring/30"
                       : "border-neutral-border bg-neutral-sand/30 hover:border-spring/50 hover:bg-white"
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center justify-between gap-3">
                     <div
-                      className={`p-3 rounded-xl transition-colors ${
+                      className={`p-2 rounded-lg transition-colors ${
                         registrationType === "vendor"
                           ? "bg-pine text-spring shadow-xs"
                           : "bg-neutral-200/80 text-neutral-600"
                       }`}
                     >
-                      <ShoppingBag className="w-5 h-5" />
+                      <ShoppingBag className="w-4 h-4" />
                     </div>
                     <div
-                      className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
+                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
                         registrationType === "vendor"
                           ? "border-spring bg-spring text-navy"
                           : "border-neutral-300 bg-white"
                       }`}
                     >
-                      {registrationType === "vendor" && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                      {registrationType === "vendor" && <Check className="w-3 h-3 stroke-[3]" />}
                     </div>
                   </div>
 
-                  <div>
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h4 className="font-bold text-pine text-base">Vendor &amp; Retailer</h4>
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-spring/30 text-pine uppercase">
-                          Marketplace
-                        </span>
-                      </div>
-                      <div className="text-right shrink-0">
-                        <span className="text-base font-extrabold text-pine block">₦25,000</span>
-                        <span className="text-[10px] font-bold text-navy/60 uppercase tracking-wider block -mt-0.5">
-                          Enrollment Fee
-                        </span>
-                      </div>
+                  <div className="flex items-end justify-between gap-2">
+                    <h4 className="font-bold text-pine text-sm sm:text-base">Vendor &amp; Retailer</h4>
+                    <div className="text-right shrink-0">
+                      <span className="text-sm sm:text-base font-extrabold text-pine block leading-tight">₦25,000</span>
+                      <span className="text-[9px] font-semibold text-navy/60 uppercase tracking-wider block">
+                        Enrollment Fee
+                      </span>
                     </div>
-                    <p className="text-xs text-navy/70 mt-1.5 leading-relaxed">
-                      For Graphic Apparel, Fashion, Art Prints, Craft &amp; Artifacts, Design Zines, Books, or Food &amp; Beverage stalls selling directly to delegates.
-                    </p>
-                  </div>
-
-                  <div className="pt-2 border-t border-neutral-200/80 flex items-center gap-1.5 text-[11px] font-semibold text-pine">
-                    <span className="w-1.5 h-1.5 rounded-full bg-spring" />
-                    Includes Commercial Stall, Staff Badges &amp; POS Space
                   </div>
                 </div>
               </div>
@@ -359,9 +328,6 @@ export default function ExhibitorApplyPage() {
                 <h3 className="text-lg font-bold text-pine">
                   Step 2: {registrationType === "vendor" ? "Vendor Profile Details" : "Exhibitor Profile Details"}
                 </h3>
-                <span className="text-xs font-semibold text-pine bg-neutral-sand px-3 py-1 rounded-full border border-neutral-200">
-                  Shared Portal Access
-                </span>
               </div>
 
               {errorMessage && (
@@ -373,8 +339,8 @@ export default function ExhibitorApplyPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-pine uppercase tracking-wider block">
-                    Business / Brand Name <span className="text-spring font-bold">*</span>
+                  <label className="text-[11px] font-medium text-pine/80 uppercase tracking-wider block">
+                    Business / Brand Name <span className="text-spring font-semibold">*</span>
                   </label>
                   <input
                     type="text"
@@ -391,8 +357,8 @@ export default function ExhibitorApplyPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-pine uppercase tracking-wider block">
-                    Contact Person Name <span className="text-spring font-bold">*</span>
+                  <label className="text-[11px] font-medium text-pine/80 uppercase tracking-wider block">
+                    Contact Person Name <span className="text-spring font-semibold">*</span>
                   </label>
                   <input
                     type="text"
@@ -405,8 +371,8 @@ export default function ExhibitorApplyPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-pine uppercase tracking-wider block">
-                    Contact Email Address <span className="text-spring font-bold">*</span>
+                  <label className="text-[11px] font-medium text-pine/80 uppercase tracking-wider block">
+                    Contact Email Address <span className="text-spring font-semibold">*</span>
                   </label>
                   <input
                     type="email"
@@ -419,8 +385,8 @@ export default function ExhibitorApplyPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-pine uppercase tracking-wider block">
-                    WhatsApp / Phone Number <span className="text-spring font-bold">*</span>
+                  <label className="text-[11px] font-medium text-pine/80 uppercase tracking-wider block">
+                    WhatsApp / Phone Number <span className="text-spring font-semibold">*</span>
                   </label>
                   <input
                     type="tel"
@@ -433,7 +399,7 @@ export default function ExhibitorApplyPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                  <label className="text-[11px] font-medium text-pine/80 uppercase tracking-wider block">
                     Website or Social Portfolio Link
                   </label>
                   <input
@@ -446,9 +412,9 @@ export default function ExhibitorApplyPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                  <label className="text-[11px] font-medium text-pine/80 uppercase tracking-wider block">
                     {registrationType === "vendor" ? "Vendor Category" : "Exhibitor Category"}{" "}
-                    <span className="text-spring font-bold">*</span>
+                    <span className="text-spring font-semibold">*</span>
                   </label>
                   <select
                     className="w-full h-12 px-4 rounded-xl border border-neutral-border bg-neutral-sand/30 hover:bg-white focus:bg-white text-sm font-medium text-pine focus:outline-none focus:ring-2 focus:ring-spring focus:border-transparent transition-all shadow-2xs cursor-pointer"
@@ -465,11 +431,11 @@ export default function ExhibitorApplyPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                <label className="text-[11px] font-medium text-pine/80 uppercase tracking-wider block">
                   {registrationType === "vendor"
                     ? "Items / Products You Plan to Sell at the Summit"
                     : "Products, Tools or Creative Services You Plan to Showcase"}{" "}
-                  <span className="text-spring font-bold">*</span>
+                  <span className="text-spring font-semibold">*</span>
                 </label>
                 <textarea
                   required
@@ -486,7 +452,7 @@ export default function ExhibitorApplyPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                <label className="text-[11px] font-medium text-pine/80 uppercase tracking-wider block">
                   Power, Equipment or Space Needs <span className="text-neutral-400 font-normal lowercase">(optional)</span>
                 </label>
                 <input
@@ -519,17 +485,11 @@ export default function ExhibitorApplyPage() {
 
               {/* Official Bank Account Details Card */}
               <div className="p-5 rounded-2xl bg-neutral-sand/50 border border-neutral-200/80 space-y-4">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-neutral-200/60 pb-3">
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">
-                      Designated Payment Account
-                    </span>
-                    <h4 className="text-sm font-bold text-pine">Northern Creative Designers Summit 2.0</h4>
-                  </div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-spring/20 text-pine text-xs font-bold">
-                    <span className="w-2 h-2 rounded-full bg-spring animate-pulse" />
-                    Instant Receipt Verification
-                  </div>
+                <div className="border-b border-neutral-200/60 pb-3">
+                  <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-400 block">
+                    Designated Payment Account
+                  </span>
+                  <h4 className="text-sm font-bold text-pine">Northern Creative Designers Summit 2.0</h4>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
@@ -573,16 +533,12 @@ export default function ExhibitorApplyPage() {
                     <p className="text-sm font-bold text-pine mt-0.5 truncate">Northern Creative Designers</p>
                   </div>
                 </div>
-
-                <p className="text-[11px] text-navy/60 leading-relaxed">
-                  <strong>Transfer Narration:</strong> Please use your Business Name (e.g., &ldquo;{formData.businessName || "Your Brand"}&rdquo;) as the transfer description for instant reconciliation.
-                </p>
               </div>
 
               {/* Upload Proof Input Area */}
               <div className="space-y-2">
-                <label className="text-xs font-bold text-pine uppercase tracking-wider block">
-                  Upload Proof of Payment (Screenshot or Receipt) <span className="text-spring font-bold">*</span>
+                <label className="text-[11px] font-medium text-pine/80 uppercase tracking-wider block">
+                  Upload Proof of Payment (Screenshot or Receipt) <span className="text-spring font-semibold">*</span>
                 </label>
 
                 {proofError && (
@@ -673,20 +629,7 @@ export default function ExhibitorApplyPage() {
                 )}
               </div>
 
-              <div className="p-4 rounded-2xl bg-spring/10 border border-spring/30 text-xs text-pine space-y-1">
-                <p className="font-bold flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-spring" />
-                  Unified Exhibitor &amp; Vendor Management
-                </p>
-                <p className="text-navy/70 leading-relaxed">
-                  Both Exhibitors and Vendors share our dedicated Marketplace Portal dashboard featuring booth management, catalog items, staff accreditation passes, and real-time delegate lead capture.
-                </p>
-              </div>
-
-              <div className="pt-4 border-t border-neutral-border flex flex-col sm:flex-row items-center justify-between gap-4">
-                <p className="text-xs text-navy/60">
-                  By submitting, you agree to comply with the Summit 2.0 Marketplace &amp; Exhibitor Guidelines.
-                </p>
+              <div className="pt-4 border-t border-neutral-border flex justify-end">
                 <button
                   type="submit"
                   disabled={isSubmitting || isUploadingProof}

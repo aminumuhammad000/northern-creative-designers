@@ -142,6 +142,7 @@ export interface LocalStoreData {
   hackathons: LocalHackathon[]
   hackathon_teams: LocalHackathonTeam[]
   hackathon_votes: LocalVote[]
+  hackathon_jury_scores?: LocalJuryScore[]
   users: LocalUser[]
   registrations: LocalRegistration[]
   tickets: LocalTicket[]
@@ -179,6 +180,7 @@ const INITIAL_DATA: LocalStoreData = {
   ],
   hackathon_teams: [],
   hackathon_votes: [],
+  hackathon_jury_scores: [],
   users: [],
   registrations: [],
   tickets: [],
@@ -685,4 +687,121 @@ export function fastTrackLocalCheckIn(query: string) {
     attendee: matchedReg,
     ticket: matchedTicket,
   }
+}
+
+export function updateLocalHackathonTeam(
+  id: string,
+  payload: Partial<LocalHackathonTeam>
+) {
+  const store = getLocalStore()
+  const lower = id.toLowerCase()
+  const team = store.hackathon_teams.find(
+    (t) => t.id === id || (t.lead_email && t.lead_email.toLowerCase() === lower)
+  )
+
+  if (!team) {
+    return { success: false, error: 'Hackathon team not found in local database.' }
+  }
+
+  if (payload.professional_title !== undefined) team.professional_title = payload.professional_title
+  if (payload.avatar_url !== undefined) team.avatar_url = payload.avatar_url
+  if (payload.project_title !== undefined) team.project_title = payload.project_title
+  if (payload.short_description !== undefined) team.short_description = payload.short_description
+  if (payload.detailed_description !== undefined) team.detailed_description = payload.detailed_description
+  if (payload.problem_statement !== undefined) team.problem_statement = payload.problem_statement
+  if (payload.proposed_solution !== undefined) team.proposed_solution = payload.proposed_solution
+  if (payload.target_audience !== undefined) team.target_audience = payload.target_audience
+  if (payload.presentation_url !== undefined) team.presentation_url = payload.presentation_url
+  if (payload.portfolio_url !== undefined) team.portfolio_url = payload.portfolio_url
+  if (payload.lead_phone !== undefined) team.lead_phone = payload.lead_phone
+  if (payload.city !== undefined) team.city = payload.city
+  if (payload.organization !== undefined) team.organization = payload.organization
+  if (payload.status !== undefined) team.status = payload.status
+  if (payload.track !== undefined) team.track = payload.track
+  if (payload.lead_name !== undefined) team.lead_name = payload.lead_name
+  if (payload.team_name !== undefined) team.team_name = payload.team_name
+
+  saveLocalStore(store)
+  return { success: true, team }
+}
+
+export function getLocalHackathonParticipant(identifier?: string | null) {
+  const store = getLocalStore()
+  if (!store.hackathon_teams || store.hackathon_teams.length === 0) {
+    return null
+  }
+
+  if (identifier) {
+    const q = identifier.trim().toLowerCase()
+    const found = store.hackathon_teams.find(
+      (t) =>
+        t.id.toLowerCase() === q ||
+        (t.lead_email && t.lead_email.toLowerCase() === q) ||
+        t.lead_name.toLowerCase().includes(q)
+    )
+    if (found) return found
+  }
+
+  return store.hackathon_teams[0] || null
+}
+
+export function saveLocalJuryScore(input: {
+  hackathon_id: string
+  team_id: string
+  judge_name: string
+  judge_email?: string
+  cultural_semiotics: number
+  problem_solution: number
+  craft_execution: number
+  presentation: number
+  total_score: number
+  feedback?: string
+  status?: string
+}) {
+  const store = getLocalStore()
+  if (!store.hackathon_jury_scores) {
+    store.hackathon_jury_scores = []
+  }
+
+  const existingIdx = store.hackathon_jury_scores.findIndex(
+    (s) =>
+      s.hackathon_id === input.hackathon_id &&
+      s.team_id === input.team_id &&
+      s.judge_name.trim().toLowerCase() === input.judge_name.trim().toLowerCase()
+  )
+
+  const scoreRecord: LocalJuryScore = {
+    id: existingIdx >= 0 ? store.hackathon_jury_scores[existingIdx].id : `score_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    hackathon_id: input.hackathon_id,
+    team_id: input.team_id,
+    judge_name: input.judge_name.trim(),
+    judge_email: input.judge_email || null,
+    cultural_semiotics: input.cultural_semiotics,
+    problem_solution: input.problem_solution,
+    craft_execution: input.craft_execution,
+    presentation: input.presentation,
+    total_score: input.total_score,
+    feedback: input.feedback || null,
+    status: input.status || 'draft',
+    created_at: existingIdx >= 0 ? store.hackathon_jury_scores[existingIdx].created_at : new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  }
+
+  if (existingIdx >= 0) {
+    store.hackathon_jury_scores[existingIdx] = scoreRecord
+  } else {
+    store.hackathon_jury_scores.push(scoreRecord)
+  }
+
+  saveLocalStore(store)
+  return { success: true, score: scoreRecord }
+}
+
+export function getLocalJuryScores(hackathonId?: string) {
+  const store = getLocalStore()
+  const scores = store.hackathon_jury_scores || []
+  if (hackathonId) {
+    return scores.filter((s) => s.hackathon_id === hackathonId)
+  }
+  return scores
 }

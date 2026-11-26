@@ -271,7 +271,21 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
         registrationId: localResult.id,
       }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
 
-      safeRevalidatePaths('/dashboard', '/admin', '/hackathon', '/hackathon/participants')
+      try {
+        const cookieStore = await cookies()
+        cookieStore.set('ncd_hackathon_team_id', localResult.id, {
+          path: '/',
+          httpOnly: true,
+          maxAge: 60 * 60 * 24 * 30,
+        })
+        cookieStore.set('ncd_session_email', trimmedEmail, {
+          path: '/',
+          httpOnly: true,
+          maxAge: 60 * 60 * 24 * 30,
+        })
+      } catch {}
+
+      safeRevalidatePaths('/dashboard', '/dashboard/hackathon', '/admin', '/hackathon', '/hackathon/participants')
       return { success: true, id: localResult.id }
     }
 
@@ -446,7 +460,23 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
       registrationId: team?.id,
     }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
 
-    safeRevalidatePaths('/dashboard', '/admin', '/hackathon', '/hackathon/participants')
+    try {
+      const cookieStore = await cookies()
+      if (team?.id) {
+        cookieStore.set('ncd_hackathon_team_id', team.id, {
+          path: '/',
+          httpOnly: true,
+          maxAge: 60 * 60 * 24 * 30,
+        })
+      }
+      cookieStore.set('ncd_session_email', trimmedEmail, {
+        path: '/',
+        httpOnly: true,
+        maxAge: 60 * 60 * 24 * 30,
+      })
+    } catch {}
+
+    safeRevalidatePaths('/dashboard', '/dashboard/hackathon', '/admin', '/hackathon', '/hackathon/participants')
     return { success: true, id: team?.id }
   } catch (err: unknown) {
     if (isDatabaseConnectionError(err)) {

@@ -4,18 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Users2,
-  Clock,
-  Lock,
   ArrowRight,
   Vote,
   Trophy,
   Award,
-  Sparkles,
-  QrCode,
   ShieldCheck,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { Button } from "@/components/ui/Button";
 import { getHackathonPublicStateAction } from "@/app/actions/voting";
 
 export const metadata: Metadata = {
@@ -51,25 +46,14 @@ export default async function HackathonPage() {
           }`}
         >
           <div className="space-y-4 max-w-2xl">
-            <div className="flex flex-wrap items-center gap-2">
-              {state.is_voting_open ? (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-spring text-[#063B18] shadow-sm animate-pulse">
-                  <span className="w-2 h-2 rounded-full bg-[#063B18]" />
-                  LIVE AUDIENCE VOTING ACTIVE
-                </span>
-              ) : state.results_published ? (
+            {state.results_published && (
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-400 text-neutral-900 shadow-sm">
                   <Award className="w-3.5 h-3.5" />
                   OFFICIAL 70/30 WINNERS PUBLISHED
                 </span>
-              ) : (
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider bg-white/15 text-spring">
-                  <Clock className="w-3.5 h-3.5" />
-                  SUMMIT 2.0 ON-STAGE COMPETITION
-                </span>
-              )}
-              <span className="text-xs text-white/70 font-mono">• 19th December, 2026, Kano</span>
-            </div>
+              </div>
+            )}
 
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
               The 2-Hour Live Stage Sprint
@@ -77,34 +61,13 @@ export default async function HackathonPage() {
             <p className="text-white/80 text-sm sm:text-base leading-relaxed">
               Following the celebrated 2025 Northern Design Hackathon (which awarded ₦100,000 in cash prizes), Hackathon 2.0 brings individual finalist designers onto the main summit stage in Kano for a 120-minute execution sprint with live audience voting and verified digital ballots.
             </p>
-
-            <div className="flex flex-wrap items-center gap-4 text-xs text-white/80 pt-1 font-mono">
-              <span className="flex items-center gap-1.5">
-                <Clock className="w-4 h-4 text-spring" />
-                120 Minutes Execution
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-1.5">
-                <Vote className="w-4 h-4 text-spring" />
-                20-Minute Voting Window
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-1.5">
-                <Users2 className="w-4 h-4 text-spring" />
-                Individual Finalists
-              </span>
-            </div>
           </div>
 
           {/* Action CTAs */}
           <div className="flex flex-col sm:flex-row lg:flex-col gap-3 flex-shrink-0 w-full lg:w-72">
             <Link
               href="/hackathon/vote"
-              className={`w-full py-3.5 px-6 rounded-full text-center text-xs font-black uppercase tracking-wider transition-all shadow-md ${
-                state.is_voting_open
-                  ? "bg-spring hover:bg-[#02b25b] text-[#063B18] animate-bounce"
-                  : "bg-spring hover:bg-[#02b25b] text-[#063B18]"
-              }`}
+              className="w-full py-3.5 px-6 rounded-full text-center text-xs font-black uppercase tracking-wider transition-all shadow-md bg-spring hover:bg-[#02b25b] text-[#063B18]"
             >
               Vote for a Designer
             </Link>
@@ -125,7 +88,7 @@ export default async function HackathonPage() {
 
             <Link
               href="/hackathon/register"
-              className="w-full py-2.5 px-6 rounded-full text-white/70 hover:text-white font-medium text-[11px] uppercase tracking-wider text-center transition-colors"
+              className="w-full py-3 px-6 rounded-full border border-white/30 text-white hover:bg-white hover:text-pine font-bold text-xs uppercase tracking-wider text-center transition-all shadow-2xs"
             >
               Register to Compete →
             </Link>
@@ -231,16 +194,12 @@ export default async function HackathonPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                   <p className="font-black text-lg">Inaugural Regional Design Sprint</p>
-                  <p className="text-white/75 text-xs font-mono">₦100,000 Cash Prizes Awarded</p>
                 </div>
               </div>
               <div className="p-6 space-y-2 bg-white flex-1 flex flex-col justify-between">
                 <p className="text-xs sm:text-sm text-navy/75 leading-relaxed">
                   Competitors solved localized civic branding and mobile UX challenges in Kano, reviewed live by a panel of regional tech founders.
                 </p>
-                <div className="pt-3 border-t border-neutral-border/60 text-xs font-mono text-pine/80 font-bold">
-                  ✦ Physical Sprint • Verified Winners
-                </div>
               </div>
             </div>
 
@@ -256,7 +215,6 @@ export default async function HackathonPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-pine/90 via-pine/30 to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                   <p className="font-black text-lg">Summit 2.0 Live Stage Sprint</p>
-                  <p className="text-white/75 text-xs font-mono">120 Minutes on Stage • 20 Min Live Ballot</p>
                 </div>
               </div>
               <div className="p-6 space-y-3 bg-pine flex-1 flex flex-col justify-between">
@@ -297,9 +255,6 @@ export default async function HackathonPage() {
               <p className="text-xs sm:text-sm text-navy/75 leading-relaxed">
                 Translating authentic Northern motifs and visual languages into scalable contemporary branding systems, logos, packaging, and cultural typography.
               </p>
-              <div className="pt-2 text-[11px] font-mono text-spring font-bold">
-                ✦ Live Stage Execution &amp; Pitch
-              </div>
             </div>
 
             <div className="p-6 rounded-3xl bg-white border border-neutral-border hover:border-pine/30 transition-all space-y-3 shadow-xs hover:shadow-md">
@@ -310,9 +265,6 @@ export default async function HackathonPage() {
               <p className="text-xs sm:text-sm text-navy/75 leading-relaxed">
                 Designing intuitive digital product experiences, mobile application interfaces, and interactive prototypes tailored to regional problems.
               </p>
-              <div className="pt-2 text-[11px] font-mono text-spring font-bold">
-                ✦ Live Stage Execution &amp; Pitch
-              </div>
             </div>
           </div>
         </section>

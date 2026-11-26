@@ -14,7 +14,7 @@ export interface DashboardSidebarItem<T extends string = string> {
 }
 
 interface DashboardSidebarProps<T extends string = string> {
-  portalType: "attendee" | "exhibitor_vendor" | "partner";
+  portalType: "attendee" | "exhibitor_vendor" | "partner" | "hackathon" | "judge";
   portalTitle: string;
   portalBadge: string;
   userName?: string;
