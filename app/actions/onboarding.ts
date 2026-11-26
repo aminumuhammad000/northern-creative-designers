@@ -223,6 +223,7 @@ async function setHackathonSessionCookies(teamId: string | undefined, email: str
       cookieStore.set('ncd_hackathon_team_id', teamId, {
         path: '/',
         httpOnly: true,
+        sameSite: 'lax',
         maxAge: 60 * 60 * 24 * 30,
       })
     }
@@ -230,6 +231,7 @@ async function setHackathonSessionCookies(teamId: string | undefined, email: str
       cookieStore.set('ncd_session_email', email, {
         path: '/',
         httpOnly: true,
+        sameSite: 'lax',
         maxAge: 60 * 60 * 24 * 30,
       })
     }
@@ -260,18 +262,24 @@ async function saveLocalHackathonAndFinalize(params: {
     portfolioUrl: params.portfolioUrl,
   })
 
-  sendHackathonConfirmationEmail({
-    email: params.leadEmail,
-    fullName: params.leadName,
-    track: params.track,
-    city: params.city,
-    organization: params.organization,
-    registrationId: localResult.id,
-  }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
+  if (!localResult.alreadyRegistered) {
+    sendHackathonConfirmationEmail({
+      email: params.leadEmail,
+      fullName: params.leadName,
+      track: params.track,
+      city: params.city,
+      organization: params.organization,
+      registrationId: localResult.id,
+    }).catch((e) => console.warn('[Email Warning] Hackathon email failed to send:', e))
+  }
 
   await setHackathonSessionCookies(localResult.id, params.leadEmail)
   safeRevalidatePaths('/dashboard', '/dashboard/hackathon', '/admin', '/hackathon', '/hackathon/participants')
-  return { success: true as const, id: localResult.id }
+  return {
+    success: true as const,
+    alreadyRegistered: Boolean(localResult.alreadyRegistered),
+    id: localResult.id,
+  }
 }
 
 export async function registerHackathonAction(data: HackathonRegistrationData) {
@@ -342,6 +350,35 @@ export async function registerHackathonAction(data: HackathonRegistrationData) {
         })
       }
       throw clientErr
+    }
+
+    // Check if user is already registered for the hackathon
+    const { data: existingTeam, error: existingErr } = await adminSupabase
+      .from('hackathon_teams')
+      .select('id')
+      .ilike('lead_email', trimmedEmail)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+
+    if (isDatabaseConnectionError(existingErr)) {
+      return await saveLocalHackathonAndFinalize({
+        teamName: contestantIdentifier,
+        track: trimmedTrack,
+        leadName: candidateName,
+        leadEmail: trimmedEmail,
+        leadPhone: trimmedPhone,
+        gender: trimmedGender,
+        city: trimmedCity,
+        organization: trimmedOrg,
+        portfolioUrl: trimmedPortfolio,
+      })
+    }
+
+    if (existingTeam?.id) {
+      await setHackathonSessionCookies(existingTeam.id, trimmedEmail)
+      safeRevalidatePaths('/dashboard', '/dashboard/hackathon', '/hackathon', '/hackathon/participants')
+      return { success: true as const, alreadyRegistered: true, id: existingTeam.id }
     }
 
     let hackathonId: string | null = null

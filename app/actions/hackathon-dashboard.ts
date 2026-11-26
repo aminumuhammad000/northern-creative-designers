@@ -11,6 +11,8 @@ import {
   saveLocalStore,
   updateLocalHackathonTeam,
   getLocalHackathonParticipant,
+  findLocalHackathonParticipantByEmailAndPhone,
+  phonesMatch,
   saveLocalJuryScore,
   getLocalJuryScores,
 } from '@/lib/supabase/local-db'
@@ -495,6 +497,70 @@ export async function setParticipantSessionCookieAction(
     return { success: true }
   } catch {
     return { success: false }
+  }
+}
+
+export async function loginHackathonParticipantAction(
+  email: string,
+  phone: string
+): Promise<{ success: boolean; participantId?: string; error?: string }> {
+  const trimmedEmail = (email || '').trim().toLowerCase()
+  const trimmedPhone = (phone || '').trim()
+
+  if (!trimmedEmail || !trimmedPhone) {
+    return { success: false, error: 'Please enter both your email address and phone number.' }
+  }
+
+  try {
+    if (isLocalDevMode()) {
+      const localMatch = findLocalHackathonParticipantByEmailAndPhone(trimmedEmail, trimmedPhone)
+      if (!localMatch) {
+        return {
+          success: false,
+          error: 'No hackathon registration found matching that email and phone number.',
+        }
+      }
+      await setParticipantSessionCookieAction(localMatch.id, localMatch.lead_email || trimmedEmail)
+      return { success: true, participantId: localMatch.id }
+    }
+
+    const adminSupabase = createAdminClient()
+    const { data: teams, error } = await adminSupabase
+      .from('hackathon_teams')
+      .select('id, lead_email, lead_phone')
+      .ilike('lead_email', trimmedEmail)
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      if (isDatabaseConnectionError(error)) {
+        const localMatch = findLocalHackathonParticipantByEmailAndPhone(trimmedEmail, trimmedPhone)
+        if (localMatch) {
+          await setParticipantSessionCookieAction(localMatch.id, localMatch.lead_email || trimmedEmail)
+          return { success: true, participantId: localMatch.id }
+        }
+      }
+      return { success: false, error: 'Unable to verify registration. Please try again.' }
+    }
+
+    const matched = (teams || []).find((t) => phonesMatch(t.lead_phone, trimmedPhone))
+    if (!matched) {
+      return {
+        success: false,
+        error: 'No hackathon registration found matching that email and phone number.',
+      }
+    }
+
+    await setParticipantSessionCookieAction(matched.id, matched.lead_email || trimmedEmail)
+    return { success: true, participantId: matched.id }
+  } catch (err: unknown) {
+    if (isDatabaseConnectionError(err)) {
+      const localMatch = findLocalHackathonParticipantByEmailAndPhone(trimmedEmail, trimmedPhone)
+      if (localMatch) {
+        await setParticipantSessionCookieAction(localMatch.id, localMatch.lead_email || trimmedEmail)
+        return { success: true, participantId: localMatch.id }
+      }
+    }
+    return { success: false, error: 'Failed to access dashboard. Please try again.' }
   }
 }
 

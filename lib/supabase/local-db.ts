@@ -566,6 +566,33 @@ export function submitLocalExhibitorApplication(data: {
   return { success: true, id, exhibitor }
 }
 
+function normalizePhoneDigits(phone?: string | null): string {
+  return (phone || '').replace(/\D/g, '')
+}
+
+export function phonesMatch(a?: string | null, b?: string | null): boolean {
+  const da = normalizePhoneDigits(a)
+  const db = normalizePhoneDigits(b)
+  if (!da || !db) return false
+  if (da === db) return true
+  if (da.length >= 10 && db.length >= 10) {
+    return da.slice(-10) === db.slice(-10)
+  }
+  return false
+}
+
+export function findLocalHackathonParticipantByEmailAndPhone(email: string, phone: string) {
+  const store = getLocalStore()
+  const trimmedEmail = email.trim().toLowerCase()
+  return (
+    store.hackathon_teams.find(
+      (t) =>
+        (t.lead_email || '').toLowerCase() === trimmedEmail &&
+        phonesMatch(t.lead_phone, phone)
+    ) || null
+  )
+}
+
 export function submitLocalHackathonTeam(data: {
   teamName: string
   track: string
@@ -579,6 +606,17 @@ export function submitLocalHackathonTeam(data: {
   portfolioUrl?: string
 }) {
   const store = getLocalStore()
+  const trimmedEmail = data.leadEmail ? data.leadEmail.trim().toLowerCase() : ''
+
+  if (trimmedEmail) {
+    const existing = store.hackathon_teams.find(
+      (t) => (t.lead_email || '').toLowerCase() === trimmedEmail
+    )
+    if (existing) {
+      return { success: true, alreadyRegistered: true, id: existing.id, team: existing }
+    }
+  }
+
   const id = `t_${Math.random().toString(36).substring(2, 7)}_${Date.now()}`
   const hackathonId = store.hackathons?.[0]?.id || DEFAULT_HACKATHON_ID
   const team: LocalHackathonTeam = {
@@ -603,7 +641,7 @@ export function submitLocalHackathonTeam(data: {
   store.hackathon_teams.unshift(team)
   saveLocalStore(store)
 
-  return { success: true, id, team }
+  return { success: true, alreadyRegistered: false, id, team }
 }
 
 export function getLocalAdminData() {

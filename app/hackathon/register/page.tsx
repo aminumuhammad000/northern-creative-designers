@@ -2,15 +2,23 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { CheckCircle, ArrowLeft, Send, Sparkles, User, Mail, Phone, MapPin, Briefcase, Globe, Layers } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { CheckCircle, ArrowLeft, ArrowRight, Send, Sparkles, User, Mail, Phone, MapPin, Briefcase, Globe, Layers } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { registerHackathonAction } from "@/app/actions/onboarding";
+import { loginHackathonParticipantAction } from "@/app/actions/hackathon-dashboard";
 
 export default function HackathonRegisterPage() {
+  const router = useRouter();
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showReturningForm, setShowReturningForm] = useState(false);
+  const [returningEmail, setReturningEmail] = useState("");
+  const [returningPhone, setReturningPhone] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [returningError, setReturningError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     organization: "",
@@ -21,6 +29,24 @@ export default function HackathonRegisterPage() {
     category: "Brand identity",
     portfolioUrl: "",
   });
+
+  const handleReturningAccess = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setReturningError("");
+    setIsLoggingIn(true);
+    try {
+      const res = await loginHackathonParticipantAction(returningEmail, returningPhone);
+      if (res.success) {
+        router.push("/dashboard/hackathon");
+      } else {
+        setReturningError(res.error || "Could not find your hackathon registration.");
+      }
+    } catch {
+      setReturningError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,6 +75,10 @@ export default function HackathonRegisterPage() {
     try {
       const res = await registerHackathonAction(formData);
       if (res.success) {
+        if ("alreadyRegistered" in res && res.alreadyRegistered) {
+          router.push("/dashboard/hackathon");
+          return;
+        }
         setSubmitted(true);
       } else {
         setErrorMessage(res.error || "Failed to submit hackathon registration.");
@@ -112,10 +142,82 @@ export default function HackathonRegisterPage() {
             </div>
           </div>
         ) : (
-          <form
-            onSubmit={handleSubmit}
-            className="p-6 sm:p-10 rounded-3xl bg-white border border-neutral-border space-y-8 shadow-sm"
-          >
+          <div className="space-y-6">
+            {/* Returning Contestant Access Banner */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-[#F6FFF8] border border-pine/20 flex flex-col gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-bold text-pine">
+                    Already registered for Hackathon 2.0?
+                  </p>
+                  <p className="text-xs text-navy/70">
+                    Enter your registered email and phone number to access your existing contestant dashboard.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowReturningForm(!showReturningForm);
+                    setReturningError("");
+                  }}
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-full bg-pine text-white hover:bg-pine-light text-xs font-bold uppercase tracking-wider transition-colors flex-shrink-0 cursor-pointer"
+                >
+                  <span>{showReturningForm ? "Hide Login" : "Access Existing Dashboard"}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {showReturningForm && (
+                <form
+                  onSubmit={handleReturningAccess}
+                  className="pt-4 border-t border-pine/15 grid grid-cols-1 sm:grid-cols-3 gap-3 items-end"
+                >
+                  <div>
+                    <label className="block text-[11px] font-bold text-pine uppercase tracking-wider mb-1">
+                      Registered Email
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="you@example.com"
+                      value={returningEmail}
+                      onChange={(e) => setReturningEmail(e.target.value)}
+                      className="w-full h-10 px-3 rounded-xl border border-neutral-border bg-white text-xs text-navy focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-pine uppercase tracking-wider mb-1">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="08012345678"
+                      value={returningPhone}
+                      onChange={(e) => setReturningPhone(e.target.value)}
+                      className="w-full h-10 px-3 rounded-xl border border-neutral-border bg-white text-xs text-navy focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={isLoggingIn}
+                    className="h-10 px-5 rounded-xl bg-spring hover:bg-spring/90 text-navy font-bold text-xs uppercase tracking-wider transition-all disabled:opacity-60 cursor-pointer"
+                  >
+                    {isLoggingIn ? "Verifying..." : "Open Dashboard →"}
+                  </button>
+                  {returningError && (
+                    <p className="sm:col-span-3 text-xs font-medium text-red-600">
+                      {returningError}
+                    </p>
+                  )}
+                </form>
+              )}
+            </div>
+
+            <form
+              onSubmit={handleSubmit}
+              className="p-6 sm:p-10 rounded-3xl bg-white border border-neutral-border space-y-8 shadow-sm"
+            >
             {/* Form Header */}
             <div className="border-b border-neutral-border pb-5">
               <div className="flex items-center gap-2 mb-1">
@@ -361,6 +463,7 @@ export default function HackathonRegisterPage() {
               </button>
             </div>
           </form>
+          </div>
         )}
       </div>
     </main>
