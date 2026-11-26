@@ -725,9 +725,18 @@ export async function adminSignOutAction(): Promise<{ success: boolean }> {
 }
 
 export interface SendEmailPayload {
-  recipientType: 'individual' | 'all_attendees' | 'checked_in_only' | 'all_exhibitors' | 'all_hackathon'
+  recipientType:
+    | 'all_users'
+    | 'individual'
+    | 'all_attendees'
+    | 'checked_in_only'
+    | 'all_exhibitors'
+    | 'all_hackathon'
+    | 'all_partners'
+    | 'custom_list'
   individualEmail?: string
   individualName?: string
+  customEmails?: string
   subject: string
   message: string
 }
@@ -754,7 +763,7 @@ export async function sendAdminEmailAction(payload: SendEmailPayload): Promise<S
       }
     }
 
-    const { recipientType, individualEmail, individualName, subject, message } = payload
+    const { recipientType, individualEmail, individualName, customEmails, subject, message } = payload
 
     if (!subject.trim()) {
       return {
@@ -776,39 +785,100 @@ export async function sendAdminEmailAction(payload: SendEmailPayload): Promise<S
       }
     }
 
-    const recipients: { email: string; name: string }[] = []
+    const recipientMap = new Map<string, { email: string; name: string }>()
+    const addRecipient = (email?: string | null, name?: string | null) => {
+      const clean = (email || '').trim().toLowerCase()
+      if (!clean || !clean.includes('@')) return
+      if (!recipientMap.has(clean)) {
+        recipientMap.set(clean, { email: clean, name: (name || 'Participant').trim() || 'Participant' })
+      }
+    }
 
-    if (isLocalDevMode()) {
+    const addCustomList = (raw?: string) => {
+      if (!raw) return
+      raw
+        .split(/[\s,;]+/)
+        .map((e) => e.trim())
+        .filter((e) => e.includes('@'))
+        .forEach((e) => addRecipient(e, 'Partner'))
+    }
+
+    if (recipientType === 'individual') {
+      addRecipient(individualEmail, individualName || 'Delegate')
+    } else if (recipientType === 'custom_list') {
+      addCustomList(customEmails)
+    } else if (isLocalDevMode()) {
       const store = getLocalStore()
-      if (recipientType === 'individual') {
-        const email = individualEmail?.trim()
-        if (email) recipients.push({ email, name: individualName?.trim() || 'Delegate' })
-      } else if (recipientType === 'all_attendees') {
-        store.registrations.forEach((r) => recipients.push({ email: r.email, name: r.full_name }))
-      } else if (recipientType === 'checked_in_only') {
+      if (recipientType === 'all_users' || recipientType === 'all_attendees') {
+        store.registrations.forEach((r) => addRecipient(r.email, r.full_name))
+      }
+      if (recipientType === 'checked_in_only') {
         const checkedRegIds = new Set(store.tickets.filter((t) => t.checked_in).map((t) => t.registration_id))
         store.registrations
           .filter((r) => checkedRegIds.has(r.id))
-          .forEach((r) => recipients.push({ email: r.email, name: r.full_name }))
-      } else if (recipientType === 'all_exhibitors') {
+          .forEach((r) => addRecipient(r.email, r.full_name))
+      }
+      if (recipientType === 'all_users' || recipientType === 'all_exhibitors') {
         store.exhibitor_applications.forEach((e) =>
-          recipients.push({ email: e.email, name: e.contact_person || e.business_name })
+          addRecipient(e.email, e.contact_person || e.business_name)
         )
-      } else if (recipientType === 'all_hackathon') {
-        store.hackathon_teams.forEach((t) =>
-          recipients.push({ email: t.lead_email || 'contestant@northcdesigner.com.ng', name: t.lead_name })
-        )
+      }
+      if (recipientType === 'all_users' || recipientType === 'all_hackathon') {
+        store.hackathon_teams.forEach((t) => addRecipient(t.lead_email, t.lead_name))
+      }
+      if (recipientType === 'all_partners') {
+        addCustomList(customEmails)
       }
     } else {
       const adminSupabase = createAdminClient()
-      if (recipientType === 'individual') {
-        const email = individualEmail?.trim()
-        if (email) recipients.push({ email, name: individualName?.trim() || 'Delegate' })
-      } else if (recipientType === 'all_attendees') {
+
+      if (recipientType === 'all_users' || recipientType === 'all_attendees') {
         const { data: regs } = await adminSupabase.from('registrations').select('email, full_name')
-        regs?.forEach((r) => recipients.push({ email: r.email, name: r.full_name }))
+        regs?.forEach((r) => addRecipient(r.email, r.full_name))
+      }
+
+      if (recipientType === 'checked_in_only') {
+        const { data: checkedTickets } = await adminSupabase
+          .from('tickets')
+          .select('registration_id')
+          .eq('checked_in', true)
+        const checkedIds = new Set((checkedTickets || []).map((t) => t.registration_id))
+        if (checkedIds.size > 0) {
+          const { data: regs } = await adminSupabase
+            .from('registrations')
+            .select('id, email, full_name')
+          regs
+            ?.filter((r) => checkedIds.has(r.id))
+            .forEach((r) => addRecipient(r.email, r.full_name))
+        }
+      }
+
+      if (recipientType === 'all_users' || recipientType === 'all_exhibitors') {
+        const { data: exhs } = await adminSupabase
+          .from('exhibitor_applications')
+          .select('email, contact_person, business_name')
+        exhs?.forEach((e) => addRecipient(e.email, e.contact_person || e.business_name))
+      }
+
+      if (recipientType === 'all_users' || recipientType === 'all_hackathon') {
+        const { data: teams } = await adminSupabase
+          .from('hackathon_teams')
+          .select('lead_email, lead_name')
+        teams?.forEach((t) => addRecipient(t.lead_email, t.lead_name))
+      }
+
+      if (recipientType === 'all_users' || recipientType === 'all_partners') {
+        try {
+          const { data: partners } = await (adminSupabase as any)
+            .from('partner_inquiries')
+            .select('email, contact_name, organization_name')
+          partners?.forEach((p: any) => addRecipient(p.email, p.contact_name || p.organization_name || 'Partner'))
+        } catch {}
+        addCustomList(customEmails)
       }
     }
+
+    const recipients = Array.from(recipientMap.values())
 
     if (recipients.length === 0) {
       return {

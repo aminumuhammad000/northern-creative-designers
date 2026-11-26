@@ -122,10 +122,18 @@ export default function AdminPortalPage() {
 
   // Broadcast Email State
   const [emailRecipientType, setEmailRecipientType] = useState<
-    "individual" | "all_attendees" | "checked_in_only" | "all_exhibitors" | "all_hackathon"
-  >("all_attendees");
+    | "all_users"
+    | "individual"
+    | "all_attendees"
+    | "checked_in_only"
+    | "all_exhibitors"
+    | "all_hackathon"
+    | "all_partners"
+    | "custom_list"
+  >("all_users");
   const [emailIndividualAddress, setEmailIndividualAddress] = useState("");
   const [emailIndividualName, setEmailIndividualName] = useState("");
+  const [emailCustomList, setEmailCustomList] = useState("");
   const [emailSubject, setEmailSubject] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
   const [isSendingEmail, setIsSendingEmail] = useState(false);
@@ -426,6 +434,7 @@ export default function AdminPortalPage() {
       recipientType: emailRecipientType,
       individualEmail: emailIndividualAddress,
       individualName: emailIndividualName,
+      customEmails: emailCustomList,
       subject: emailSubject,
       message: emailMessage,
     };
@@ -549,8 +558,25 @@ export default function AdminPortalPage() {
       ? Math.round((metrics.checkedInCount / metrics.totalRegistrations) * 100)
       : 0;
 
+  const customEmailCount = useMemo(() => {
+    return emailCustomList
+      .split(/[\s,;]+/)
+      .map((e) => e.trim())
+      .filter((e) => e.includes("@")).length;
+  }, [emailCustomList]);
+
+  const allUniqueUsersCount = useMemo(() => {
+    const set = new Set<string>();
+    registrations.forEach((r) => r.email && set.add(r.email.toLowerCase()));
+    exhibitors.forEach((e) => e.email && set.add(e.email.toLowerCase()));
+    hackathonTeams.forEach((t) => t.lead_email && set.add(t.lead_email.toLowerCase()));
+    return set.size;
+  }, [registrations, exhibitors, hackathonTeams]);
+
   const estimatedRecipientsCount = (() => {
     switch (emailRecipientType) {
+      case "all_users":
+        return allUniqueUsersCount;
       case "individual":
         return emailIndividualAddress.trim() ? 1 : 0;
       case "all_attendees":
@@ -561,6 +587,9 @@ export default function AdminPortalPage() {
         return exhibitors.length;
       case "all_hackathon":
         return hackathonTeams.length;
+      case "all_partners":
+      case "custom_list":
+        return customEmailCount;
       default:
         return 0;
     }
@@ -1448,13 +1477,16 @@ export default function AdminPortalPage() {
                     <label className="text-xs font-bold text-pine uppercase tracking-wider block">
                       Target Audience
                     </label>
-                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {[
+                        { id: "all_users", label: "All Users" },
                         { id: "all_attendees", label: "All Delegates" },
                         { id: "checked_in_only", label: "Checked-In" },
-                        { id: "all_exhibitors", label: "Exhibitors" },
                         { id: "all_hackathon", label: "Hackathon" },
-                        { id: "individual", label: "Direct Recipient" },
+                        { id: "all_exhibitors", label: "Exhibitors" },
+                        { id: "all_partners", label: "Partners" },
+                        { id: "individual", label: "Individual" },
+                        { id: "custom_list", label: "Custom List" },
                       ].map((item) => (
                         <button
                           key={item.id}
@@ -1471,6 +1503,23 @@ export default function AdminPortalPage() {
                       ))}
                     </div>
                   </div>
+
+                  {(emailRecipientType === "all_partners" || emailRecipientType === "custom_list") && (
+                    <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-1.5">
+                      <label className="text-xs font-bold text-neutral-700 block">
+                        {emailRecipientType === "all_partners"
+                          ? "Partner Email Addresses (comma or newline separated)"
+                          : "Recipient Email Addresses (comma or newline separated)"}
+                      </label>
+                      <textarea
+                        rows={3}
+                        placeholder="partner1@company.com, partner2@agency.com"
+                        value={emailCustomList}
+                        onChange={(e) => setEmailCustomList(e.target.value)}
+                        className="w-full p-3 rounded-xl border border-neutral-300 bg-white text-xs font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine"
+                      />
+                    </div>
+                  )}
 
                   {emailRecipientType === "individual" && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-neutral-50 border border-neutral-200">
