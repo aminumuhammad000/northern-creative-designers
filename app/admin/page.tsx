@@ -485,132 +485,120 @@ export default function AdminPortalPage() {
   // ---------------------------------------------------------------------------
   if (!isAuthenticated) {
     return (
-      <main className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#02210a] via-[#011406] to-[#010903] text-white px-4 py-12 relative overflow-hidden selection:bg-spring selection:text-pine">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[540px] h-[320px] bg-emerald-500/10 blur-[130px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-10 right-10 w-[280px] h-[280px] bg-spring/5 blur-[90px] rounded-full pointer-events-none" />
+      <main className="min-h-screen w-full flex flex-col bg-white text-navy selection:bg-spring selection:text-pine">
+        {/* Top-Left Brand Logo */}
+        <header className="w-full px-6 sm:px-10 pt-6 flex items-center justify-start">
+          <Link
+            href="/"
+            className="inline-block transition-transform duration-300 hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-spring rounded-lg p-1"
+            aria-label="Return to Summit Portal"
+          >
+            <Image
+              src="/images/brand/logo-header.png"
+              alt="Northern Creative Designers"
+              width={200}
+              height={64}
+              className="h-8 sm:h-9 w-auto object-contain"
+              priority
+            />
+          </Link>
+        </header>
 
-        <div className="w-full max-w-md relative z-10">
-          <div className="text-center mb-8">
-            <Link
-              href="/"
-              className="inline-block transition-transform duration-300 hover:scale-105 mb-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-spring rounded-lg p-1"
-              aria-label="Return to Summit Portal"
-            >
-              <Image
-                src="/images/brand/logo-footer.png"
-                alt="Northern Creative Designers"
-                width={240}
-                height={76}
-                className="h-9 sm:h-10 w-auto object-contain mx-auto"
-                priority
-              />
-            </Link>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-spring text-xs font-semibold tracking-wider uppercase border border-white/10 mb-3 shadow-inner">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Operations Control Gateway</span>
+        <div className="flex-1 flex items-center justify-center px-4 py-10">
+          <div className="w-full max-w-md">
+            <div className="text-center mb-8">
+              <h1 className="text-2xl font-black text-pine tracking-tight">
+                Executive Administration
+              </h1>
             </div>
-            <h1 className="text-2xl font-black text-white tracking-tight">
-              Executive Administration
-            </h1>
-            <p className="text-xs text-white/60 mt-1">
-              Authorized Summit 2.0 personnel &amp; venue ops only
-            </p>
-          </div>
 
-          <div className="p-8 sm:p-10 rounded-3xl bg-white/[0.04] backdrop-blur-xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] space-y-6">
-            {authError && (
-              <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-300 font-medium leading-relaxed flex items-start gap-2.5">
-                <ShieldAlert className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                <span>{authError}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleAdminLogin} className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-white/80 uppercase tracking-wider block">
-                  Administrator Email
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-white/40">
-                    <Mail className="w-4 h-4" />
-                  </div>
-                  <input
-                    type="email"
-                    required
-                    placeholder="support@northcdesigner.com.ng"
-                    className="w-full h-12 pl-10 pr-4 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 focus:bg-white/10 text-sm font-medium text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-spring/40 focus:border-spring transition-all"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="email"
-                  />
+            <div className="p-8 sm:p-10 rounded-3xl bg-white border border-neutral-border shadow-sm space-y-6">
+              {authError && (
+                <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 font-medium leading-relaxed flex items-start gap-2.5">
+                  <ShieldAlert className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+                  <span>{authError}</span>
                 </div>
-              </div>
+              )}
 
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-white/80 uppercase tracking-wider block">
-                  Security Passkey
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-white/40">
-                    <Lock className="w-4 h-4" />
+              <form onSubmit={handleAdminLogin} className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                    Administrator Email
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
+                      <Mail className="w-4 h-4" />
+                    </div>
+                    <input
+                      type="email"
+                      required
+                      placeholder="support@northcdesigner.com.ng"
+                      className="w-full h-12 pl-10 pr-4 rounded-xl border border-neutral-border bg-neutral-50/50 hover:bg-white focus:bg-white text-sm font-medium text-navy placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-spring/40 focus:border-spring transition-all"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      autoComplete="email"
+                    />
                   </div>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    required
-                    placeholder="Enter passkey..."
-                    className="w-full h-12 pl-10 pr-11 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 focus:bg-white/10 text-sm font-medium text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-spring/40 focus:border-spring transition-all font-mono tracking-wider"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="current-password"
-                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                    Security Passkey
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-neutral-400">
+                      <Lock className="w-4 h-4" />
+                    </div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      required
+                      placeholder="Enter passkey..."
+                      className="w-full h-12 pl-10 pr-11 rounded-xl border border-neutral-border bg-neutral-50/50 hover:bg-white focus:bg-white text-sm font-medium text-navy placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-spring/40 focus:border-spring transition-all font-mono tracking-wider"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      autoComplete="current-password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-neutral-400 hover:text-navy transition-colors focus:outline-none"
+                      aria-label={showPassword ? "Hide passkey" : "Show passkey"}
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="pt-3">
                   <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-white/40 hover:text-white/80 transition-colors focus:outline-none"
-                    aria-label={showPassword ? "Hide passkey" : "Show passkey"}
+                    type="submit"
+                    disabled={isLoadingAuth}
+                    className="w-full h-12 rounded-xl bg-spring hover:bg-spring/90 text-navy font-bold text-sm tracking-wide transition-all shadow-sm hover:shadow active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {isLoadingAuth ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin text-navy" />
+                        <span>Authenticating Credentials...</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShieldCheck className="w-4 h-4 text-navy" />
+                        <span>Authenticate &amp; Enter Portal</span>
+                      </>
+                    )}
                   </button>
                 </div>
-              </div>
-
-              <div className="pt-3">
-                <button
-                  type="submit"
-                  disabled={isLoadingAuth}
-                  className="w-full h-12 rounded-xl bg-spring hover:bg-spring/90 text-navy font-bold text-sm tracking-wide transition-all shadow-[0_4px_16px_rgba(74,222,128,0.25)] hover:shadow-[0_6px_20px_rgba(74,222,128,0.35)] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                >
-                  {isLoadingAuth ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin text-navy" />
-                      <span>Authenticating Credentials...</span>
-                    </>
-                  ) : (
-                    <>
-                      <ShieldCheck className="w-4 h-4 text-navy" />
-                      <span>Authenticate &amp; Enter Portal</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
-
-            <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-white/50">
-              <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                TLS 1.3 Encrypted
-              </span>
-              <span className="font-mono text-white/40">RC: 9930022</span>
+              </form>
             </div>
-          </div>
 
-          <div className="mt-8 text-center">
-            <Link
-              href="/"
-              className="text-xs font-semibold text-white/50 hover:text-spring transition-colors inline-flex items-center gap-1.5"
-            >
-              <span>&larr; Return to Summit Homepage</span>
-            </Link>
+            <div className="mt-8 text-center">
+              <Link
+                href="/"
+                className="text-xs font-semibold text-navy/60 hover:text-pine transition-colors inline-flex items-center gap-1.5"
+              >
+                <span>&larr; Return to Summit Homepage</span>
+              </Link>
+            </div>
           </div>
         </div>
       </main>
