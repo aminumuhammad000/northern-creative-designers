@@ -147,20 +147,19 @@ export default function HackathonParticipantDashboard() {
       const base64 = reader.result as string;
       try {
         const uploadRes = await uploadHackathonParticipantPhotoAction(base64);
-        if (uploadRes.success && uploadRes.url) {
-          setFormData((prev) => ({ ...prev, avatar_url: uploadRes.url! }));
-          if (participant?.id) {
-            await updateHackathonParticipantAction(participant.id, { avatar_url: uploadRes.url });
+        const finalUrl = uploadRes.success && uploadRes.url ? uploadRes.url : base64;
+
+        setFormData((prev) => ({ ...prev, avatar_url: finalUrl }));
+        setParticipant((prev) => (prev ? { ...prev, avatar_url: finalUrl } : prev));
+
+        if (participant?.id) {
+          const saveRes = await updateHackathonParticipantAction(participant.id, { avatar_url: finalUrl });
+          if (!saveRes.success) {
+            setFeedback({ type: "error", text: saveRes.error || "Photo uploaded but failed to save to profile." });
+            return;
           }
-          setFeedback({ type: "success", text: "Profile photograph uploaded and updated successfully!" });
-        } else {
-          // Resilient fallback: set base64 preview
-          setFormData((prev) => ({ ...prev, avatar_url: base64 }));
-          if (participant?.id) {
-            await updateHackathonParticipantAction(participant.id, { avatar_url: base64 });
-          }
-          setFeedback({ type: "success", text: "Profile photograph updated!" });
         }
+        setFeedback({ type: "success", text: "Profile photograph uploaded and saved successfully!" });
       } catch {
         setFeedback({ type: "error", text: "Failed to upload image. Please try again." });
       } finally {
@@ -226,9 +225,9 @@ export default function HackathonParticipantDashboard() {
         userSubtitle={participant?.track ? `${participant.track} Track` : "Designer"}
         userEmail={participant?.lead_email || "competitor@hackathon.org"}
         items={[
-          { id: "project", label: "Project & Presentation", icon: Presentation, badge: "Core" },
+          { id: "project", label: "Project & Presentation", icon: Presentation },
           { id: "profile", label: "Profile & Avatar", icon: User },
-          { id: "voting", label: "Stage Voting & Ballot", icon: Vote, badge: participant?.votes ? `${participant.votes} Votes` : undefined },
+          { id: "voting", label: "Stage Voting & Ballot", icon: Vote, badge: participant?.votes ? `${participant.votes}` : undefined },
         ]}
         activeTab={activeTab}
         onSelectTab={(tabId) => setActiveTab(tabId as TabId)}
@@ -246,8 +245,7 @@ export default function HackathonParticipantDashboard() {
               ? "Designer Profile & Avatar"
               : "Live Stage Voting & Public Link"
           }
-          subtitle={`Competitor: ${participant?.lead_name || "Candidate"}`}
-          badgeText={participant?.track ? `${participant.track} Track` : "Hackathon 2.0"}
+          subtitle={participant?.lead_name || "Hackathon Contestant"}
           onOpenMobile={() => setMobileSidebarOpen(true)}
         />
 
@@ -271,91 +269,54 @@ export default function HackathonParticipantDashboard() {
           </div>
         )}
 
-        {/* Participant Switcher / Lookup Bar */}
-        {allParticipants.length > 0 && (
-          <div className="max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-            <div className="bg-white rounded-2xl border border-neutral-200 p-3 sm:p-4 shadow-2xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-pine uppercase tracking-wider text-[11px]">
-                  Registered Contestant:
-                </span>
-                <select
-                  value={participant?.id || ""}
-                  onChange={(e) => {
-                    const selected = allParticipants.find((p) => p.id === e.target.value);
-                    if (selected) handleSelectParticipant(selected.id, selected.lead_email);
-                  }}
-                  className="px-3 py-1.5 rounded-xl border border-neutral-200 bg-neutral-50 text-pine font-semibold focus:outline-none focus:ring-1 focus:ring-pine cursor-pointer"
-                >
-                  {allParticipants.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.lead_name} — {p.track} ({p.project_title})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Link
-                  href="/dashboard/judge"
-                  className="px-3 py-1.5 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-pine font-bold uppercase tracking-wider text-[10px] transition-colors"
-                >
-                  Open Judges Portal
-                </Link>
-                {participant && (
-                  <Link
-                    href={`/hackathon/participants/${participant.id}`}
-                    target="_blank"
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-spring/20 hover:bg-spring/30 text-pine font-bold uppercase tracking-wider text-[10px] transition-colors"
-                  >
-                    <span>View Public Finalist Page</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </Link>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+        <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
           {/* Contestant Status Overview Banner */}
           {participant && (
-            <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-pine to-[#034d1b] text-white shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
+            <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-pine to-[#034d1b] text-white shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-4 min-w-0">
                 <div className="relative w-14 h-14 rounded-2xl overflow-hidden border-2 border-spring/40 bg-white/10 shrink-0">
                   <Image
                     src={formData.avatar_url || "/images/community/ncd_class_training.jpg"}
                     alt={participant.lead_name}
                     fill
+                    unoptimized
                     className="object-cover"
                   />
                 </div>
-                <div>
-                  <div className="flex items-center gap-2">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-spring text-[#063B18]">
-                      {participant.track} Track
+                      {participant.track}
                     </span>
                     <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-white/20 text-white">
-                      Status: {participant.status.replace("_", " ")}
+                      {participant.status.replace("_", " ")}
                     </span>
                   </div>
-                  <h2 className="text-lg sm:text-xl font-bold mt-1 text-white">
+                  <h2 className="text-lg sm:text-xl font-bold mt-1 text-white truncate">
                     {formData.project_title || participant.lead_name}
                   </h2>
-                  <p className="text-xs text-white/80">
-                    Lead: {participant.lead_name} {participant.city ? `• ${participant.city}` : ""}
+                  <p className="text-xs text-white/80 truncate">
+                    {participant.lead_name}{participant.city ? ` • ${participant.city}` : ""}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+              <div className="flex flex-wrap items-center gap-2 shrink-0">
+                <Link
+                  href={`/hackathon/participants/${participant.id}`}
+                  target="_blank"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold uppercase tracking-wider transition-all"
+                >
+                  <span>Public Page</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </Link>
                 <button
                   type="button"
                   onClick={handleCopyPublicLink}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold uppercase tracking-wider transition-all"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer"
                 >
                   {copiedLink ? <Check className="w-3.5 h-3.5 text-spring" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{copiedLink ? "Link Copied" : "Copy Voting Link"}</span>
+                  <span>{copiedLink ? "Copied" : "Copy Link"}</span>
                 </button>
               </div>
             </div>
@@ -398,9 +359,6 @@ export default function HackathonParticipantDashboard() {
                     onChange={(e) => setFormData({ ...formData, project_title: e.target.value })}
                     className="w-full h-11 px-3.5 rounded-xl border border-neutral-200 bg-white text-xs font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine shadow-2xs"
                   />
-                  <p className="text-[11px] text-neutral-500">
-                    A punchy, memorable title summarizing your 120-minute design execution.
-                  </p>
                 </div>
 
                 {/* Short Pitch / Elevator Description */}
@@ -434,9 +392,6 @@ export default function HackathonParticipantDashboard() {
                         className="w-full h-11 pl-9 pr-3 rounded-xl border border-neutral-200 bg-white text-xs font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine shadow-2xs"
                       />
                     </div>
-                    <p className="text-[11px] text-neutral-500">
-                      Link to your live prototype, slides deck, or Behance project presentation.
-                    </p>
                   </div>
 
                   <div className="space-y-1.5">
@@ -453,15 +408,12 @@ export default function HackathonParticipantDashboard() {
                         className="w-full h-11 pl-9 pr-3 rounded-xl border border-neutral-200 bg-white text-xs font-medium text-pine focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine shadow-2xs"
                       />
                     </div>
-                    <p className="text-[11px] text-neutral-500">
-                      Showcase past works and credentials to judges.
-                    </p>
                   </div>
                 </div>
 
                 {/* Problem Statement */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-pine uppercase tracking-wider block flex items-center gap-1.5">
+                  <label className="text-xs font-bold text-pine uppercase tracking-wider flex items-center gap-1.5">
                     <Lightbulb className="w-3.5 h-3.5 text-tangerine" />
                     Problem Statement &amp; Regional Context
                   </label>
@@ -476,7 +428,7 @@ export default function HackathonParticipantDashboard() {
 
                 {/* Proposed Solution */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-pine uppercase tracking-wider block flex items-center gap-1.5">
+                  <label className="text-xs font-bold text-pine uppercase tracking-wider flex items-center gap-1.5">
                     <Target className="w-3.5 h-3.5 text-spring" />
                     Proposed Solution &amp; Cultural Semiotics
                   </label>
@@ -547,6 +499,7 @@ export default function HackathonParticipantDashboard() {
                     src={formData.avatar_url || "/images/community/ncd_class_training.jpg"}
                     alt={formData.lead_name || "Profile Photo"}
                     fill
+                    unoptimized
                     className="object-cover"
                   />
                   {isUploadingPhoto && (
