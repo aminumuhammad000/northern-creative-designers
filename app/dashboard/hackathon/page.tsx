@@ -33,6 +33,7 @@ import {
   updateHackathonParticipantAction,
   uploadHackathonParticipantPhotoAction,
   setParticipantSessionCookieAction,
+  loginHackathonParticipantAction,
   HackathonParticipantData,
 } from "@/app/actions/hackathon-dashboard";
 
@@ -75,8 +76,30 @@ export default function HackathonParticipantDashboard() {
     track: "Brand identity",
   });
 
-  // Switcher Lookup
+  // Switcher Lookup & Sign-In
   const [searchEmail, setSearchEmail] = useState("");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPhone, setLoginPhone] = useState("");
+  const [isSigningIn, setIsSigningIn] = useState(false);
+  const [signInError, setSignInError] = useState("");
+
+  const handleDashboardSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSignInError("");
+    setIsSigningIn(true);
+    try {
+      const res = await loginHackathonParticipantAction(loginEmail, loginPhone);
+      if (res.success) {
+        await loadData(res.participantId);
+      } else {
+        setSignInError(res.error || "No matching hackathon registration found.");
+      }
+    } catch {
+      setSignInError("Unable to verify your registration. Please try again.");
+    } finally {
+      setIsSigningIn(false);
+    }
+  };
 
   const loadData = async (identifier?: string) => {
     try {
@@ -208,8 +231,78 @@ export default function HackathonParticipantDashboard() {
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#f8fafc]">
         <Loader2 className="w-8 h-8 text-pine animate-spin mb-3" />
         <p className="text-xs font-semibold text-pine uppercase tracking-wider">
-          Connecting to Hackathon Stage Database...
+          Loading Hackathon Dashboard...
         </p>
+      </div>
+    );
+  }
+
+  if (!participant) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white px-4 py-12">
+        <div className="w-full max-w-md space-y-6">
+          <div className="text-center space-y-2">
+            <h1 className="text-2xl font-black text-pine tracking-tight">
+              Hackathon Contestant Dashboard
+            </h1>
+            <p className="text-xs text-neutral-500">
+              Sign in with the email and phone number you used to register for Hackathon 2.0.
+            </p>
+          </div>
+
+          <form
+            onSubmit={handleDashboardSignIn}
+            className="p-6 sm:p-8 rounded-3xl bg-white border border-neutral-200 shadow-sm space-y-4"
+          >
+            {signInError && (
+              <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 font-medium">
+                {signInError}
+              </div>
+            )}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                Registered Email
+              </label>
+              <input
+                type="email"
+                required
+                placeholder="you@example.com"
+                value={loginEmail}
+                onChange={(e) => setLoginEmail(e.target.value)}
+                className="w-full h-11 px-3.5 rounded-xl border border-neutral-200 bg-neutral-50/50 text-sm text-navy focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-pine uppercase tracking-wider block">
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                required
+                placeholder="08012345678"
+                value={loginPhone}
+                onChange={(e) => setLoginPhone(e.target.value)}
+                className="w-full h-11 px-3.5 rounded-xl border border-neutral-200 bg-neutral-50/50 text-sm text-navy focus:outline-none focus:ring-2 focus:ring-pine/20 focus:border-pine"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={isSigningIn}
+              className="w-full h-11 rounded-xl bg-pine hover:bg-pine-light text-white text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-60 cursor-pointer"
+            >
+              {isSigningIn ? "Verifying..." : "Access My Dashboard"}
+            </button>
+          </form>
+
+          <div className="text-center space-y-2">
+            <p className="text-xs text-neutral-500">
+              Haven&apos;t registered yet?{" "}
+              <Link href="/hackathon/register" className="font-bold text-pine hover:underline">
+                Register for Hackathon 2.0
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -220,10 +313,10 @@ export default function HackathonParticipantDashboard() {
       <DashboardSidebar
         portalType="hackathon"
         portalTitle="Sprint Portal"
-        portalBadge="Finalist"
-        userName={participant?.lead_name || "Hackathon Competitor"}
-        userSubtitle={participant?.track ? `${participant.track} Track` : "Designer"}
-        userEmail={participant?.lead_email || "competitor@hackathon.org"}
+        portalBadge="Contestant"
+        userName={participant.lead_name}
+        userSubtitle={participant.track ? `${participant.track} Track` : "Designer"}
+        userEmail={participant.lead_email}
         items={[
           { id: "project", label: "Project & Presentation", icon: Presentation },
           { id: "profile", label: "Profile & Avatar", icon: User },

@@ -104,17 +104,14 @@ export async function getHackathonParticipantDataAction(emailOrId?: string): Pro
         project_title: t.project_title || t.team_name,
       }))
 
-      let matchedTeam = getLocalHackathonParticipant(targetIdentifier)
-      if (!matchedTeam && teams.length > 0) {
-        matchedTeam = teams[0]
-      }
+      const matchedTeam = targetIdentifier ? getLocalHackathonParticipant(targetIdentifier) : null
 
       if (!matchedTeam) {
         return {
-          success: true,
+          success: false,
           hackathonState,
           allParticipants: [],
-          error: 'No hackathon participants found. Please register first.',
+          error: 'Please sign in with your registered email and phone number to access your dashboard.',
         }
       }
 
@@ -129,10 +126,10 @@ export async function getHackathonParticipantDataAction(emailOrId?: string): Pro
         lead_phone: matchedTeam.lead_phone || '',
         track: matchedTeam.track,
         team_size: matchedTeam.team_size || 1,
-        professional_title: matchedTeam.professional_title || 'Lead Designer & Sprint Competitor',
+        professional_title: matchedTeam.professional_title || '',
         avatar_url: matchedTeam.avatar_url || '/images/community/ncd_class_training.jpg',
-        project_title: matchedTeam.project_title || matchedTeam.team_name,
-        short_description: matchedTeam.short_description || `Individual live stage sprint in ${matchedTeam.track}.`,
+        project_title: matchedTeam.project_title || '',
+        short_description: matchedTeam.short_description || '',
         detailed_description: matchedTeam.detailed_description || '',
         problem_statement: matchedTeam.problem_statement || '',
         proposed_solution: matchedTeam.proposed_solution || '',
@@ -212,23 +209,12 @@ export async function getHackathonParticipantDataAction(emailOrId?: string): Pro
       }
     }
 
-    // Fallback: Pick latest registered participant
-    if (!teamRecord) {
-      const { data } = await adminSupabase
-        .from('hackathon_teams')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle()
-      teamRecord = data
-    }
-
     if (!teamRecord) {
       return {
-        success: true,
+        success: false,
         hackathonState,
-        allParticipants,
-        error: 'No registered hackathon participant found.',
+        allParticipants: [],
+        error: 'Please sign in with your registered email and phone number to access your dashboard.',
       }
     }
 
@@ -247,10 +233,10 @@ export async function getHackathonParticipantDataAction(emailOrId?: string): Pro
       lead_phone: teamRecord.lead_phone || '',
       track: teamRecord.track,
       team_size: teamRecord.team_size || 1,
-      professional_title: teamRecord.professional_title || 'Lead Designer & Sprint Competitor',
+      professional_title: teamRecord.professional_title || '',
       avatar_url: teamRecord.avatar_url || '/images/community/ncd_class_training.jpg',
-      project_title: teamRecord.project_title || teamRecord.team_name,
-      short_description: teamRecord.short_description || `Individual live stage sprint in ${teamRecord.track}.`,
+      project_title: teamRecord.project_title || '',
+      short_description: teamRecord.short_description || '',
       detailed_description: teamRecord.detailed_description || '',
       problem_statement: teamRecord.problem_statement || '',
       proposed_solution: teamRecord.proposed_solution || '',
@@ -289,9 +275,9 @@ export async function getHackathonParticipantDataAction(emailOrId?: string): Pro
             lead_phone: participant.lead_phone || '',
             track: participant.track,
             team_size: 1,
-            professional_title: participant.professional_title || 'Lead Designer & Sprint Competitor',
+            professional_title: participant.professional_title || '',
             avatar_url: participant.avatar_url || '/images/community/ncd_class_training.jpg',
-            project_title: participant.project_title || participant.team_name,
+            project_title: participant.project_title || '',
             short_description: participant.short_description || '',
             detailed_description: participant.detailed_description || '',
             problem_statement: participant.problem_statement || '',

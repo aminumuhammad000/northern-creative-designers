@@ -774,13 +774,12 @@ export function getLocalHackathonParticipant(identifier?: string | null) {
     const found = store.hackathon_teams.find(
       (t) =>
         t.id.toLowerCase() === q ||
-        (t.lead_email && t.lead_email.toLowerCase() === q) ||
-        t.lead_name.toLowerCase().includes(q)
+        (t.lead_email && t.lead_email.toLowerCase() === q)
     )
     if (found) return found
   }
 
-  return store.hackathon_teams[0] || null
+  return null
 }
 
 export function saveLocalJuryScore(input: {
