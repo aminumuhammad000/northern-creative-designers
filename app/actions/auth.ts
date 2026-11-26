@@ -390,18 +390,48 @@ export async function loginAction(formData: FormData) {
 
     // Determine appropriate dashboard based on user profile
     const adminSupabase = createAdminClient()
-    const { data: exhibitor, error: exhErr } = await adminSupabase
-      .from('exhibitor_applications')
-      .select('id')
-      .ilike('email', email)
-      .maybeSingle()
+    const [{ data: exhibitor, error: exhErr }, { data: hackathonTeam }, { data: attendeeReg }] =
+      await Promise.all([
+        adminSupabase
+          .from('exhibitor_applications')
+          .select('id')
+          .ilike('email', email)
+          .maybeSingle(),
+        adminSupabase
+          .from('hackathon_teams')
+          .select('id')
+          .ilike('lead_email', email)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle(),
+        adminSupabase
+          .from('registrations')
+          .select('id')
+          .ilike('email', email)
+          .maybeSingle(),
+      ])
 
     if (isDatabaseConnectionError(exhErr)) {
       const targetUrl = email.includes('vendor') || email.includes('exhibitor') ? '/dashboard/exhibitor' : '/dashboard'
       return { success: true, redirectUrl: targetUrl }
     }
 
-    const targetUrl = exhibitor ? '/dashboard/exhibitor' : '/dashboard'
+    if (hackathonTeam?.id) {
+      try {
+        const cookieStore = await cookies()
+        cookieStore.set('ncd_hackathon_team_id', hackathonTeam.id, {
+          path: '/',
+          httpOnly: true,
+          maxAge: 60 * 60 * 24 * 30,
+        })
+      } catch {}
+    }
+
+    const targetUrl = exhibitor
+      ? '/dashboard/exhibitor'
+      : hackathonTeam && !attendeeReg
+      ? '/dashboard/hackathon'
+      : '/dashboard'
     revalidatePath(targetUrl)
     return { success: true, redirectUrl: targetUrl }
   } catch (err: unknown) {

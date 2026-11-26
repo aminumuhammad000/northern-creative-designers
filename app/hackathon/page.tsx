@@ -92,6 +92,13 @@ export default async function HackathonPage() {
             >
               Register to Compete →
             </Link>
+
+            <Link
+              href="/dashboard/hackathon"
+              className="w-full py-3 px-6 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-spring font-bold text-xs uppercase tracking-wider text-center transition-all shadow-2xs"
+            >
+              Contestant Dashboard →
+            </Link>
           </div>
         </section>
 

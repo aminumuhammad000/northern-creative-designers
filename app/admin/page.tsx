@@ -635,19 +635,19 @@ export default function AdminPortalPage() {
 
       {/* Modern Left Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 lg:w-72 bg-[#021f13] text-white flex flex-col border-r border-white/10 transition-transform duration-300 md:static md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-56 lg:w-60 bg-[#021f13] text-white flex flex-col border-r border-white/10 transition-transform duration-300 md:sticky md:top-0 md:h-screen md:flex-shrink-0 md:translate-x-0 ${
           mobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Brand Header in Sidebar */}
-        <div className="p-6 border-b border-white/10 flex items-center justify-between">
+        <div className="px-4 py-4 border-b border-white/10 flex items-center justify-between flex-shrink-0">
           <Link href="/" className="inline-block" aria-label="Summit Portal Home">
             <Image
               src="/images/brand/logo-footer.png"
               alt="Northern Creative Designers"
-              width={180}
-              height={56}
-              className="h-8 w-auto object-contain"
+              width={160}
+              height={50}
+              className="h-7 w-auto object-contain"
               priority
             />
           </Link>
@@ -659,32 +659,23 @@ export default function AdminPortalPage() {
           </button>
         </div>
 
-        {/* Live Status indicator badge */}
-        <div className="px-6 py-3 bg-white/[0.03] border-b border-white/10 flex items-center justify-between text-xs">
-          <span className="flex items-center gap-2 text-white/80 font-medium">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            Live Operations
-          </span>
-          <span className="font-mono text-emerald-300 text-[11px] font-semibold">19 Dec 2026</span>
-        </div>
-
         {/* Sidebar Navigation Items */}
-        <nav className="p-4 flex-1 space-y-1.5 overflow-y-auto">
+        <nav className="p-3 flex-1 space-y-1 overflow-hidden">
           <button
             onClick={() => {
               setActiveTab("attendees");
               setMobileSidebarOpen(false);
             }}
-            className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all text-left ${
+            className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-bold text-xs transition-all text-left ${
               activeTab === "attendees"
                 ? "bg-spring text-navy shadow-sm"
                 : "text-white/80 hover:text-white hover:bg-white/10"
             }`}
           >
             <Users className="w-4 h-4 flex-shrink-0" />
-            <span className="flex-1">Attendees</span>
+            <span className="flex-1 truncate">Attendees</span>
             <span
-              className={`font-mono text-xs px-2 py-0.5 rounded-full ${
+              className={`font-mono text-[11px] px-2 py-0.5 rounded-full ${
                 activeTab === "attendees" ? "bg-navy/15 text-navy" : "bg-white/10 text-white/90"
               }`}
             >
@@ -697,16 +688,16 @@ export default function AdminPortalPage() {
               setActiveTab("checkin");
               setMobileSidebarOpen(false);
             }}
-            className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all text-left ${
+            className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-bold text-xs transition-all text-left ${
               activeTab === "checkin"
                 ? "bg-spring text-navy shadow-sm"
                 : "text-white/80 hover:text-white hover:bg-white/10"
             }`}
           >
             <QrCode className="w-4 h-4 flex-shrink-0" />
-            <span className="flex-1">Venue Check-In</span>
+            <span className="flex-1 truncate">Venue Check-In</span>
             <span
-              className={`font-mono text-xs px-2 py-0.5 rounded-full ${
+              className={`font-mono text-[11px] px-2 py-0.5 rounded-full ${
                 activeTab === "checkin" ? "bg-navy/15 text-navy" : "bg-white/10 text-white/90"
               }`}
             >
@@ -719,14 +710,14 @@ export default function AdminPortalPage() {
               setActiveTab("email");
               setMobileSidebarOpen(false);
             }}
-            className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all text-left ${
+            className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-bold text-xs transition-all text-left ${
               activeTab === "email"
                 ? "bg-spring text-navy shadow-sm"
                 : "text-white/80 hover:text-white hover:bg-white/10"
             }`}
           >
             <Send className="w-4 h-4 flex-shrink-0" />
-            <span className="flex-1">Broadcast Email</span>
+            <span className="flex-1 truncate">Broadcast Email</span>
           </button>
 
           <button
@@ -734,16 +725,16 @@ export default function AdminPortalPage() {
               setActiveTab("exhibitors");
               setMobileSidebarOpen(false);
             }}
-            className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all text-left ${
+            className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-bold text-xs transition-all text-left ${
               activeTab === "exhibitors"
                 ? "bg-spring text-navy shadow-sm"
                 : "text-white/80 hover:text-white hover:bg-white/10"
             }`}
           >
             <Store className="w-4 h-4 flex-shrink-0" />
-            <span className="flex-1">Exhibitors</span>
+            <span className="flex-1 truncate">Exhibitors</span>
             <span
-              className={`font-mono text-xs px-2 py-0.5 rounded-full ${
+              className={`font-mono text-[11px] px-2 py-0.5 rounded-full ${
                 activeTab === "exhibitors" ? "bg-navy/15 text-navy" : "bg-white/10 text-white/90"
               }`}
             >
@@ -756,16 +747,16 @@ export default function AdminPortalPage() {
               setActiveTab("hackathon");
               setMobileSidebarOpen(false);
             }}
-            className={`w-full flex items-center gap-3 px-3.5 py-3 rounded-xl font-bold text-xs sm:text-sm transition-all text-left ${
+            className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-bold text-xs transition-all text-left ${
               activeTab === "hackathon"
                 ? "bg-spring text-navy shadow-sm"
                 : "text-white/80 hover:text-white hover:bg-white/10"
             }`}
           >
             <Zap className="w-4 h-4 flex-shrink-0" />
-            <span className="flex-1">Hackathon Teams</span>
+            <span className="flex-1 truncate">Hackathon Teams</span>
             <span
-              className={`font-mono text-xs px-2 py-0.5 rounded-full ${
+              className={`font-mono text-[11px] px-2 py-0.5 rounded-full ${
                 activeTab === "hackathon" ? "bg-navy/15 text-navy" : "bg-white/10 text-white/90"
               }`}
             >
@@ -775,12 +766,12 @@ export default function AdminPortalPage() {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="p-4 border-t border-white/10 bg-[#01140b] space-y-3">
+        <div className="p-3 border-t border-white/10 bg-[#01140b] space-y-2.5 flex-shrink-0">
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={fetchFullData}
               disabled={isLoadingData}
-              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-semibold text-white transition-colors border border-white/10"
+              className="inline-flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-semibold text-white transition-colors border border-white/10"
               title="Refresh database"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isLoadingData ? "animate-spin" : ""}`} />
@@ -789,7 +780,7 @@ export default function AdminPortalPage() {
             <button
               onClick={handleExportCSV}
               disabled={registrations.length === 0}
-              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-spring hover:bg-spring/90 text-navy text-xs font-bold transition-all shadow-2xs disabled:opacity-50"
+              className="inline-flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-xl bg-spring hover:bg-spring/90 text-navy text-xs font-bold transition-all shadow-2xs disabled:opacity-50"
               title="Export attendees to CSV"
             >
               <Download className="w-3.5 h-3.5" />
@@ -800,13 +791,13 @@ export default function AdminPortalPage() {
           <div className="flex items-center justify-between pt-2 border-t border-white/10">
             <div className="min-w-0 pr-2">
               <p className="font-bold text-white truncate text-xs">Operations Desk</p>
-              <p className="text-white/50 truncate text-[11px] font-mono">
+              <p className="text-white/50 truncate text-[10px] font-mono">
                 support@northcdesigner.com.ng
               </p>
             </div>
             <button
               onClick={handleLogout}
-              className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-300 transition-colors"
+              className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-300 transition-colors flex-shrink-0"
               title="Sign Out"
             >
               <LogOut className="w-4 h-4" />
@@ -816,9 +807,9 @@ export default function AdminPortalPage() {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
+      <div className="flex-1 flex flex-col min-h-screen min-w-0 overflow-x-hidden">
         {/* Clean Top Navigation Bar */}
-        <header className="bg-white border-b border-neutral-200/90 px-6 sm:px-8 py-4.5 flex flex-wrap items-center justify-between gap-4 sticky top-0 z-30 shadow-2xs">
+        <header className="bg-white border-b border-neutral-200/90 px-6 sm:px-8 py-4 flex flex-wrap items-center justify-between gap-4 sticky top-0 z-30 shadow-2xs">
           <div>
             <h1 className="text-lg sm:text-xl font-black text-pine tracking-tight">
               {activeTab === "attendees" && "Attendee Management & Pass Directory"}
@@ -827,16 +818,6 @@ export default function AdminPortalPage() {
               {activeTab === "exhibitors" && "Marketplace & Exhibitor Management"}
               {activeTab === "hackathon" && "Live Stage Design Sprint Teams"}
             </h1>
-            <p className="text-xs text-neutral-500 mt-0.5">
-              Northern Creative Designers Summit 2.0 • Roots &amp; Vectors • Kano Secretariat
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              Real-time Database
-            </span>
           </div>
         </header>
 
@@ -844,7 +825,16 @@ export default function AdminPortalPage() {
         <div className="p-6 sm:p-8 space-y-6 flex-1">
           {/* KPI Stats Row */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-            <div className="p-5 rounded-2xl bg-white border border-neutral-200/90 shadow-2xs space-y-2">
+            <button
+              type="button"
+              onClick={() => {
+                setActiveTab("attendees");
+                setCheckInFilter("all");
+              }}
+              className={`p-5 rounded-2xl bg-white border text-left shadow-2xs space-y-2 transition-all cursor-pointer hover:border-pine/40 hover:shadow-sm ${
+                activeTab === "attendees" ? "border-pine ring-1 ring-pine/20" : "border-neutral-200/90"
+              }`}
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider">
                   Total Registered
@@ -860,9 +850,15 @@ export default function AdminPortalPage() {
                 <span className="text-xs text-neutral-500 font-medium">Delegates</span>
               </div>
               <p className="text-[11px] text-neutral-500">Live summit registrations</p>
-            </div>
+            </button>
 
-            <div className="p-5 rounded-2xl bg-white border border-neutral-200/90 shadow-2xs space-y-2">
+            <button
+              type="button"
+              onClick={() => setActiveTab("checkin")}
+              className={`p-5 rounded-2xl bg-white border text-left shadow-2xs space-y-2 transition-all cursor-pointer hover:border-emerald-500/40 hover:shadow-sm ${
+                activeTab === "checkin" ? "border-emerald-500 ring-1 ring-emerald-500/20" : "border-neutral-200/90"
+              }`}
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider">
                   Venue Checked-In
@@ -885,9 +881,15 @@ export default function AdminPortalPage() {
                   style={{ width: `${checkInPercentage}%` }}
                 />
               </div>
-            </div>
+            </button>
 
-            <div className="p-5 rounded-2xl bg-white border border-neutral-200/90 shadow-2xs space-y-2">
+            <button
+              type="button"
+              onClick={() => setActiveTab("exhibitors")}
+              className={`p-5 rounded-2xl bg-white border text-left shadow-2xs space-y-2 transition-all cursor-pointer hover:border-amber-500/40 hover:shadow-sm ${
+                activeTab === "exhibitors" ? "border-amber-500 ring-1 ring-amber-500/20" : "border-neutral-200/90"
+              }`}
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider">
                   Exhibitors
@@ -903,9 +905,15 @@ export default function AdminPortalPage() {
                 <span className="text-xs text-neutral-500 font-medium">Brands</span>
               </div>
               <p className="text-[11px] text-neutral-500">Marketplace showcases</p>
-            </div>
+            </button>
 
-            <div className="p-5 rounded-2xl bg-white border border-neutral-200/90 shadow-2xs space-y-2">
+            <button
+              type="button"
+              onClick={() => setActiveTab("hackathon")}
+              className={`p-5 rounded-2xl bg-white border text-left shadow-2xs space-y-2 transition-all cursor-pointer hover:border-indigo-500/40 hover:shadow-sm ${
+                activeTab === "hackathon" ? "border-indigo-500 ring-1 ring-indigo-500/20" : "border-neutral-200/90"
+              }`}
+            >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider">
                   Hackathon Teams
@@ -921,7 +929,7 @@ export default function AdminPortalPage() {
                 <span className="text-xs text-neutral-500 font-medium">Teams</span>
               </div>
               <p className="text-[11px] text-neutral-500">Stage sprint entries</p>
-            </div>
+            </button>
           </div>
 
           {/* TAB 1: ATTENDEES */}
@@ -1013,12 +1021,12 @@ export default function AdminPortalPage() {
                     <table className="w-full text-left text-xs border-collapse">
                       <thead>
                         <tr className="bg-neutral-50/80 border-b border-neutral-200 text-neutral-500 font-bold uppercase tracking-wider text-[10px]">
-                          <th className="py-3.5 px-4 sm:px-6">Delegate</th>
-                          <th className="py-3.5 px-4">Pass Reference</th>
-                          <th className="py-3.5 px-4">Discipline / Role</th>
-                          <th className="py-3.5 px-4">City</th>
-                          <th className="py-3.5 px-4">Admission Status</th>
-                          <th className="py-3.5 px-4 text-right">Actions</th>
+                          <th className="py-3.5 px-4 sm:px-6 whitespace-nowrap">Delegate</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Pass Reference</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Discipline / Role</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">City</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Admission Status</th>
+                          <th className="py-3.5 px-4 sm:px-6 text-right whitespace-nowrap">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-neutral-100">
@@ -1036,12 +1044,12 @@ export default function AdminPortalPage() {
                           return (
                             <React.Fragment key={attendee.id}>
                               <tr className="hover:bg-neutral-50/60 transition-colors">
-                                <td className="py-3.5 px-4 sm:px-6">
+                                <td className="py-3.5 px-4 sm:px-6 align-middle">
                                   <div className="flex items-center gap-3">
                                     <div className="w-9 h-9 rounded-xl bg-pine/10 text-pine flex items-center justify-center font-bold text-xs flex-shrink-0">
                                       {initials}
                                     </div>
-                                    <div className="min-w-0">
+                                    <div className="min-w-0 max-w-[200px]">
                                       <span className="font-bold text-neutral-900 block truncate">
                                         {attendee.full_name}
                                       </span>
@@ -1052,7 +1060,7 @@ export default function AdminPortalPage() {
                                   </div>
                                 </td>
 
-                                <td className="py-3.5 px-4 whitespace-nowrap">
+                                <td className="py-3.5 px-4 whitespace-nowrap align-middle">
                                   <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 border border-neutral-200">
                                     <span className="font-mono text-xs font-bold text-pine">
                                       {attendee.reference_code}
@@ -1071,20 +1079,20 @@ export default function AdminPortalPage() {
                                   </div>
                                 </td>
 
-                                <td className="py-3.5 px-4">
-                                  <span className="font-medium text-neutral-800 block">
+                                <td className="py-3.5 px-4 align-middle">
+                                  <span className="font-medium text-neutral-800 block truncate max-w-[180px]">
                                     {attendee.creative_discipline}
                                   </span>
-                                  <span className="text-[10px] text-neutral-500 block">
+                                  <span className="text-[10px] text-neutral-500 block truncate max-w-[180px]">
                                     {attendee.experience_level}
                                   </span>
                                 </td>
 
-                                <td className="py-3.5 px-4 whitespace-nowrap font-medium text-neutral-700">
+                                <td className="py-3.5 px-4 whitespace-nowrap align-middle font-medium text-neutral-700">
                                   {attendee.city_state}
                                 </td>
 
-                                <td className="py-3.5 px-4 whitespace-nowrap">
+                                <td className="py-3.5 px-4 whitespace-nowrap align-middle">
                                   {isCheckedIn ? (
                                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">
                                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
@@ -1098,32 +1106,34 @@ export default function AdminPortalPage() {
                                   )}
                                 </td>
 
-                                <td className="py-3.5 px-4 text-right whitespace-nowrap space-x-2">
-                                  <button
-                                    onClick={() => handleToggleCheckIn(attendee)}
-                                    disabled={isPending}
-                                    className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-all ${
-                                      isCheckedIn
-                                        ? "bg-neutral-100 hover:bg-neutral-200 text-neutral-700"
-                                        : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-2xs"
-                                    }`}
-                                  >
-                                    {isCheckedIn ? "Undo" : "Admit"}
-                                  </button>
+                                <td className="py-3.5 px-4 sm:px-6 text-right whitespace-nowrap align-middle">
+                                  <div className="inline-flex items-center justify-end gap-2">
+                                    <button
+                                      onClick={() => handleToggleCheckIn(attendee)}
+                                      disabled={isPending}
+                                      className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-all ${
+                                        isCheckedIn
+                                          ? "bg-neutral-100 hover:bg-neutral-200 text-neutral-700"
+                                          : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-2xs"
+                                      }`}
+                                    >
+                                      {isCheckedIn ? "Undo" : "Admit"}
+                                    </button>
 
-                                  <button
-                                    onClick={() =>
-                                      setExpandedAttendeeId(isExpanded ? null : attendee.id)
-                                    }
-                                    className="p-1.5 rounded-lg text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 transition-colors"
-                                    title="View pass details"
-                                  >
-                                    {isExpanded ? (
-                                      <ChevronUp className="w-4 h-4" />
-                                    ) : (
-                                      <ChevronDown className="w-4 h-4" />
-                                    )}
-                                  </button>
+                                    <button
+                                      onClick={() =>
+                                        setExpandedAttendeeId(isExpanded ? null : attendee.id)
+                                      }
+                                      className="p-1.5 rounded-lg text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 transition-colors"
+                                      title="View pass details"
+                                    >
+                                      {isExpanded ? (
+                                        <ChevronUp className="w-4 h-4" />
+                                      ) : (
+                                        <ChevronDown className="w-4 h-4" />
+                                      )}
+                                    </button>
+                                  </div>
                                 </td>
                               </tr>
 
@@ -1446,47 +1456,47 @@ export default function AdminPortalPage() {
                     <table className="w-full text-left text-xs border-collapse">
                       <thead>
                         <tr className="bg-neutral-50 border-b border-neutral-200 text-neutral-500 font-bold uppercase tracking-wider text-[10px]">
-                          <th className="py-3.5 px-4 sm:px-6">Brand / Company</th>
-                          <th className="py-3.5 px-4">Contact Person</th>
-                          <th className="py-3.5 px-4">Category</th>
-                          <th className="py-3.5 px-4">Booth Assignment</th>
-                          <th className="py-3.5 px-4">Review Status</th>
-                          <th className="py-3.5 px-4 text-right">Actions</th>
+                          <th className="py-3.5 px-4 sm:px-6 whitespace-nowrap">Brand / Company</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Contact Person</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Category</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Booth Assignment</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Review Status</th>
+                          <th className="py-3.5 px-4 sm:px-6 text-right whitespace-nowrap">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-neutral-100">
                         {exhibitors.map((ex) => (
                           <tr key={ex.id} className="hover:bg-neutral-50/60 transition-colors">
-                            <td className="py-3.5 px-4 sm:px-6">
-                              <span className="font-bold text-neutral-900 block">{ex.business_name}</span>
+                            <td className="py-3.5 px-4 sm:px-6 align-middle">
+                              <span className="font-bold text-neutral-900 block truncate max-w-[180px]">{ex.business_name}</span>
                               {ex.website && (
                                 <a
                                   href={ex.website}
                                   target="_blank"
                                   rel="noreferrer"
-                                  className="text-[11px] text-pine hover:underline truncate block"
+                                  className="text-[11px] text-pine hover:underline truncate block max-w-[180px]"
                                 >
                                   {ex.website}
                                 </a>
                               )}
                             </td>
-                            <td className="py-3.5 px-4">
-                              <span className="font-medium text-neutral-800 block">{ex.contact_person}</span>
-                              <span className="text-[11px] text-neutral-500 block">{ex.email}</span>
+                            <td className="py-3.5 px-4 align-middle">
+                              <span className="font-medium text-neutral-800 block truncate max-w-[180px]">{ex.contact_person}</span>
+                              <span className="text-[11px] text-neutral-500 block truncate max-w-[180px]">{ex.email}</span>
                             </td>
-                            <td className="py-3.5 px-4">
+                            <td className="py-3.5 px-4 whitespace-nowrap align-middle">
                               <span className="px-2.5 py-1 rounded bg-neutral-100 text-neutral-700 text-[11px] font-medium">
                                 {ex.category}
                               </span>
                             </td>
-                            <td className="py-3.5 px-4">
+                            <td className="py-3.5 px-4 whitespace-nowrap align-middle">
                               <span className="font-mono text-xs font-bold text-pine">
                                 {ex.assigned_booth || "Unassigned"}
                               </span>
                             </td>
-                            <td className="py-3.5 px-4">
+                            <td className="py-3.5 px-4 whitespace-nowrap align-middle">
                               <span
-                                className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                                className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold ${
                                   ex.status === "approved"
                                     ? "bg-emerald-100 text-emerald-800"
                                     : ex.status === "rejected"
@@ -1497,29 +1507,31 @@ export default function AdminPortalPage() {
                                 {ex.status.toUpperCase()}
                               </span>
                             </td>
-                            <td className="py-3.5 px-4 text-right space-x-2">
-                              {ex.status !== "approved" && (
-                                <button
-                                  onClick={() =>
-                                    handleUpdateExhibitor(
-                                      ex.id,
-                                      "approved",
-                                      "Booth " + Math.floor(10 + Math.random() * 90)
-                                    )
-                                  }
-                                  className="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-2xs"
-                                >
-                                  Approve
-                                </button>
-                              )}
-                              {ex.status !== "rejected" && (
-                                <button
-                                  onClick={() => handleUpdateExhibitor(ex.id, "rejected")}
-                                  className="px-2.5 py-1.5 rounded-lg bg-neutral-200 hover:bg-neutral-300 text-neutral-700 font-bold text-xs"
-                                >
-                                  Reject
-                                </button>
-                              )}
+                            <td className="py-3.5 px-4 sm:px-6 text-right whitespace-nowrap align-middle">
+                              <div className="inline-flex items-center justify-end gap-2">
+                                {ex.status !== "approved" && (
+                                  <button
+                                    onClick={() =>
+                                      handleUpdateExhibitor(
+                                        ex.id,
+                                        "approved",
+                                        "Booth " + Math.floor(10 + Math.random() * 90)
+                                      )
+                                    }
+                                    className="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-2xs"
+                                  >
+                                    Approve
+                                  </button>
+                                )}
+                                {ex.status !== "rejected" && (
+                                  <button
+                                    onClick={() => handleUpdateExhibitor(ex.id, "rejected")}
+                                    className="px-2.5 py-1.5 rounded-lg bg-neutral-200 hover:bg-neutral-300 text-neutral-700 font-bold text-xs"
+                                  >
+                                    Reject
+                                  </button>
+                                )}
+                              </div>
                             </td>
                           </tr>
                         ))}
@@ -1603,20 +1615,20 @@ export default function AdminPortalPage() {
                     <table className="w-full text-left text-xs border-collapse">
                       <thead>
                         <tr className="bg-neutral-50 border-b border-neutral-200 text-neutral-500 font-bold uppercase tracking-wider text-[10px]">
-                          <th className="py-3.5 px-4 sm:px-6">Team / Project</th>
-                          <th className="py-3.5 px-4">Track</th>
-                          <th className="py-3.5 px-4">Team Lead</th>
-                          <th className="py-3.5 px-4">Contact</th>
-                          <th className="py-3.5 px-4">Team Size</th>
-                          <th className="py-3.5 px-4">Review Status</th>
-                          <th className="py-3.5 px-4 text-right">Actions</th>
+                          <th className="py-3.5 px-4 sm:px-6 whitespace-nowrap">Team / Project</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Track</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Team Lead</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Contact</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Team Size</th>
+                          <th className="py-3.5 px-4 whitespace-nowrap">Review Status</th>
+                          <th className="py-3.5 px-4 sm:px-6 text-right whitespace-nowrap">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-neutral-100">
                         {hackathonTeams.map((team) => (
                           <tr key={team.id} className="hover:bg-neutral-50/60 transition-colors">
-                            <td className="py-3.5 px-4 sm:px-6">
-                              <span className="font-bold text-neutral-900 block">{team.team_name}</span>
+                            <td className="py-3.5 px-4 sm:px-6 align-middle">
+                              <span className="font-bold text-neutral-900 block truncate max-w-[170px]">{team.team_name}</span>
                               {team.portfolio_url && (
                                 <a
                                   href={team.portfolio_url}
@@ -1628,24 +1640,24 @@ export default function AdminPortalPage() {
                                 </a>
                               )}
                             </td>
-                            <td className="py-3.5 px-4">
+                            <td className="py-3.5 px-4 whitespace-nowrap align-middle">
                               <span className="px-2.5 py-1 rounded bg-indigo-50 text-indigo-700 text-[11px] font-semibold">
                                 {team.track}
                               </span>
                             </td>
-                            <td className="py-3.5 px-4 font-semibold text-neutral-800">
+                            <td className="py-3.5 px-4 whitespace-nowrap align-middle font-semibold text-neutral-800">
                               {team.lead_name}
                             </td>
-                            <td className="py-3.5 px-4 text-[11px] text-neutral-600">
-                              <span className="block">{team.lead_email}</span>
-                              <span className="block text-neutral-400">{team.lead_phone}</span>
+                            <td className="py-3.5 px-4 text-[11px] text-neutral-600 align-middle">
+                              <span className="block truncate max-w-[170px]">{team.lead_email}</span>
+                              <span className="block text-neutral-400 whitespace-nowrap">{team.lead_phone}</span>
                             </td>
-                            <td className="py-3.5 px-4 font-mono font-bold text-pine">
+                            <td className="py-3.5 px-4 whitespace-nowrap align-middle font-mono font-bold text-pine">
                               {team.team_size} Members
                             </td>
-                            <td className="py-3.5 px-4">
+                            <td className="py-3.5 px-4 whitespace-nowrap align-middle">
                               <span
-                                className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                                className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold ${
                                   team.status === "shortlisted" || team.status === "approved" || team.status === "stage_finalist"
                                     ? "bg-emerald-100 text-emerald-800"
                                     : team.status === "rejected"
@@ -1656,23 +1668,25 @@ export default function AdminPortalPage() {
                                 {team.status.toUpperCase()}
                               </span>
                             </td>
-                            <td className="py-3.5 px-4 text-right space-x-2">
-                              {team.status !== "shortlisted" && team.status !== "stage_finalist" && (
-                                <button
-                                  onClick={() => handleUpdateHackathonTeam(team.id, "shortlisted")}
-                                  className="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-2xs"
-                                >
-                                  Shortlist
-                                </button>
-                              )}
-                              {team.status !== "rejected" && (
-                                <button
-                                  onClick={() => handleUpdateHackathonTeam(team.id, "rejected")}
-                                  className="px-2.5 py-1.5 rounded-lg bg-neutral-200 hover:bg-neutral-300 text-neutral-700 font-bold text-xs"
-                                >
-                                  Reject
-                                </button>
-                              )}
+                            <td className="py-3.5 px-4 sm:px-6 text-right whitespace-nowrap align-middle">
+                              <div className="inline-flex items-center justify-end gap-2">
+                                {team.status !== "shortlisted" && team.status !== "stage_finalist" && (
+                                  <button
+                                    onClick={() => handleUpdateHackathonTeam(team.id, "shortlisted")}
+                                    className="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-2xs"
+                                  >
+                                    Shortlist
+                                  </button>
+                                )}
+                                {team.status !== "rejected" && (
+                                  <button
+                                    onClick={() => handleUpdateHackathonTeam(team.id, "rejected")}
+                                    className="px-2.5 py-1.5 rounded-lg bg-neutral-200 hover:bg-neutral-300 text-neutral-700 font-bold text-xs"
+                                  >
+                                    Reject
+                                  </button>
+                                )}
+                              </div>
                             </td>
                           </tr>
                         ))}

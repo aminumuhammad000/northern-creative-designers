@@ -94,9 +94,15 @@ export default function HackathonRegisterPage() {
               </p>
             </div>
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Button href="/hackathon" variant="primary" size="md">
-                Return to Hackathon Overview
+              <Button href="/dashboard/hackathon" variant="primary" size="md">
+                Access Hackathon Dashboard &rarr;
               </Button>
+              <Link
+                href="/hackathon"
+                className="px-5 py-2.5 rounded-full border border-neutral-border bg-white text-navy text-xs font-bold uppercase tracking-wider hover:bg-neutral-50 transition-colors"
+              >
+                Hackathon Overview
+              </Link>
               <Link
                 href="/voting-rules"
                 className="px-5 py-2.5 rounded-full border border-neutral-border bg-white text-navy text-xs font-bold uppercase tracking-wider hover:bg-neutral-50 transition-colors"
